@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-function Garage({ src, title, link }) {
+function Garage({ src, title, link,prize }) {
   return (
     <div className="flex flex-col items-center justify-center ">
       <div
@@ -15,7 +15,7 @@ function Garage({ src, title, link }) {
             href={link}
             className="bg-white/50 hover:bg-white/80 text-black/50 hover:text-black/80 md:px-10 py-2 rounded-md transition-all duration-500"
           >
-            Zamów Wycenę
+           {prize ? prize : "Zamów Wycenę" } 
           </Link>
         </div>
         {/* ON HOVER SHOW BUTTON ,TITLE AND SHADOW ON BG */}

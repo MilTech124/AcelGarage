@@ -22,7 +22,7 @@ async function PopularGarages() {
     <h2 className='text-center pb-5'>Najpopularniejsze Garaże</h2>
     <div className='flex w-full justify-center gap-[10vw] flex-wrap'>
     {data ? data.map((item,index) => ( 
-        <Garage key={index} link={'/garaze/'+item.slug} src={item.acf.obrazy[0].full_image_url} title={item.acf.tytul}/>
+        <Garage key={index} link={'/garaze/'+item.slug} src={item.acf.obrazy[0].full_image_url} title={item.acf.tytul} prize={item.acf.cena}/>
       ))
       : <p>Ładowanie danych ...</p>
       }
