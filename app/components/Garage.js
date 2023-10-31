@@ -9,7 +9,7 @@ function Garage({ src, title, link,prize }) {
       >
         {/* ON HOVER SHOW BUTTON ,TITLE AND SHADOW ON BG */}
         <div className="flex flex-col items-center justify-center w-full h-full bg-black/50 hover:bg-transparent transition-all duration-500">
-          <p className="text-white md:text-2xl font-bold">{title}</p>
+          <p className="text-white md:text-2xl font-bold text-center">{title}</p>
 
           <Link
             href={link}

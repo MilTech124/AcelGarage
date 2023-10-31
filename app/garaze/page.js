@@ -1,8 +1,12 @@
-import React from 'react'
+
+import Filters from "../components/garaze/Filters"
 
 function page() {
+
   return (
-    <div>page</div>
+    <main className="flex flex-col py-10">
+      <Filters/>
+    </main>
   )
 }
 
