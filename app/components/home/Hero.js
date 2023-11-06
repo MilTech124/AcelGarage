@@ -30,14 +30,14 @@ function Hero() {
       link: "/kontakt",
     },
    {
-      src: "/image/home/2.jpg",
+      src: "/image/home/brama.jpg",
       alt: "Image 2",
       title: "Bramy Segmentowe",
       subtitle: "Twój garaż zasługuje na najlepsze: Wybierz bramy segmentowe",
       link: "/bramy",
     },
    {
-      src: "/image/home/3.jpg",
+      src: "/image/home/domki.jpg",
       alt: "Image 3",
       title: "Domki ogrodowe",
       subtitle: "Idealne miejsce dla narzędzi ogrodowych",
@@ -51,7 +51,7 @@ function Hero() {
       link: "/garaze",
     },
    {
-      src: "/image/home/3.jpg",
+      src: "/image/home/kojec.jpg",
       alt: "Image 3",
       title: "Kojce dla pupili",
       subtitle: "Twój przyjaciel na czterech łapach zasługuje na swoją przestrzeń",

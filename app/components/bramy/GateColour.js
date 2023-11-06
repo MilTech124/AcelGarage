@@ -90,8 +90,8 @@ function GateColour() {
     <section className="bg-white w-full flex flex-col items-center justify-center">
         <h2 className="text-black">Kolorystyka oraz przetłoczenia</h2>
         <div className="w-full flex flex-wrap">
-        { images.map((image)=>(
-            <div className="w-1/3 group active:scale-150 active:z-50 hover:cursor-zoom-in hover:border relative">
+        { images.map((image,index)=>(
+            <div key={index} className="w-1/3 group active:scale-150 active:z-50 hover:cursor-zoom-in hover:border relative">
                 <Image src={image.src} alt={image.alt} width={800} height={800} className="object-cover  !h-full !w-full" />
                 <div className="absolute top-0 left-0 w-full h-full group-hover:opacity-0 bg-black/20 flex items-center justify-center">
                 <h4 className='text-white'>{image.title}</h4>

@@ -13,13 +13,9 @@ const  getData = async() => {
 
  function Filters() {
 
-    // getData().then((data) => {
-    //     const garages = data.filter((item) => item.acf.rodzaj === filter)
-    //     console.log("Garages",garages);
-    // }
-    // )
     const [filter, setFilter] = useState("drewnopodobny")
     const [data, setData] = useState(null)
+
     useEffect(() => {
         getData().then((data) => {
             setData(data)
@@ -28,8 +24,6 @@ const  getData = async() => {
 
     const currentData = data ? data.filter((item) => item.acf.rodzaj === filter) : null
     console.log("CurrentData",currentData);
-
-   
   
     const types =[
         {
@@ -55,13 +49,6 @@ const  getData = async() => {
         }
     ]
     
-    
-    
-
-  
-
-
-
   const handleChange = (event) => {
     setFilter(event.target.value);
   };
@@ -87,7 +74,7 @@ const  getData = async() => {
         {currentData ? currentData.map((item,index) => ( 
             <Garage key={index} link={'/garaze/'+item.slug} src={item.acf.obrazy ? item.acf.obrazy[0].full_image_url :null} title={item.acf.tytul} prize={item.acf.cena}/>
         ))
-        : <span class="loader"></span>
+        : <span className="loader"></span>
         }
     </div>
     </div>

@@ -7,7 +7,7 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header id="header" className="bg-black relative text-white z-10">
+    <header id="header" className="bg-black relative border-b text-white z-10">
       <div className="mx-auto">
         <div className="bg-slate-800 border-b-2 max-sm:text-xs text-sm border-white/20 py-1 flex justify-center max-sm:justify-start gap-5 relative">
           <Link href="tel:733003192" className="top-item">
@@ -19,12 +19,12 @@ export default function Header() {
             <span>+48 733003192</span>
           </Link>
           <Link href="mailto:biuro@acelgarage.pl" className="top-item">
-            <img src="image/mail.svg" />
+            <img src="/image/mail.svg" />
             <span>biuro@acelgarage.pl</span>
           </Link>
 
           <Link href="/garaze" className="top-item">
-            <img src="image/bag.svg" />
+            <img src="/image/bag.svg" />
           </Link>
         </div>
         <div className=" container mx-auto flex max-sm:flex-col justify-between items-center py-4">
@@ -53,12 +53,9 @@ export default function Header() {
             <a href="/garaze" className="menu-item">
               Garaże
             </a>
-            <a href="/kojce" className="menu-item">
+            {/* <a href="/kojce" className="menu-item">
               Kojce
-            </a>
-            <a href="/galeria" className="menu-item">
-              Galeria
-            </a>
+            </a>           */}
             <a href="/konfigurator" className="menu-item">
               Konfigurator
             </a>

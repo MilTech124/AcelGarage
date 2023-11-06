@@ -34,7 +34,7 @@
       @apply hover:text-slate-600 transition-all duration-300 lg:mx-4
   }
   .btn-acel{
-   @apply bg-transparent border-2 border-white/50 text-white px-5 py-2 rounded-sm hover:bg-white hover:text-black transition-all duration-300
+   @apply bg-transparent border-2  border-slate-200 text-white px-5 py-2 rounded-sm hover:bg-white hover:text-black transition-all duration-300
   }
 }
 
@@ -157,4 +157,16 @@
     box-shadow: 0 0 0 1rem #fff;
     opacity: 1;
   }
+}
+
+#contact::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url(/image/contact-bg.svg) no-repeat center center/cover;
+  z-index: -1;
+  opacity: 0.5;
 }
