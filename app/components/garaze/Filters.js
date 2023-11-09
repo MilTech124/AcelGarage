@@ -2,7 +2,7 @@
 import{ useEffect, useState } from 'react'
 import axios from 'axios'
 import Garage from '../Garage'
-
+import {Fade} from "react-awesome-reveal";
 
 const  getData = async() => {
     
@@ -23,7 +23,7 @@ const  getData = async() => {
     }, [])
 
     const currentData = data ? data.filter((item) => item.acf.rodzaj === filter) : null
-    console.log("CurrentData",currentData);
+
   
     const types =[
         {
@@ -48,6 +48,13 @@ const  getData = async() => {
             type:"kojec"
         }
     ]
+
+
+    //changing resolution of image
+    const changeRes = (item) => {
+       return item.acf.obrazy[0].full_image_url ? item.acf.obrazy[0].medium_srcset.split(", ")[0].split(" ")[0] : null
+      }
+ 
     
   const handleChange = (event) => {
     setFilter(event.target.value);
@@ -72,7 +79,7 @@ const  getData = async() => {
      {/* IMAGES BY FILTER */}
     <div className='flex gap-5 px-5 py-5 flex-wrap justify-center'>
         {currentData ? currentData.map((item,index) => ( 
-            <Garage key={index} link={'/garaze/'+item.slug} src={item.acf.obrazy ? item.acf.obrazy[0].full_image_url :null} title={item.acf.tytul} prize={item.acf.cena}/>
+            <Fade triggerOnce> <Garage key={index} link={'/garaze/'+item.slug} src={item.acf.obrazy ? changeRes(item) :null} title={item.acf.tytul} prize={item.acf.cena}/></Fade>
         ))
         : <span className="loader"></span>
         }
