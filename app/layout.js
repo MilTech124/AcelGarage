@@ -14,7 +14,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="pl">
+    <html
+      lang="pl"
+      className="scroll-smooth"
+      style={{ scrollBehavior: "smooth" }}
+    >
       <body className={inter.className}>
         <Header />
         <ToastContainer

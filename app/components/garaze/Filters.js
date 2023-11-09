@@ -62,7 +62,7 @@ const  getData = async() => {
                     <div key={index} onClick={()=>setFilter(item.type)} className='relative border-2 transition-all group cursor-pointer md:w-[250px] md:h-[200px] w-[100px] h-[75pxpx] '>
                         <img src={item.img} alt={item.title} className={`w-full h-full`} />
                         <div className={`absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center text-center items-end  transition-all opacity-100 group-hover:bg-opacity-0 ${item.type === filter ? "bg-transparent border-4" : ""} `}>
-                            <p className="text-white md:text-xl text-xs pb-1 translate-y-0 group-hover:-translate-y-10 transition-all group-hover:text-2xl">{item.title}</p>
+                            <p className="text-white md:text-xl text-xs pb-1 translate-y-0 md:group-hover:-translate-y-10 transition-all md:group-hover:text-2xl">{item.title}</p>
                         </div>  
                     </div>
                 )

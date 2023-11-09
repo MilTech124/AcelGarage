@@ -59,7 +59,7 @@ function CustomSlider({data})
         >
           {images.map((img, index) => (
             <div key={index}>
-              <Image src={img} height={600} width={800} className='object-center w-full ' alt="" />
+              <Image src={img} height={600} width={800} className='object-center w-full !h-[50vh] object-cover ' alt="" />
             </div>
           ))}
         </Slider>
@@ -69,7 +69,7 @@ function CustomSlider({data})
         >
           {images.map((img, idx) => (
             <div key={idx}>
-              <img src={img} alt="img" />
+              <img src={img} alt="img" className='max-h-[200px]' />
             </div>
           ))}
         </Slider>

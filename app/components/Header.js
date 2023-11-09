@@ -3,6 +3,7 @@ import { Bars2Icon as Menu, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useState } from "react";
 
+
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -44,24 +45,27 @@ export default function Header() {
               isOpen ? "flex gap-5" : "hidden"
             } transition-all duration-300 max-md:flex-col`}
           >
-            <a href="/" className="menu-item">
+            <Link href="/" className="menu-item">
               Strona Główna
-            </a>
-            <a href="/bramy" className="menu-item">
+            </Link>
+            <Link href="/bramy" className="menu-item">
               Bramy Segmentowe
-            </a>
-            <a href="/garaze" className="menu-item">
+            </Link>
+            <Link href="/garaze" className="menu-item">
               Garaże
-            </a>
+            </Link>
             {/* <a href="/kojce" className="menu-item">
               Kojce
             </a>           */}
-            <a href="/konfigurator" className="menu-item">
+            <Link href="/konfigurator" className="menu-item">
               Konfigurator
-            </a>
-            <a href="/kontakt" className="menu-item">
+            </Link>
+            <Link href="/info" className="menu-item">
+              Info
+            </Link>
+            <Link href="/kontakt" className="menu-item">
               Kontakt
-            </a>
+            </Link>
           </div>
         </div>
       </div>
