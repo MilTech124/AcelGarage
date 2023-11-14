@@ -15,9 +15,9 @@ export default function Header() {
             <img src="/image/phone.svg" />
             <span>+48 733003192</span>
           </Link>
-          <Link href="tel:733003192" className="top-item">
+          <Link href="tel:733003152" className="top-item">
             <img src="/image/phone.svg" />
-            <span>+48 733003192</span>
+            <span>+48 733003152</span>
           </Link>
           <Link href="mailto:biuro@acelgarage.pl" className="top-item">
             <img src="/image/mail.svg" />
