@@ -1,4 +1,3 @@
-import React from "react";
 
 function TypeGarage({ selectedOptions, setSelectedOptions }) {
   const garageTypes = [
@@ -17,7 +16,7 @@ function TypeGarage({ selectedOptions, setSelectedOptions }) {
       <div className="flex gap-0 flex-wrap justify-between">
         {garageTypes.map((type) => (
           <img key={type.name} onClick={() => setSelectedOptions({...selectedOptions, roof: type.name})}
-            className={`w-32 h-16 object-cover ${selectedOptions.roof ===type.name ? "border-2" :null}  `}
+            className={`w-32 h-16 object-cover ${selectedOptions.roof ===type.name ? "border-4" :null}  `}
             src={type.url}
             alt={type.name}
           />

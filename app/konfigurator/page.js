@@ -1,11 +1,11 @@
 import React from 'react'
-import Container from '../components/configurator/Container'
+import Main from '../components/configurator/Main'
 
 function page() {
   return (
     // STRONA W BUDOWIE
     <div className="w-screen h-screen flex justify-center items-center">  
-      <Container />
+      <Main />
     </div>
 
   )
