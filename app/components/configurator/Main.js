@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import GarageConfigurator from "./GarageConfigurator";
 import GarageViewer from "./GarageViewer";
 
+
+
 function Main() {
   const [selectedOptions, setSelectedOptions] = useState({
     color: "Złoty Dąb Jasny",
@@ -14,6 +16,7 @@ function Main() {
 
     roof: "dwuspad",
     roofColor: "Antracyt",
+    roofColorRal:'#272C38',
     roofType: "blachodachówka",
 
     gateEmbose: "wąskie",
@@ -39,12 +42,20 @@ function Main() {
     gateHeight3: 200,
     gatePositionValue3:700,
 
+    door:[],
+    window:[],
+
+    carport:false,
+    carportWidth: 3,
+    carportSide: "lewo",
+    
+
   });
 
   return (
     <div className="bg-slate-200 w-screen h-screen flex">
       <div className="w-full">
-        <GarageViewer selectedOptions={selectedOptions} />{" "}
+        <GarageViewer selectedOptions={selectedOptions} />
       </div>
       <div className=" p-5 w-[600px] bg-slate-300 overflow-auto ">
         <GarageConfigurator selectedOptions={selectedOptions} setSelectedOptions={setSelectedOptions}

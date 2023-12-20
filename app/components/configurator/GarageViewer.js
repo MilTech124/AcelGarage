@@ -1,11 +1,27 @@
+import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
+import { Environment } from "@react-three/drei";
+import { OrbitControls,ContactShadows } from "@react-three/drei";
+import { Model } from "./Model";
 
-function GarageViewer({ selectedOptions }) {
+function GarageViewer({selectedOptions}) {
+
   // renderowanie modelu 3D z wykorzystaniem selectedOptions
   return (
+    <Canvas camera={{ position: [20, 5, 5], fov: 25 }}>
+      <OrbitControls />
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[20, 20, 5]} intensity={2} />
+      <ContactShadows
+        frames={1}
+        position={[0, -0.5, 0]}
+        blur={1}
+        opacity={0.75}
+      />
 
-      <Canvas>{/* elementy 3D tutaj */}</Canvas>
-
+      <Model selectedOptions={selectedOptions} />
+      <Environment preset="forest"  />
+    </Canvas>
   );
 }
 

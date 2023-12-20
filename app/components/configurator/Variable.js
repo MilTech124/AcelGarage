@@ -23,4 +23,16 @@ export const variable={
     gateEmbose:["szerokie","wąskie"],
     gateDirection:["pion","poziom"],
 
+    doorSize:["100x190","90x190","80x190"],
+    doorType:["lewe","prawe"],
+    dooorColors:["Złoty Dąb Jasny","Złoty Dąb Ciemny","Orzech","Antracyt","Ciemny Brąz 8017","Brąz Jasny 8004","Ciemna Zieleń 6005","Jasna Zieleń 6029","Grafit 7016","Biały 9010","Szary 9002","Srebrny 9006","Piaskowy 1002","Czerwony 3011", "Wisniowy 3005", "Czarny 9005"],
+    doorPosition: ["przod","tył","lewo","prawo"],
+  
+
+    windowSize:["80x60","100x60","100x80"],
+    windowPosition: ["przod","tył","lewo","prawo"],
+    
+    carportWidth:[1,,1.5,2,3,3.5,4],
+    
+
 }
