@@ -28,8 +28,8 @@ const MainGarage = ({ selectedOptions, setSelectedOptions }) => {
     setSelectedOptions({ ...selectedOptions, [optionType]: event.target.value });
   };
 
-  const handleSelectColor = (color) => {
-    setSelectedOptions({ ...selectedOptions, color });
+  const handleSelectColor = (color,colorRal) => {
+    setSelectedOptions({ ...selectedOptions, color,colorRal });
   };
 
 
@@ -95,8 +95,8 @@ const MainGarage = ({ selectedOptions, setSelectedOptions }) => {
       <Grid item xs={12} className='pt-2'>
         <div className='flex flex-wrap gap-2 ' spacing={2}>
           {garageColors.map((color) => (
-          color.url ? <div className={`max-w-[80px] ${selectedOptions.color===color.name ? ' font-bold' : null}`}> <img src={color.url} className='w-20 h-12 rounded-md ' alt={color.name} onClick={() => handleSelectColor(color.name)} /> <p className='text-xs text-center text-black'>{color.name}</p></div>
-          : <div className={`max-w-[80px] ${selectedOptions.color===color.name ? ' font-bold' : null}`}><div className='w-20 h-12 rounded-md' style={{backgroundColor:color.ral}} onClick={() => handleSelectColor(color.name)}></div> <p className='text-xs text-center text-black'>{color.name}</p>
+          color.url ? <div key={color.name} className={`max-w-[80px] ${selectedOptions.color===color.name ? ' font-bold' : null}`}> <img key={color.name} src={color.url} className='w-20 h-12 rounded-md ' alt={color.name} onClick={() => handleSelectColor(color.name,color.ral)} /> <p className='text-xs text-center text-black'>{color.name}</p></div>
+          : <div key={color.name} className={`max-w-[80px] ${selectedOptions.color===color.name ? ' font-bold' : null}`}><div key={color.name} className='w-20 h-12 rounded-md' style={{backgroundColor:color.ral}} onClick={() => handleSelectColor(color.name,color.ral)}></div> <p className='text-xs text-center text-black'>{color.name}</p>
         
           </div>
           ))}
@@ -107,9 +107,9 @@ const MainGarage = ({ selectedOptions, setSelectedOptions }) => {
 
 
       
-      <Grid className='pt-2' item xs={12} sm={4}>
+      <Grid className='pt-2 flex gap-2' item xs={12} sm={4}>
         {/* Selektor wytłoczenia */}
-        <FormControl fullWidth>
+        <FormControl fullWidth >
           <InputLabel>Wytłoczenie</InputLabel>
           <Select
             value={selectedOptions.emboss}
@@ -118,6 +118,18 @@ const MainGarage = ({ selectedOptions, setSelectedOptions }) => {
           >
             {variable.garageEmbose.map((emboss) => (
               <MenuItem key={emboss} value={emboss}>{emboss}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl fullWidth >
+          <InputLabel>Kierunek przetczen</InputLabel>
+          <Select
+            value={selectedOptions.direction}
+            label="Wytłoczenie"
+            onChange={handleChange('direction')}
+          >
+            {variable.garageDirection.map((direction) => (
+              <MenuItem key={direction} value={direction}>{direction}</MenuItem>
             ))}
           </Select>
         </FormControl>

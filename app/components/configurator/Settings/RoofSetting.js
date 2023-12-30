@@ -33,7 +33,7 @@ function RoofSetting({selectedOptions, setSelectedOptions}) {
         <h4 className="bg-slate-900 p-2">Pokrycie dachu</h4>
         <div className="flex gap-0 flex-wrap justify-evenly">
             {roof.map((type) => (
-                <div>
+                <div key={type.name}>
                     <img key={type.name} onClick={() => setSelectedOptions({...selectedOptions, roofType: type.name})}
                     className={`w-32 h-16 object-cover ${selectedOptions.roofType ===type.name ? "border-4" :null}  `}
                     src={type.url}
@@ -50,7 +50,7 @@ function RoofSetting({selectedOptions, setSelectedOptions}) {
       <Grid item xs={12} className='pt-2'>
         <div className='flex flex-wrap gap-2 ' spacing={2}>
           {roofColor.map((color) => (
-          <div className={`max-w-[80px] ${selectedOptions.roofColor===color.name ? ' font-bold' : null}`}><div className='w-20 h-12 rounded-md' style={{backgroundColor:color.ral}} onClick={() => {handleSelectColor(color.name,color.ral)}}></div> <p className='text-xs text-center text-black'>{color.name}</p>       
+          <div key={color.name} className={`max-w-[80px] ${selectedOptions.roofColor===color.name ? ' font-bold' : null}`}><div className='w-20 h-12 rounded-md' style={{backgroundColor:color.ral}} onClick={() => {handleSelectColor(color.name,color.ral)}}></div> <p className='text-xs text-center text-black'>{color.name}</p>       
           </div>
           ))}
         </div>

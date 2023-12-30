@@ -10,8 +10,8 @@ function GarageViewer({selectedOptions}) {
   return (
     <Canvas camera={{ position: [20, 5, 5], fov: 25 }}>
       <OrbitControls />
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[20, 20, 5]} intensity={2} />
+      {/* <ambientLight intensity={0.5} /> */}
+      <directionalLight position={[20, 20, 5]} intensity={1} />
       <ContactShadows
         frames={1}
         position={[0, -0.5, 0]}
@@ -20,7 +20,7 @@ function GarageViewer({selectedOptions}) {
       />
 
       <Model selectedOptions={selectedOptions} />
-      <Environment preset="forest"  />
+      <Environment preset="city"   />
     </Canvas>
   );
 }

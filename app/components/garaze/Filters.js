@@ -79,7 +79,7 @@ const  getData = async() => {
      {/* IMAGES BY FILTER */}
     <div className='flex gap-5 px-5 py-5 flex-wrap justify-center'>
         {currentData ? currentData.map((item,index) => ( 
-            <Fade triggerOnce> <Garage key={index} link={'/garaze/'+item.slug} src={item.acf.obrazy ? changeRes(item) :null} title={item.acf.tytul} prize={item.acf.cena}/></Fade>
+            <Fade key={index} triggerOnce> <Garage key={index} link={'/garaze/'+item.slug} src={item.acf.obrazy ? changeRes(item) :null} title={item.acf.tytul} prize={item.acf.cena}/></Fade>
         ))
         : <span className="loader"></span>
         }

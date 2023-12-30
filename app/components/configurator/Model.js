@@ -12,7 +12,8 @@ export function Model(props) {
 const { color, width, depth, height, emboss, roof, roofColor, roofType, gateEmbose, gateDirection, gateCount, gateType1, gateColor1, gateWidth1, gateHeight1, gatePositionValue1, gateType2, gateColor2, gateWidth2, gateHeight2, gatePositionValue2, gateType3, gateColor3, gateWidth3, gateHeight3, gatePositionValue3, door, window, carport, carportWidth, carportSide } = props.selectedOptions;
 
 const { nodes, materials } = useGLTF("/model/garaz.glb");
-const {roofMaterial,wallMaterial} = Materials(props.selectedOptions);
+const {roofMaterial,wallMaterial,gateMaterial,gateMaterial1,gateMaterial3,gateMaterial2,doorMaterial1} = Materials(props.selectedOptions);
+
 
 
   const Gate = () => {
@@ -21,7 +22,7 @@ const {roofMaterial,wallMaterial} = Materials(props.selectedOptions);
         <mesh
           name="brama"
           geometry={nodes.brama.geometry}
-          material={materials.inny}
+          material={gateMaterial1}
           position={[3.004, 1.033, 0]}
           rotation={[0, 0, -Math.PI / 2]}
           scale={[1, 1, 1.5]}
@@ -46,8 +47,9 @@ const {roofMaterial,wallMaterial} = Materials(props.selectedOptions);
   };
 
   const Door = () => {
+
     return (
-      <group>
+        <group>
         <mesh
           name="drzwi-klamka"
           geometry={nodes["drzwi-klamka"].geometry}
@@ -58,7 +60,7 @@ const {roofMaterial,wallMaterial} = Materials(props.selectedOptions);
         <mesh
           name="drzwi"
           geometry={nodes.drzwi.geometry}
-          material={nodes.drzwi.material}
+          material={doorMaterial1}
           position={[2.963, 1.054, -2.175]}
           scale={[0.05, 1.021, 0.5]}
         />

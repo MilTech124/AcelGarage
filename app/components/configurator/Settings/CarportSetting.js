@@ -69,7 +69,7 @@ function CarportSetting({ selectedOptions, setSelectedOptions }) {
               label="Szerokość"
             >
                 {variable.carportWidth.map((width) => (
-                    <MenuItem value={width}>{width}</MenuItem>
+                    <MenuItem key={width} value={width}>{width}</MenuItem>
                 ))}
             
             </Select>

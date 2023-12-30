@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import {
   Select,
   InputLabel,
@@ -10,36 +10,89 @@ import {
 import { variable } from "../Variable";
 
 function GateSetting2({ selectedOptions, setSelectedOptions }) {
+  const [gateCount, setGateCount] = useState(1);
+  const {
+    width,
+    height,
+    gate,
+    gateColorRal1,
+    gateColor1,
+    gateColor2,
+    gateColor3,
+    gateColorRal2,
+    gateColorRal3,
+    gatePositionValue1,
+    gatePositionValue2,
+    gatePositionValue3,
+    gateWidth1,
+    gateWidth2,
+    gateWidth3,
+    gateHeight1,
+    gateHeight2,
+    gateHeight3,
+    gateType1,
+    gateType2,
+    gateType3,
+  } = selectedOptions;
 
-    const [gateCount, setGateCount] = useState(1);
-    const { width,height,
-        gatePositionValue1,gatePositionValue2, gatePositionValue3,
-         gateWidth1, gateWidth2, gateWidth3,gateHeight1,gateHeight2,gateHeight3,
-        gateType1,gateType2,gateType3 } = selectedOptions;
+  const gateColor = [
+    { name: "Złoty Dąb Jasny", url: "./konfigurator/jasny-dab.webp" },
+    { name: "Złoty Dąb Ciemny", url: "./konfigurator/ciemny-dab.png" },
+    { name: "Orzech", url: "./konfigurator/orzech.png" },
+    { name: "Antracyt", ral: "#272C38" },
+    { name: "Ciemny Brąz 8017", ral: "#2F1D1D" },
+    { name: "Brąz Jasny 8004", ral: "#85392C" },
+    { name: "Ciemna Zieleń 6029", ral: "#0B3821" },
+    { name: "Jasna Zieleń 6029", ral: "#117825" },
+    { name: "Grafit 7016", ral: "#262F38" },
+    { name: "Biały 9010", ral: "#FBFFFF" },
+    { name: "Szary 9002", ral: "#F2EFE8" },
+    { name: "Srebrny 9006", ral: "#A7ABB6" },
+    { name: "Piaskowy 1002", ral: "#D7B075" },
+    { name: "Czerwony 3011", ral: "#781416" },
+    { name: "Wisniowy 3005", ral: "#4F121A" },
+    { name: "Czarny 9005", ral: "#2C2C2C" },
+  ];
 
-
-    const handleGates = (action) => {
-        if (action === "+" && gateCount < 3) {
-            if(gateCount === 1 && width < gateWidth2 + gateWidth1 +  gatePositionValue1 / 100){
-                return toast.info("Nie mozna dodac drugiej bramy zmień rozmiar pierwszej lub pozycje.");
-            }
-            if(gateCount === 2 && width < gateWidth3 + gateWidth2 + gatePositionValue2/100){
-                return toast.info("Nie mozna dodac trzeciej bramy bramy zmień rozmiary.");
-            }
-            setGateCount(gateCount + 1);
-           
-        } else if (action === "-" && gateCount > 1) {
-            setGateCount(gateCount - 1);
-         
-        }
-    };
+  const handleGates = (action) => {
+    if (action === "+" && gateCount < 3) {
+      if (
+        gateCount === 1 &&
+        width < gateWidth2 + gateWidth1 + gatePositionValue1 / 100
+      ) {
+        return toast.info(
+          "Nie mozna dodac drugiej bramy zmień rozmiar pierwszej lub pozycje."
+        );
+      }
+      if (
+        gateCount === 2 &&
+        width < gateWidth3 + gateWidth2 + gatePositionValue2 / 100
+      ) {
+        return toast.info(
+          "Nie mozna dodac trzeciej bramy bramy zmień rozmiary."
+        );
+      }
+      setGateCount(gateCount + 1);
+    } else if (action === "-" && gateCount > 1) {
+      setGateCount(gateCount - 1);
+    }
+  };
 
   const handleChange = (prop) => (event) => {
     setSelectedOptions({ ...selectedOptions, [prop]: event.target.value });
   };
 
+  const changeColor = (prop, ralProp) => (event) => {
+    const colorRal = gateColor.find(
+      (color) => color.name === event.target.value
+    )?.ral;
+    setSelectedOptions({
+      ...selectedOptions,
+      [prop]: event.target.value,
+      [ralProp]: colorRal,
+    });
+  };
 
-  
   return (
     <div>
       <h4 className="bg-slate-900 p-2">Bramy</h4>
@@ -61,30 +114,36 @@ function GateSetting2({ selectedOptions, setSelectedOptions }) {
                 onClick={() => handleGates("+")}
               >
                 +
-              </button>             
+              </button>
             </div>
-         
           </div>
-          
         </div>
         <p className="text-red-400 text-xs pb-5">
           Aby dodać więćej bram potrzebujesz min 6m szerokośći garażu
         </p>
         <div className="flex pb-3 gap-5 max-md:flex-wrap">
           <FormControl fullWidth>
-                  <InputLabel>Przetłoczenia bram</InputLabel>
-                  <Select value={selectedOptions.gateEmbose} label="Przetłoczenia">
-                    {variable.gateEmbose.map((type) => (
-                      <MenuItem key={type} value={type}>
-                        {type}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+            <InputLabel>Przetłoczenia bram</InputLabel>
+            <Select
+              value={selectedOptions.gateEmbose}
+              onChange={handleChange("gateEmbose")}
+              label="Przetłoczenia"
+            >
+              {variable.gateEmbose.map((type) => (
+                <MenuItem key={type} value={type}>
+                  {type}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
           <FormControl fullWidth className="pb-5">
             <InputLabel>Kierunek przetłoczeń</InputLabel>
-            <Select value={selectedOptions.gateDirection} label="Kierunek przetłoczeń">
+            <Select
+              value={selectedOptions.gateDirection}
+              onChange={handleChange("gateDirection")}
+              label="Kierunek przetłoczeń"
+            >
               {variable.gateDirection.map((type) => (
                 <MenuItem key={type} value={type}>
                   {type}
@@ -93,7 +152,6 @@ function GateSetting2({ selectedOptions, setSelectedOptions }) {
             </Select>
           </FormControl>
         </div>
-       
 
         {/* //first gate  */}
         {selectedOptions.gateCount >= 1 ? (
@@ -116,7 +174,7 @@ function GateSetting2({ selectedOptions, setSelectedOptions }) {
               <FormControl fullWidth>
                 <InputLabel>Wysokość</InputLabel>
                 <Select
-                disabled={gateCount === 1 ? false : true}
+                  disabled={gateCount === 1 ? false : true}
                   value={gateHeight1}
                   label="Wysokość"
                   onChange={handleChange("gateHeight1")}
@@ -138,28 +196,46 @@ function GateSetting2({ selectedOptions, setSelectedOptions }) {
                   label="Szerokość"
                   onChange={handleChange("gateWidth1")}
                 >
-                  {variable.gateSizes.width.filter((widthVAR) => width/(widthVAR+gatePositionValue1/100) >= 1).map((width) => (
-                    <MenuItem key={width} value={width}>
-                      {width} m
-                    </MenuItem>
-                  ))
-                 }
+                  {variable.gateSizes.width
+                    .filter(
+                      (widthVAR) =>
+                        width / (widthVAR + gatePositionValue1 / 100) >= 1
+                    )
+                    .map((width) => (
+                      <MenuItem key={width} value={width}>
+                        {width} m
+                      </MenuItem>
+                    ))}
                 </Select>
               </FormControl>
             </div>
+            <FormControl className="py-3" fullWidth>
+              <InputLabel>Kolorystyka</InputLabel>
+              <Select
+                value={gateColor1}
+                label="Kolorystyka"
+                onChange={changeColor("gateColor1", "gateColorRal1")}
+              >
+                {gateColor.map((color) => (
+                  <MenuItem key={color.name} value={color.name}>
+                    {color.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             {/* Slider*/}
             <h5 className="text-sm text-center pt-2 text-slate-900">
               Pozycja bramy
             </h5>
             <Slider
-                disabled={gateCount === 1 ? false : true}
+              disabled={gateCount === 1 ? false : true}
               aria-label="Default"
-              defaultValue={(width/2*100)-(gateWidth1/2*100)}
+              defaultValue={(width / 2) * 100 - (gateWidth1 / 2) * 100}
               valueLabelDisplay="auto"
               step={10}
               marks
               min={0}
-              max={width*100-gateWidth1*100}
+              max={width * 100 - gateWidth1 * 100}
               onChange={(event, newValue) =>
                 setSelectedOptions({
                   ...selectedOptions,
@@ -171,8 +247,7 @@ function GateSetting2({ selectedOptions, setSelectedOptions }) {
           </div>
         ) : null}
         {/* //second gate  */}
-        {gateCount >= 2
-         ? (
+        {gateCount >= 2 ? (
           <div className="py-5 relative">
             <h4 className="bg-slate-600 text-sm p-2 mb-2">Druga brama</h4>
             {/* //gateCount -1 button to remove gate */}
@@ -205,45 +280,63 @@ function GateSetting2({ selectedOptions, setSelectedOptions }) {
                   label="Wysokość"
                   onChange={handleChange("gateHeight2")}
                 >
-                  {variable.gateSizes.height.map((heightGate) => (
+                  {variable.gateSizes.height.map((heightGate) =>
                     height >= heightGate ? (
-                    <MenuItem key={heightGate} value={heightGate}>
-                      {heightGate} m
-                    </MenuItem>
+                      <MenuItem key={heightGate} value={heightGate}>
+                        {heightGate} m
+                      </MenuItem>
                     ) : null
-                  ))}
+                  )}
                 </Select>
               </FormControl>
               <FormControl fullWidth>
                 <InputLabel>Szerokość</InputLabel>
                 <Select
-                disabled={gateCount === 2 ? false : true}
+                  disabled={gateCount === 2 ? false : true}
                   value={gateWidth2}
                   label="Szerokość"
                   onChange={handleChange("gateWidth2")}
                 >
-                {variable.gateSizes.width.filter((widthVAR) => width/(widthVAR+gatePositionValue2/100) >= 1).map((width) => (
-                    <MenuItem key={width} value={width}>
-                      {width} m
-                    </MenuItem>
-                  ))
-                 }
+                  {variable.gateSizes.width
+                    .filter(
+                      (widthVAR) =>
+                        width / (widthVAR + gatePositionValue2 / 100) >= 1
+                    )
+                    .map((width) => (
+                      <MenuItem key={width} value={width}>
+                        {width} m
+                      </MenuItem>
+                    ))}
                 </Select>
               </FormControl>
             </div>
+            <FormControl className="py-3" fullWidth>
+              <InputLabel>Kolorystyka</InputLabel>
+              <Select
+                value={gateColor2}
+                label="Kolorystyka"
+                onChange={changeColor("gateColor2", "gateColorRal")}
+              >
+                {gateColor.map((color) => (
+                  <MenuItem key={color.name} value={color.name}>
+                    {color.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             {/* Slider 2*/}
             <h5 className="text-sm text-center pt-2 text-slate-900">
               Pozycja bramy
             </h5>
             <Slider
-            disabled={gateCount === 2 ? false : true}
+              disabled={gateCount === 2 ? false : true}
               aria-label="Default"
-              defaultValue={gatePositionValue1+(gateWidth1*100)}
+              defaultValue={gatePositionValue1 + gateWidth1 * 100}
               valueLabelDisplay="auto"
               step={10}
               marks
-              min={gatePositionValue1+(gateWidth1*100)}
-              max={width*100-gateWidth2*100}
+              min={gatePositionValue1 + gateWidth1 * 100}
+              max={width * 100 - gateWidth2 * 100}
               onChange={(event, newValue) =>
                 setSelectedOptions({
                   ...selectedOptions,
@@ -253,9 +346,7 @@ function GateSetting2({ selectedOptions, setSelectedOptions }) {
             />
             {gatePositionValue2} cm od lewej krawędzi
           </div>
-        
         ) : null}
-       
 
         {/* //third gate  */}
         {gateCount >= 3 ? (
@@ -300,23 +391,37 @@ function GateSetting2({ selectedOptions, setSelectedOptions }) {
               <FormControl fullWidth>
                 <InputLabel>Szerokość</InputLabel>
                 <Select
-                  value={
-                    gateWidth3 <= width
-                      ? gateWidth3
-                      : width
-                  }
+                  value={gateWidth3 <= width ? gateWidth3 : width}
                   label="Szerokość"
                   onChange={handleChange("gateWidth3")}
                 >
-                   {variable.gateSizes.width.filter((widthVAR) => width/(widthVAR+gatePositionValue2/100) >= 1).map((width) => (
-                    <MenuItem key={width} value={width}>
-                      {width} m
-                    </MenuItem>
-                  ))
-                 }
+                  {variable.gateSizes.width
+                    .filter(
+                      (widthVAR) =>
+                        width / (widthVAR + gatePositionValue2 / 100) >= 1
+                    )
+                    .map((width) => (
+                      <MenuItem key={width} value={width}>
+                        {width} m
+                      </MenuItem>
+                    ))}
                 </Select>
               </FormControl>
             </div>
+            <FormControl className="py-3" fullWidth>
+              <InputLabel>Kolorystyka</InputLabel>
+              <Select
+                value={gateColor3}
+                label="Kolorystyka"
+                onChange={changeColor("gateColor3", "gateColorRal3")}
+              >
+                {gateColor.map((color) => (
+                  <MenuItem key={color.name} value={color.name}>
+                    {color.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             {/* Slider*/}
             <h5 className="text-sm text-center pt-2 text-slate-900">
               Pozycja bramy
@@ -327,9 +432,7 @@ function GateSetting2({ selectedOptions, setSelectedOptions }) {
               valueLabelDisplay="auto"
               step={10}
               marks
-              min={
-                0
-              }
+              min={0}
               max={selectedOptions.width}
               onChange={(event, newValue) =>
                 setSelectedOptions({
