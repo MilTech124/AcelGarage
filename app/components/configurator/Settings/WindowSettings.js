@@ -146,8 +146,8 @@ function WindowSettings({ selectedOptions, setSelectedOptions }) {
               min={0}
               max={
                 window.position === "przod" || window.position === "tył"
-                  ? depth * 100 - 100
-                  : width * 100 - 100
+                  ? width * 100 - 100
+                  : depth * 100 - 100
               }
               step={10}
               aria-label="Default"

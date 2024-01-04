@@ -43,8 +43,8 @@ function Materials(selectedOptions) {
       wallMaterial = new MeshStandardMaterial({
         color: colorRal,
         normalMap: direction === "poziom" ? normalWall : normalwall90,
-        roughness: 0.8,
-        metalness: 1,
+        roughness: 0.9,
+        metalness: 0.2,
       });
     }
     return wallMaterial;
@@ -61,16 +61,16 @@ function Materials(selectedOptions) {
               : gateColor1 === "Złoty Dąb Ciemny"
               ? wallTextureDabDark
               : wallTextureOrzech,
-          normalMap: direction === "poziom" ? normalWall : normalwall90,
+          normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
           roughness: 0.8,
           metalness: 1,
         });
       } else {
         gateMaterial = new MeshStandardMaterial({
           color: gateColorRal1,
-          normalMap: direction === "poziom" ? normalWall : normalwall90,
-          roughness: 0.8,
-          metalness: 1,
+          normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
+          roughness: 0.9,
+          metalness: 0.2,
         });
       }
     } else if (num === 2) {
@@ -82,16 +82,16 @@ function Materials(selectedOptions) {
               : gateColor2 === "Złoty Dąb Ciemny"
               ? wallTextureDabDark
               : wallTextureOrzech,
-          normalMap: direction === "poziom" ? normalWall : normalwall90,
+          normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
           roughness: 0.8,
           metalness: 1,
         });
       } else {
         gateMaterial = new MeshStandardMaterial({
           color: gateColorRal2,
-          normalMap: direction === "poziom" ? normalWall : normalwall90,
-          roughness: 0.8,
-          metalness: 1,
+          normalMap: gateDirection === "poziom" ? normalGate : normalwall90,
+          roughness: 0.9,
+          metalness: 0.2,
         });
       }
     } else if (num === 3) {
@@ -103,16 +103,16 @@ function Materials(selectedOptions) {
               : gateColor3 === "Złoty Dąb Ciemny"
               ? wallTextureDabDark
               : wallTextureOrzech,
-          normalMap: direction === "poziom" ? normalWall : normalwall90,
+          normalMap: gateDirection === "poziom" ? normalWall : normalGate90,
           roughness: 0.8,
           metalness: 1,
         });
       } else {
         gateMaterial = new MeshStandardMaterial({
           color: gateColorRal3,
-          normalMap: direction === "poziom" ? normalWall : normalwall90,
-          roughness: 0.8,
-          metalness: 1,
+          normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
+          roughness: 0.9,
+          metalness: 0.2,
         });
       }
     }
@@ -120,23 +120,16 @@ function Materials(selectedOptions) {
   };
   
   const doorNumber = (num) => {
-    door.map((door, index) => {
-      if (index === num) {
-        console.log("doorLOG",door);
-        return door;
-      }
-    });
+    const doorItem = door.find((door, index) => index === num);    
+    return doorItem;
   };
- //////////ZLOGUJ DOOR ZWRACA W DOORNUMBER A W DOORCOLOR JUZ NIE ......
+
   const doorColor = (num) => {
     let doorMaterial;  
-    console.log("door",door);
-
-    if(door.length > 1){
+    if(door.length >= 1){
     doorNumber(num);
    
-    const curentDoor = doorNumber(num);
-    console.log("current",curentDoor);
+    const curentDoor = doorNumber(num);  
     const colorRal = curentDoor.colorRal ? curentDoor.colorRal:null;
     const color = curentDoor.color?curentDoor.color:null;
     if (colorRal === null || colorRal === undefined) {
@@ -147,16 +140,16 @@ function Materials(selectedOptions) {
             : color === "Złoty Dąb Ciemny"
             ? wallTextureDabDark
             : wallTextureOrzech,
-        normalMap: direction === "poziom" ? normalWall : normalwall90,
+        normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
         roughness: 0.8,
         metalness: 1,
       });
     } else {
       doorMaterial = new MeshStandardMaterial({
         color: colorRal,
-        normalMap: direction === "poziom" ? normalWall : normalwall90,
-        roughness: 0.8,
-        metalness: 1,
+        normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
+        roughness: 0.9,
+        metalness: 0.2,
       });
     }
     return doorMaterial;
@@ -166,15 +159,18 @@ function Materials(selectedOptions) {
   //textures loader
   const roofTexture = useLoader(TextureLoader, "/model/roof.jpg");
   const roofTrapezTexture = useLoader(TextureLoader, "/model/trapez2.jpg");
+
   const wallTexture = useLoader(TextureLoader, "/model/jasny-dab-2.jpg");
+  const wallTextureDabDark = useLoader(TextureLoader, "/model/dab-2.jpg");
+  const wallTextureOrzech = useLoader(TextureLoader, "/model/orzech-2.jpg");
   const normalWall = useLoader(TextureLoader, "/model/normal-big-90.jpg");
   const normalwall90 = useLoader(TextureLoader, "/model/normal-big.jpg");
+
   const gateTexture = useLoader(TextureLoader, "/model/jasny-dab-2.jpg");
   const normalGate = useLoader(TextureLoader, "/model/normal-big-90-gate.jpg");
   const normalGate90 = useLoader(TextureLoader, "/model/normal-big-gate.jpg");
 
-  const wallTextureDabDark = useLoader(TextureLoader, "/model/dab-2.jpg");
-  const wallTextureOrzech = useLoader(TextureLoader, "/model/orzech-2.jpg");
+ 
 
   //textures uv
   roofTexture.repeat.set(1.5, 1.5);
@@ -197,11 +193,11 @@ function Materials(selectedOptions) {
   wallTextureOrzech.wrapS = THREE.RepeatWrapping;
   wallTextureOrzech.wrapT = THREE.RepeatWrapping;
 
-  normalWall.repeat.set(1, emboss === "wąskie" ? 3.2 : 2.2);
+  normalWall.repeat.set(1, emboss === "wąskie" ? 5.2 : 3.2);
   normalWall.wrapS = THREE.RepeatWrapping;
   normalWall.wrapT = THREE.RepeatWrapping;
 
-  normalwall90.repeat.set(emboss === "wąskie" ? 10 : 7, 1);
+  normalwall90.repeat.set(emboss === "wąskie" ? 16 : 10, 1);
   normalwall90.wrapS = THREE.RepeatWrapping;
   normalwall90.wrapT = THREE.RepeatWrapping;
 
@@ -209,11 +205,11 @@ function Materials(selectedOptions) {
   gateTexture.wrapS = THREE.RepeatWrapping;
   gateTexture.wrapT = THREE.RepeatWrapping;
 
-  normalGate.repeat.set(1, gateEmbose === "wąskie" ? 3.2 : 2.2);
+  normalGate.repeat.set(1, gateEmbose === "wąskie" ? 5.2 : 2.2);
   normalGate.wrapS = THREE.RepeatWrapping;
   normalGate.wrapT = THREE.RepeatWrapping;
 
-  normalGate90.repeat.set(gateEmbose === "wąskie" ? 5 : 3, 1);
+  normalGate90.repeat.set(gateEmbose === "wąskie" ? 5.2 : 3, 1);
   normalGate90.wrapS = THREE.RepeatWrapping;
   normalGate90.wrapT = THREE.RepeatWrapping;
 
@@ -222,19 +218,10 @@ function Materials(selectedOptions) {
     map: roofType === "blachodachówka" ? null : roofTrapezTexture,
     normalMap: roofType === "blachodachówka" ? roofTexture : roofTrapezTexture,
     color: roofColorRal,
-    roughness: roofType === "blachodachówka" ? 0.8 : 0.9,
-    metalness: 0.1,
+    roughness: roofType === "blachodachówka" ? 0.9 : 0.9,
+    metalness: roofType === "blachodachówka" ? 0.1 : 0.4,
     bumpMap: roofType === "blachodachówka" ? roofTexture : roofTrapezTexture,
   });
-
-  // const doorMaterial1 = new MeshStandardMaterial({
-  //   map: gateTexture,
-  //   // normalMap:
-
-  //   normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
-  //   roughness: 0.8,
-  //   metalness: 1,
-  // });
 
   const wallMaterial = mainColor();
   const gateMaterial1 = gateColor(1);

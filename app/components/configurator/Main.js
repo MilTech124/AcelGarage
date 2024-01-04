@@ -10,7 +10,7 @@ function Main() {
   const [selectedOptions, setSelectedOptions] = useState({
     color: "Złoty Dąb Jasny",
     colorRal:null,
-    width: 10,
+    width: 7,
     depth: 5,
     height: 213,
     emboss: "wąskie",
@@ -48,7 +48,11 @@ function Main() {
     gatePositionValue3:700,
 
     door:[],
-    window:[],
+    window:[{
+      "size": "80x60",
+      "position": "przod",
+      "positionValue": 0
+  }],
 
     carport:false,
     carportWidth: 3,
@@ -56,6 +60,7 @@ function Main() {
     
 
   });
+  console.log(selectedOptions.window);
 
   return (
     <div className="bg-slate-200 w-screen h-screen flex">
