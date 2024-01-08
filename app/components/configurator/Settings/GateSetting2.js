@@ -12,6 +12,7 @@ import { variable } from "../Variable";
 function GateSetting2({ selectedOptions, setSelectedOptions }) {
   const [gateCount, setGateCount] = useState(1);
   const {
+    
     width,
     height,
     gate,
@@ -92,6 +93,27 @@ function GateSetting2({ selectedOptions, setSelectedOptions }) {
       [ralProp]: colorRal,
     });
   };
+
+  useEffect(() => {
+    if (gateCount === 1) {
+      setSelectedOptions({
+        ...selectedOptions,
+        gateCount: 1,
+      });
+    }
+    if (gateCount === 2) {
+      setSelectedOptions({
+        ...selectedOptions,
+        gateCount: 2,
+      });
+    }
+    if (gateCount === 3) {
+      setSelectedOptions({
+        ...selectedOptions,
+        gateCount: 3,
+      });
+    }
+  }, [gateCount]);
 
   return (
     <div>
@@ -427,13 +449,14 @@ function GateSetting2({ selectedOptions, setSelectedOptions }) {
               Pozycja bramy
             </h5>
             <Slider
+              disabled={gateCount === 3 ? false : true}
               aria-label="Default"
-              defaultValue={50}
+              defaultValue={gatePositionValue2 + gateWidth2 * 100}
               valueLabelDisplay="auto"
               step={10}
               marks
-              min={0}
-              max={selectedOptions.width}
+              min={gatePositionValue2 + gateWidth2 * 100}
+              max={width * 100 - gateWidth3 * 100}
               onChange={(event, newValue) =>
                 setSelectedOptions({
                   ...selectedOptions,

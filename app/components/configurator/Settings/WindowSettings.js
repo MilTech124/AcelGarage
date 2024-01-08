@@ -12,7 +12,7 @@ import {
 import { variable } from "../Variable";
 
 function WindowSettings({ selectedOptions, setSelectedOptions }) {
-  const [countWindow, setCountWindow] = useState(0);
+  const [countWindow, setCountWindow] = useState(1);
   const { width, depth, height } = selectedOptions;
 
   const handleSliderChange = (prop) => (event, newValue) => {

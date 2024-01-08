@@ -30,7 +30,7 @@ export const variable={
     doorPosition: ["przod","tył","lewo","prawo"],
   
 
-    windowSize:["80x60","100x60","100x80"],
+    windowSize:["80x60"],
     windowPosition: ["przod","tył","lewo","prawo"],
     
     carportWidth:[1,,1.5,2,3,3.5,4],

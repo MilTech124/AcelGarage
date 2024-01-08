@@ -6,50 +6,84 @@ import React, { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import Materials from "./Materials";
 
-
 export function Model(props) {
-    
-const { color,direction, width, depth, height, emboss, roof, roofColor, roofType, gateEmbose, gateDirection, gateCount, gateType1, gateColor1, gateWidth1, gateHeight1, gatePositionValue1, gateType2, gateColor2, gateWidth2, gateHeight2, gatePositionValue2, gateType3, gateColor3, gateWidth3, gateHeight3, gatePositionValue3, door, window, carport, carportWidth, carportSide } = props.selectedOptions;
+  const {
+    color,
+    direction,
+    width,
+    depth,
+    height,
+    emboss,
+    roof,
+    roofColor,
+    roofType,
+    gateEmbose,
+    gateDirection,
+    gateCount,
+    gateType1,
+    gateColor1,
+    gateWidth1,
+    gateHeight1,
+    gatePositionValue1,
+    gateType2,
+    gateColor2,
+    gateWidth2,
+    gateHeight2,
+    gatePositionValue2,
+    gateType3,
+    gateColor3,
+    gateWidth3,
+    gateHeight3,
+    gatePositionValue3,
+    door,
+    window,
+    carport,
+    carportWidth,
+    carportSide,
+  } = props.selectedOptions;
 
-const { nodes, materials } = useGLTF("/model/garaz.glb");
-const {roofMaterial,wallMaterial,gateMaterial,gateMaterial1,gateMaterial3,gateMaterial2,doorMaterial1} = Materials(props.selectedOptions);
+  const { nodes, materials } = useGLTF("/model/garaz.glb");
+  const {
+    roofMaterial,
+    wallMaterial,
+    gateMaterial1,
+    gateMaterial3,
+    gateMaterial2,
+    doorMaterial1,
+  } = Materials(props.selectedOptions);
 
-
-
-  const Gate = () => {
+  const Gate = ({ gateMaterial, position,scale }) => {
     return (
       <>
-        <mesh
-          name="brama"
-          geometry={nodes.brama.geometry}
-          material={gateMaterial1}
-          position={[3.004, 1.033, 0]}
-          rotation={[0, 0, -Math.PI / 2]}
-          scale={[1, 1, 1.5]}
-        />
-        <mesh
-          name="obramowka-drzwi001"
-          geometry={nodes["obramowka-drzwi001"].geometry}
-          material={materials.czarna}
-          position={[3.001, 1.053, 0]}
-          rotation={[0, 0, -Math.PI / 2]}
-          scale={[1.02, 1.054, 1.55]}
-        />
-        <mesh
-          name="brama-klamka"
-          geometry={nodes["brama-klamka"].geometry}
-          material={materials.czarna}
-          position={[3.013, 1.032, 0.002]}
-          scale={[0.017, 0.021, 0.017]}
-        />
+        <group position={position} scale={scale}>
+          <mesh
+            geometry={nodes.brama.geometry}
+            material={gateMaterial}
+            position={[3.004*depth/6, 1.033, 0]}
+            rotation={[0, 0, -Math.PI / 2]}
+            scale={[1, 1, 1.4]}//5
+          />
+          <mesh
+            geometry={nodes["obramowka-drzwi001"].geometry}
+            material={materials.czarna}
+            position={[3.001*depth/6, 1.053, 0]}
+            rotation={[0, 0, -Math.PI / 2]}
+            scale={[1.02, 1.054, 1.45]} //55
+          />
+          <mesh
+            geometry={nodes["brama-klamka"].geometry}
+            material={materials.czarna}
+            position={[3.013*depth/6, 1.032, 0.002]}
+            scale={[0.017, 0.021, 0.017]}
+          />
+        </group>
       </>
     );
   };
 
   const Door = () => {
-
     return (
-        <group>
+      <group>
         <mesh
           name="drzwi-klamka"
           geometry={nodes["drzwi-klamka"].geometry}
@@ -132,16 +166,60 @@ const {roofMaterial,wallMaterial,gateMaterial,gateMaterial1,gateMaterial3,gateMa
       </group>
     );
   };
-  const Window = () => {
+  const Window = ({ number }) => {
+    if (!number || number === undefined) {
+      number = 0;
+    }
     return (
       <group
         name="okno"
         position={
-          window[0].position === "przod"
-          ?[3.006*depth/6, 1.631,(width/6)>=6 ?(2.7*width/6)+(-window[0].positionValue/100):(2.4*width/6)+(-window[0].positionValue/100)]
-          :null
-          }
-        scale={[0.02, 0.4, 0.4]}
+          window[number].position === "przod"
+            ? [
+                (3.006 * depth) / 6,
+                1.631,
+                width >= 6
+                  ? (2.7 * width) / 6 - window[number].positionValue / 100
+                  : (2 * width) / 6 - window[number].positionValue / 100,
+              ]
+            : window[number].position === "tył"
+            ? [
+                (-3.006 * depth) / 6,
+                1.631,
+                width >= 6
+                  ? (2.7 * width) / 6 - window[number].positionValue / 100
+                  : (2 * width) / 6 - window[number].positionValue / 100,
+              ]
+            : window[number].position === "lewo"
+            ? [
+                depth <= 6
+                  ? (-2.4 * depth) / 6 + window[number].positionValue / 100
+                  : (-2.7 * depth) / 6 + window[number].positionValue / 100,
+                1.631,
+                (3 * width) / 6,
+              ]
+            : window[number].position === "prawo"
+            ? [
+                depth <= 6
+                  ? (-2.4 * depth) / 6 + window[number].positionValue / 100
+                  : (-2.7 * depth) / 6 + window[number].positionValue / 100,
+                1.631,
+                (-3 * width) / 6,
+              ]
+            : null
+        }
+        rotation={
+          window[number].position === "przod"
+            ? [0, 0, 0]
+            : window[number].position === "tył"
+            ? [0, Math.PI / 1, 0]
+            : window[number].position === "lewo"
+            ? [0, -Math.PI / 2, 0]
+            : window[number].position === "prawo"
+            ? [0, -Math.PI / -2, 0]
+            : [0, 0, 0]
+        }
+        scale={[0.02, 0.3, 0.4]}
       >
         <mesh
           name="Cube002"
@@ -159,19 +237,24 @@ const {roofMaterial,wallMaterial,gateMaterial,gateMaterial1,gateMaterial3,gateMa
 
   const Roof = () => {
     return (
-      <group visible={roof==="dwuspad" || roof==="dwuspad przod-tył" } scale={
-       roof==="dwuspad" ? [1*(depth/6), 1*height/213, 1*(width/6)]
-       : roof==="dwuspad przod-tył" ? [1*(width/6), 1*height/213, 1*(depth/6)]
-       :null
+      <group
+        visible={roof === "dwuspad" || roof === "dwuspad przod-tył"}
+        scale={
+          roof === "dwuspad"
+            ? [1 * (depth / 6), (1 * height) / 213, 1 * (width / 6)]
+            : roof === "dwuspad przod-tył"
+            ? [1 * (width / 6), (1 * height) / 213, 1 * (depth / 6)]
+            : null
         }
-        position={[0,0,0]}
+        position={[0, 0, 0]}
         rotation={
-         roof==="dwuspad przod-tył" ? [0,-Math.PI / 2,0] 
-         : roof==="dwuspad" ? [0,0,0]
-          :null
-          }
-        
-        >
+          roof === "dwuspad przod-tył"
+            ? [0, -Math.PI / 2, 0]
+            : roof === "dwuspad"
+            ? [0, 0, 0]
+            : null
+        }
+      >
         <mesh
           name="dach-lewy"
           visible={true}
@@ -208,20 +291,29 @@ const {roofMaterial,wallMaterial,gateMaterial,gateMaterial1,gateMaterial3,gateMa
   };
 
   const RoofDirection = () => (
-    <group scale={
-        roof==="spad tył" ? [1*depth/6,1*height/213,1*width/6]
-        : roof==="spad przód" ? [1*depth/6,1*height/213,1*width/6]
-        : roof==="spad w prawo" ? [1*width/6,1*height/213,1*depth/6]
-        : roof==="spad w lewo" ? [1*width/6,1*height/213,1*depth/6]
-        :null      
-      } 
+    <group
+      scale={
+        roof === "spad tył"
+          ? [(1 * depth) / 6, (1 * height) / 213, (1 * width) / 6]
+          : roof === "spad przód"
+          ? [(1 * depth) / 6, (1 * height) / 213, (1 * width) / 6]
+          : roof === "spad w prawo"
+          ? [(1 * width) / 6, (1 * height) / 213, (1 * depth) / 6]
+          : roof === "spad w lewo"
+          ? [(1 * width) / 6, (1 * height) / 213, (1 * depth) / 6]
+          : null
+      }
       rotation={
-        roof==="spad tył" ? [0,0,0]
-        : roof==="spad przód" ? [0,Math.PI,0]
-        : roof==="spad w prawo" ? [0,-Math.PI / 2,0]
-        : roof==="spad w lewo" ? [0,Math.PI / 2,0]
-        :null
-        }
+        roof === "spad tył"
+          ? [0, 0, 0]
+          : roof === "spad przód"
+          ? [0, Math.PI, 0]
+          : roof === "spad w prawo"
+          ? [0, -Math.PI / 2, 0]
+          : roof === "spad w lewo"
+          ? [0, Math.PI / 2, 0]
+          : null
+      }
     >
       <mesh
         name="bryla"
@@ -240,22 +332,48 @@ const {roofMaterial,wallMaterial,gateMaterial,gateMaterial1,gateMaterial3,gateMa
       />
     </group>
   );
+  console.log(gateCount);
 
   return (
     <group {...props} dispose={null} position={[0, -0.5, 0]}>
-      <Gate />
+      {[...Array(gateCount)].map((_, index) => {
+        let gateMaterial, position,scale;
+        if (index === 0) {
+          gateMaterial = gateMaterial1;
+          position = [0,0,(width-gateWidth1)*0.5-gatePositionValue1/100];
+          scale = [1,gateHeight1/190,
+          gateWidth1/3];
+        } else if (index === 1) {
+          gateMaterial = gateMaterial2;
+          position = [0,0,(width-gateWidth2)*0.5-gatePositionValue2/100];
+          scale = [1,1,
+          gateWidth2/3];
+        } else if (index === 2) {
+          gateMaterial = gateMaterial3;
+          position = [0,0,(width-gateWidth3)*0.5-gatePositionValue3/100];
+          scale = [1,1,
+          gateWidth3/3];
+        }
+        return (
+          <Gate key={index} gateMaterial={gateMaterial} position={position} scale={scale} />
+        );
+      })}
+
       <Door />
-      <Window />
+      {window.map((item, index) => (
+        <Window number={index} key={index} />
+      ))}
+
       <Roof />
       {/* <Carport />  */}
       <RoofDirection />
       <mesh
         name="calosc"
-        visible={roof==="dwuspad" || roof==="dwuspad przod-tył" }
+        visible={roof === "dwuspad" || roof === "dwuspad przod-tył"}
         geometry={nodes.calosc.geometry}
         material={wallMaterial}
-        position={[0, 1.079*height/213, 0]}
-        scale={[3*(depth/6), 1.05*(height/213), 3*(width/6)]}
+        position={[0, (1.079 * height) / 213, 0]}
+        scale={[3 * (depth / 6), 1.05 * (height / 213), 3 * (width / 6)]}
       />
     </group>
   );

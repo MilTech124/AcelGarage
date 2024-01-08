@@ -205,7 +205,7 @@ function Materials(selectedOptions) {
   gateTexture.wrapS = THREE.RepeatWrapping;
   gateTexture.wrapT = THREE.RepeatWrapping;
 
-  normalGate.repeat.set(1, gateEmbose === "wąskie" ? 5.2 : 2.2);
+  normalGate.repeat.set(1, gateEmbose === "wąskie" ? 5.2 : 3,1);
   normalGate.wrapS = THREE.RepeatWrapping;
   normalGate.wrapT = THREE.RepeatWrapping;
 
