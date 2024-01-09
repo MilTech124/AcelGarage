@@ -229,13 +229,15 @@ function Materials(selectedOptions) {
   const gateMaterial3 = gateColor(3);
   const doorMaterial1 = doorColor(0);
 
+
   return {
     roofMaterial,
     wallMaterial,
     gateMaterial1,
     gateMaterial2,
     gateMaterial3,
-    doorMaterial1,
+    doorMaterial1,  
+
   };
 }
 

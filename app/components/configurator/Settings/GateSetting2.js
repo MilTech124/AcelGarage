@@ -337,7 +337,7 @@ function GateSetting2({ selectedOptions, setSelectedOptions }) {
               <Select
                 value={gateColor2}
                 label="Kolorystyka"
-                onChange={changeColor("gateColor2", "gateColorRal")}
+                onChange={changeColor("gateColor2", "gateColorRal2")}
               >
                 {gateColor.map((color) => (
                   <MenuItem key={color.name} value={color.name}>
@@ -417,10 +417,10 @@ function GateSetting2({ selectedOptions, setSelectedOptions }) {
                   label="Szerokość"
                   onChange={handleChange("gateWidth3")}
                 >
-                  {variable.gateSizes.width
+                    {variable.gateSizes.width
                     .filter(
                       (widthVAR) =>
-                        width / (widthVAR + gatePositionValue2 / 100) >= 1
+                        width / (widthVAR + gatePositionValue3 / 100) >= 1
                     )
                     .map((width) => (
                       <MenuItem key={width} value={width}>

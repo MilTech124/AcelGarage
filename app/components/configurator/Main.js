@@ -45,7 +45,7 @@ function Main() {
     gateColorRal3:null,
     gateWidth3: 3,
     gateHeight3: 200,
-    gatePositionValue3:700,
+    gatePositionValue3:600,
 
     door:[],
     window:[{
