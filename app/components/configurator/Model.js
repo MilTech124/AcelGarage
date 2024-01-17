@@ -56,8 +56,9 @@ export function Model(props) {
     doorMaterial5,
 
   } = Materials(props.selectedOptions);
+  
 
-  const Gate = ({ gateMaterial, position, scale }) => {
+  const Gate = ({ gateMaterial, position, scale,type }) => {
     return (
       <>
         <group position={position} scale={scale}>
@@ -75,23 +76,25 @@ export function Model(props) {
             rotation={[0, 0, -Math.PI / 2]}
             scale={[1.02, 1.054, 1.45]} //55
           />
+           <mesh
+            name="przedziałka"
+            visible={type==="dwuskrzydłowa"}          
+            geometry={nodes.przedziałka.geometry}
+            material={materials.czarna}
+            position={[3.2 * depth / 6, 1.033, 0]}
+            rotation={[0, 0, -Math.PI / 2]}
+            scale={[1.02, 1.054, 0.023]}
+          />
           <group >
           <mesh
           name="drzwi-klamka"
+          visible={type==="dwuskrzydłowa"}
           geometry={nodes["drzwi-klamka"].geometry}
           material={materials.czarna}
           position={[(3.05 * depth) / 6, 1.035, -0.1]}
           scale={[0.025, 0.02, 0.025]}
         />
-          <mesh
-            name="przedziałka"
-            visible           
-            geometry={nodes.przedziałka.geometry}
-            material={materials.czarna}
-            position={[(3.17 * depth) / 6, 1.033, 0]}
-            rotation={[0, 0, -Math.PI / 2]}
-            scale={[1.02, 1.054, 0.023]}
-          />
+         
           </group>
         
           <mesh
@@ -106,21 +109,44 @@ export function Model(props) {
   };
 
   const Door = ({number}) => {
+    if (!number || number === undefined) {
+      number = 0;
+    }
+    const doorMaterials = [doorMaterial1, doorMaterial2, doorMaterial3,doorMaterial4,doorMaterial5]; // Array
+    const selectedDoorMaterial = doorMaterials[number];
     return (
       <group name="drzwi-cale"
-      position={[2.965*depth/6,1.054,2.94*width / 6 - door[number].positionValue / 100,]}      
+      position={
+        door[number].position === "przod" ? [2.965*depth/6,1.054,width<5 ?2.82*width / 6 - door[number].positionValue / 100 :2.92*width / 6 - door[number].positionValue / 100]       
+        :door[number].position === "tył" ? [-2.965*depth/6,1.054,  (-2.2-0.71)*width / 6  + door[number].positionValue / 100] 
+        :door[number].position === "prawo" ? [(2.86) * depth / 6 - door[number].positionValue / 100, 1.054, -2.965 * width / 6]      
+        :door[number].position === "lewo" ? [(((2.86) * depth / 6 - door[number].positionValue / 100)-0.6*width/6), 1.054, 2.965 * width / 6]      
+         :null}      
+      rotation={[0, door[number].position === "przod" ? 0 
+      :door[number].position==="tył" ? Math.PI
+      :door[number].position==="prawo" ? Math.PI/2
+      :door[number].position==="lewo" ? -Math.PI/2
+      :null, 0]}
+
+      scale={[1, 1, door[number].size==="100x190" ? 1 :
+      door[number].size==="90x190" ? 0.95 :
+      door[number].size==="80x190" ? 0.92 :null
+    ]}
       >
+      
         <mesh
           name="drzwi-klamka"
           geometry={nodes["drzwi-klamka"].geometry}
           material={materials.czarna}
-          position={[0.1, 0.014,0 ]}
+          position={door[number].type==="lewe"?[0.1, 0.014,0 ]:[0.1, 0.014,-0.7 ]}
+          rotation={[door[number].type==="lewe"?0:Math.PI/1, 0, 0]}
           scale={[0.025, 0.02, 0.025]}
         />
+        
         <mesh
           name="drzwi"
           geometry={nodes.drzwi.geometry}
-          material={doorMaterial1}
+          material={selectedDoorMaterial}
           position={[0, 0, -0.362]}
           scale={[0.05, 1.021, 0.5]}
         />
@@ -277,7 +303,7 @@ export function Model(props) {
           roof === "dwuspad przod-tył"
             ? [0, -Math.PI / 2, 0]
             : roof === "dwuspad"
-            ? [0, 0, 0]
+            ? [0, -Math.PI / 1, 0]
             : null
         }
       >
@@ -358,12 +384,12 @@ export function Model(props) {
       />
     </group>
   );
-  console.log(gateCount);
+  console.log(door);
 
   return (
     <group {...props} dispose={null} position={[0, -0.5, 0]}>
       {[...Array(gateCount)].map((_, index) => {
-        let gateMaterial, position, scale;
+        let gateMaterial, position, scale,type;
         if (index === 0) {
           gateMaterial = gateMaterial1;
           position = [
@@ -372,6 +398,7 @@ export function Model(props) {
             (width - gateWidth1) * 0.5 - gatePositionValue1 / 100,
           ];
           scale = [1, gateHeight1 / 190, gateWidth1 / 3];
+          type = gateType1;
         } else if (index === 1) {
           gateMaterial = gateMaterial2;
           position = [
@@ -380,6 +407,7 @@ export function Model(props) {
             (width - gateWidth2) * 0.5 - gatePositionValue2 / 100,
           ];
           scale = [1, gateHeight2 / 190, gateWidth2 / 3];
+          type = gateType2;
         } else if (index === 2) {
           gateMaterial = gateMaterial3;
           position = [
@@ -387,6 +415,7 @@ export function Model(props) {
             0,
             (width - gateWidth3) * 0.5 - gatePositionValue3 / 100,
           ];
+          type = gateType3;
           scale = [1, gateHeight3 / 190, gateWidth3 / 3];
         }
         return (
@@ -395,6 +424,7 @@ export function Model(props) {
             gateMaterial={gateMaterial}
             position={position}
             scale={scale}
+            type={type}
           />
         );
       })}

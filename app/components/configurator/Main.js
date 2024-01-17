@@ -51,7 +51,7 @@ function Main() {
     window:[{
       "size": "80x60",
       "position": "przod",
-      "positionValue": 0
+      "positionValue": 50,
   }],
 
     carport:false,

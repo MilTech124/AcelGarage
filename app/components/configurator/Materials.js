@@ -4,8 +4,6 @@ import { MeshStandardMaterial } from "three";
 import * as THREE from "three";
 
 function Materials(selectedOptions) {
-
-
   const {
     roofColorRal,
     roofType,
@@ -98,14 +96,14 @@ function Materials(selectedOptions) {
       if (gateColorRal3 === null || gateColorRal3 === undefined) {
         gateMaterial = new MeshStandardMaterial({
           map:
-            gateColor3 === "Złoty Dąb Jasny"
-              ? wallTexture
-              : gateColor3 === "Złoty Dąb Ciemny"
-              ? wallTextureDabDark
-              : wallTextureOrzech,
-          normalMap: gateDirection === "poziom" ? normalWall : normalGate90,
-          roughness: 0.8,
-          metalness: 1,
+          gateColor3 === "Złoty Dąb Jasny"
+            ? wallTexture
+            : gateColor3 === "Złoty Dąb Ciemny"
+            ? wallTextureDabDark
+            : wallTextureOrzech,
+        normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
+        roughness: 0.8,
+        metalness: 1,
         });
       } else {
         gateMaterial = new MeshStandardMaterial({
@@ -118,42 +116,42 @@ function Materials(selectedOptions) {
     }
     return gateMaterial;
   };
-  
+
   const doorNumber = (num) => {
-    const doorItem = door.find((door, index) => index === num);    
+    const doorItem = door.find((door, index) => index === num);
     return doorItem;
   };
 
   const doorColor = (num) => {
-    let doorMaterial;  
-    if(door.length >= 1){
-    doorNumber(num);
-   
-    const curentDoor = doorNumber(num);  
-    const colorRal = curentDoor.colorRal ? curentDoor.colorRal:null;
-    const color = curentDoor.color?curentDoor.color:null;
-    if (colorRal === null || colorRal === undefined) {
-      doorMaterial = new MeshStandardMaterial({
-        map:
-          color === "Złoty Dąb Jasny"
-            ? wallTexture
-            : color === "Złoty Dąb Ciemny"
-            ? wallTextureDabDark
-            : wallTextureOrzech,
-        normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
-        roughness: 0.8,
-        metalness: 1,
-      });
-    } else {
-      doorMaterial = new MeshStandardMaterial({
-        color: colorRal,
-        normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
-        roughness: 0.9,
-        metalness: 0.2,
-      });
+    let doorMaterial;
+    if (door.length >= 1) {
+      doorNumber(num);
+
+      const curentDoor = doorNumber(num);
+      const colorRal = curentDoor.colorRal ? curentDoor.colorRal : null;
+      const color = curentDoor.color ? curentDoor.color : null;
+      if (colorRal === null || colorRal === undefined) {
+        doorMaterial = new MeshStandardMaterial({
+          map:
+            color === "Złoty Dąb Jasny"
+              ? wallTexture
+              : color === "Złoty Dąb Ciemny"
+              ? wallTextureDabDark
+              : wallTextureOrzech,
+          normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
+          roughness: 0.8,
+          metalness: 1,
+        });
+      } else {
+        doorMaterial = new MeshStandardMaterial({
+          color: colorRal,
+          normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
+          roughness: 0.9,
+          metalness: 0.2,
+        });
+      }
+      return doorMaterial;
     }
-    return doorMaterial;
-  }
   };
 
   //textures loader
@@ -169,8 +167,6 @@ function Materials(selectedOptions) {
   const gateTexture = useLoader(TextureLoader, "/model/jasny-dab-2.jpg");
   const normalGate = useLoader(TextureLoader, "/model/normal-big-90-gate.jpg");
   const normalGate90 = useLoader(TextureLoader, "/model/normal-big-gate.jpg");
-
- 
 
   //textures uv
   roofTexture.repeat.set(1.5, 1.5);
@@ -205,7 +201,7 @@ function Materials(selectedOptions) {
   gateTexture.wrapS = THREE.RepeatWrapping;
   gateTexture.wrapT = THREE.RepeatWrapping;
 
-  normalGate.repeat.set(1, gateEmbose === "wąskie" ? 5.2 : 3,1);
+  normalGate.repeat.set(1, gateEmbose === "wąskie" ? 5.2 : 3, 1);
   normalGate.wrapS = THREE.RepeatWrapping;
   normalGate.wrapT = THREE.RepeatWrapping;
 
@@ -227,8 +223,15 @@ function Materials(selectedOptions) {
   const gateMaterial1 = gateColor(1);
   const gateMaterial2 = gateColor(2);
   const gateMaterial3 = gateColor(3);
-  const doorMaterial1 = doorColor(0);
 
+  let doorMaterial1;
+  let doorMaterial2;
+  let doorMaterial3;
+  let doorMaterial4;
+  doorMaterial1 = door.length >= 1 ? doorColor(0) : doorMaterial1;
+  doorMaterial2 = door.length >= 2 ? doorColor(1) : doorMaterial2;
+  doorMaterial3 = door.length >= 3 ? doorColor(2) : doorMaterial3;
+  doorMaterial4 = door.length >= 4 ? doorColor(3) : doorMaterial4;
 
   return {
     roofMaterial,
@@ -236,8 +239,10 @@ function Materials(selectedOptions) {
     gateMaterial1,
     gateMaterial2,
     gateMaterial3,
-    doorMaterial1,  
-
+    doorMaterial1,
+    doorMaterial2,
+    doorMaterial3,
+    doorMaterial4,
   };
 }
 

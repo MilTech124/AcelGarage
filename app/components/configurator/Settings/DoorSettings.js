@@ -63,7 +63,7 @@ function DoorSettings({ selectedOptions, setSelectedOptions }) {
     this.type = type;
     this.color = color;
     this.position = "lewo";
-    this.positionValue = 0;
+    this.positionValue = 20;
   }
 
   return (
@@ -216,8 +216,8 @@ function DoorSettings({ selectedOptions, setSelectedOptions }) {
                 min={0}
                 max={
                   door.position === "przod" || door.position === "tył"
-                    ? depth * 100 - 100
-                    : width * 100 - 100
+                    ? width * 100 - 100
+                    : depth * 100 - 100
                 }
                 step={10}
                 aria-label="Default"
