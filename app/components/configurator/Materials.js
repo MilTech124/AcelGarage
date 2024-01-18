@@ -20,6 +20,7 @@ function Materials(selectedOptions) {
     gateColorRal3,
     gateColor3,
     door,
+    height,width
   } = selectedOptions;
 
   //helpers
@@ -189,11 +190,11 @@ function Materials(selectedOptions) {
   wallTextureOrzech.wrapS = THREE.RepeatWrapping;
   wallTextureOrzech.wrapT = THREE.RepeatWrapping;
 
-  normalWall.repeat.set(1, emboss === "wąskie" ? 5.2 : 3.2);
+  normalWall.repeat.set(1, emboss === "wąskie" ? (6*(height/213)) : 3.5*(height/213));
   normalWall.wrapS = THREE.RepeatWrapping;
   normalWall.wrapT = THREE.RepeatWrapping;
 
-  normalwall90.repeat.set(emboss === "wąskie" ? 16 : 10, 1);
+  normalwall90.repeat.set(emboss === "wąskie" ? (11*width/6) : (6*width/6), 1);
   normalwall90.wrapS = THREE.RepeatWrapping;
   normalwall90.wrapT = THREE.RepeatWrapping;
 

@@ -231,7 +231,7 @@ function GateSetting2({ selectedOptions, setSelectedOptions }) {
                 </Select>
               </FormControl>
             </div>
-            <FormControl className="py-3" fullWidth>
+            <FormControl className="py-3 mt-3" fullWidth>
               <InputLabel>Kolorystyka</InputLabel>
               <Select
                 value={gateColor1}
@@ -332,7 +332,7 @@ function GateSetting2({ selectedOptions, setSelectedOptions }) {
                 </Select>
               </FormControl>
             </div>
-            <FormControl className="py-3" fullWidth>
+            <FormControl className="py-3 mt-3" fullWidth>
               <InputLabel>Kolorystyka</InputLabel>
               <Select
                 value={gateColor2}
@@ -430,7 +430,7 @@ function GateSetting2({ selectedOptions, setSelectedOptions }) {
                 </Select>
               </FormControl>
             </div>
-            <FormControl className="py-3" fullWidth>
+            <FormControl className="py-3 mt-3" fullWidth>
               <InputLabel>Kolorystyka</InputLabel>
               <Select
                 value={gateColor3}
