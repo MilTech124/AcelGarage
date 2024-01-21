@@ -98,6 +98,7 @@ export function Model(props) {
           </group>
         
           <mesh
+          visible={type==="uchylna"}
             geometry={nodes["brama-klamka"].geometry}
             material={materials.czarna}
             position={[(3.013 * depth) / 6, 1.032, 0.002]}

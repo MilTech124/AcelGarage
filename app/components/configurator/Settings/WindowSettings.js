@@ -1,6 +1,5 @@
-// make like DoorSettings.js
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import {
   Select,
@@ -12,8 +11,8 @@ import {
 import { variable } from "../Variable";
 
 function WindowSettings({ selectedOptions, setSelectedOptions }) {
-  const [countWindow, setCountWindow] = useState(1);
-  const { width, depth, height } = selectedOptions;
+  const [countWindow, setCountWindow] = useState(0);
+  const { width, depth} = selectedOptions;
 
   const handleSliderChange = (prop) => (event, newValue) => {
     setSelectedOptions({ ...selectedOptions, [prop]: newValue });
@@ -48,8 +47,7 @@ function WindowSettings({ selectedOptions, setSelectedOptions }) {
     <div>
       <h4 className="bg-slate-900 p-2 mt-5">Dodatkowe okno</h4>
       <div className="flex justify-around">
-        <figure>
-          {" "}
+        <figure>          
           <img className="w-20 pt-5" src="./konfigurator/window.png" />
         </figure>
         <div className="  flex flex-col justify-center items-center">

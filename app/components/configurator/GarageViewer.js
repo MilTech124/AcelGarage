@@ -19,8 +19,7 @@ function GarageViewer({ selectedOptions }) {
         minPolarAngle={Math.PI / 2.8}
         maxPolarAngle={Math.PI / 2.2}
         minDistance={15} // minimum zoom level
-        maxDistance={30} // maximum zoom level     
-       
+        maxDistance={30} // maximum zoom level            
       />
       {/* <ambientLight intensity={0.5} /> */}
       <directionalLight position={[20, 20, 5]} intensity={1} />
@@ -33,6 +32,7 @@ function GarageViewer({ selectedOptions }) {
 
       <Model selectedOptions={selectedOptions} />
       <Environment preset="city" />
+      
     </Canvas>
   );
 }

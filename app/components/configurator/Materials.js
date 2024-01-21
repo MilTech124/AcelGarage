@@ -19,8 +19,12 @@ function Materials(selectedOptions) {
     gateColor2,
     gateColorRal3,
     gateColor3,
+    gateType1,
+    gateType2,
+    gateType3,
     door,
-    height,width
+    height,
+    width,
   } = selectedOptions;
 
   //helpers
@@ -51,68 +55,141 @@ function Materials(selectedOptions) {
 
   const gateColor = (num) => {
     let gateMaterial;
+
     if (num === 1) {
-      if (gateColorRal1 === null || gateColorRal1 === undefined) {
-        gateMaterial = new MeshStandardMaterial({
-          map:
-            gateColor1 === "Złoty Dąb Jasny"
-              ? wallTexture
-              : gateColor1 === "Złoty Dąb Ciemny"
-              ? wallTextureDabDark
-              : wallTextureOrzech,
-          normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
-          roughness: 0.8,
-          metalness: 1,
-        });
+      if (gateType1 != "segmentowa") {
+        if (gateColorRal1 === null || gateColorRal1 === undefined) {
+          gateMaterial = new MeshStandardMaterial({
+            map:
+              gateColor1 === "Złoty Dąb Jasny"
+                ? wallTexture
+                : gateColor1 === "Złoty Dąb Ciemny"
+                ? wallTextureDabDark
+                : wallTextureOrzech,
+            normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
+            roughness: 0.8,
+            metalness: 1,
+          });
+        } else {
+          gateMaterial = new MeshStandardMaterial({
+            color: gateColorRal1,
+            normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
+            roughness: 0.9,
+            metalness: 0.2,
+          });
+        }
       } else {
-        gateMaterial = new MeshStandardMaterial({
-          color: gateColorRal1,
-          normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
-          roughness: 0.9,
-          metalness: 0.2,
-        });
+        if (gateColorRal1 === null || gateColorRal1 === undefined) {
+          gateMaterial = new MeshStandardMaterial({
+            map:
+              gateColor1 === "Złoty Dąb Jasny"
+                ? wallTexture
+                : gateColor1 === "Złoty Dąb Ciemny"
+                ? wallTextureDabDark
+                : wallTextureOrzech,
+            normalMap: gateSegment,
+            roughness: 0.8,
+            metalness: 1,
+          });
+        } else {
+          gateMaterial = new MeshStandardMaterial({
+            color:gateColorRal1,
+            normalMap: gateSegment,
+            roughness: 0.9,
+            metalness: 0.2,
+          });
+          return gateMaterial;
+        }
       }
     } else if (num === 2) {
-      if (gateColorRal2 === null || gateColorRal2 === undefined) {
-        gateMaterial = new MeshStandardMaterial({
-          map:
-            gateColor2 === "Złoty Dąb Jasny"
-              ? wallTexture
-              : gateColor2 === "Złoty Dąb Ciemny"
-              ? wallTextureDabDark
-              : wallTextureOrzech,
-          normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
-          roughness: 0.8,
-          metalness: 1,
-        });
+      if (gateType2 != "segmentowa") {
+        if (gateColorRal2 === null || gateColorRal2 === undefined) {
+          gateMaterial = new MeshStandardMaterial({
+            map:
+              gateColor2 === "Złoty Dąb Jasny"
+                ? wallTexture
+                : gateColor2 === "Złoty Dąb Ciemny"
+                ? wallTextureDabDark
+                : wallTextureOrzech,
+            normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
+            roughness: 0.8,
+            metalness: 1,
+          });
+        } else {
+          gateMaterial = new MeshStandardMaterial({
+            color: gateColorRal2,
+            normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
+            roughness: 0.9,
+            metalness: 0.2,
+          });
+        }
       } else {
-        gateMaterial = new MeshStandardMaterial({
-          color: gateColorRal2,
-          normalMap: gateDirection === "poziom" ? normalGate : normalwall90,
-          roughness: 0.9,
-          metalness: 0.2,
-        });
+        if (gateColorRal2 === null || gateColorRal2 === undefined) {
+          gateMaterial = new MeshStandardMaterial({
+            map:
+              gateColor2 === "Złoty Dąb Jasny"
+                ? wallTexture
+                : gateColor2 === "Złoty Dąb Ciemny"
+                ? wallTextureDabDark
+                : wallTextureOrzech,
+            normalMap: gateSegment,
+            roughness: 0.8,
+            metalness: 1,
+          });
+        } else {
+          gateMaterial = new MeshStandardMaterial({
+            color:gateColorRal2,
+            normalMap: gateSegment,
+            roughness: 0.9,
+            metalness: 0.2,
+          });
+          return gateMaterial;
+        }
       }
     } else if (num === 3) {
-      if (gateColorRal3 === null || gateColorRal3 === undefined) {
-        gateMaterial = new MeshStandardMaterial({
-          map:
-          gateColor3 === "Złoty Dąb Jasny"
-            ? wallTexture
-            : gateColor3 === "Złoty Dąb Ciemny"
-            ? wallTextureDabDark
-            : wallTextureOrzech,
-        normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
-        roughness: 0.8,
-        metalness: 1,
-        });
+      if (gateType3 != "segmentowa") {
+        if (gateColorRal3 === null || gateColorRal3 === undefined) {
+          gateMaterial = new MeshStandardMaterial({
+            map:
+              gateColor3 === "Złoty Dąb Jasny"
+                ? wallTexture
+                : gateColor3 === "Złoty Dąb Ciemny"
+                ? wallTextureDabDark
+                : wallTextureOrzech,
+            normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
+            roughness: 0.8,
+            metalness: 1,
+          });
+        } else {
+          gateMaterial = new MeshStandardMaterial({
+            color: gateColorRal3,
+            normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
+            roughness: 0.9,
+            metalness: 0.2,
+          });
+        }
       } else {
-        gateMaterial = new MeshStandardMaterial({
-          color: gateColorRal3,
-          normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
-          roughness: 0.9,
-          metalness: 0.2,
-        });
+        if (gateColorRal3 === null || gateColorRal3 === undefined) {
+          gateMaterial = new MeshStandardMaterial({
+            map:
+              gateColor3 === "Złoty Dąb Jasny"
+                ? wallTexture
+                : gateColor3 === "Złoty Dąb Ciemny"
+                ? wallTextureDabDark
+                : wallTextureOrzech,
+            normalMap: gateSegment,
+            roughness: 0.8,
+            metalness: 1,
+          });
+        } else {
+          gateMaterial = new MeshStandardMaterial({
+            color:gateColorRal3,
+            normalMap: gateSegment,
+            roughness: 0.9,
+            metalness: 0.2,
+          });
+          return gateMaterial;
+        }
       }
     }
     return gateMaterial;
@@ -168,6 +245,7 @@ function Materials(selectedOptions) {
   const gateTexture = useLoader(TextureLoader, "/model/jasny-dab-2.jpg");
   const normalGate = useLoader(TextureLoader, "/model/normal-big-90-gate.jpg");
   const normalGate90 = useLoader(TextureLoader, "/model/normal-big-gate.jpg");
+  const gateSegment = useLoader(TextureLoader, "/model/segmentowa.jpg");
 
   //textures uv
   roofTexture.repeat.set(1.5, 1.5);
@@ -190,17 +268,27 @@ function Materials(selectedOptions) {
   wallTextureOrzech.wrapS = THREE.RepeatWrapping;
   wallTextureOrzech.wrapT = THREE.RepeatWrapping;
 
-  normalWall.repeat.set(1, emboss === "wąskie" ? (6*(height/213)) : 3.5*(height/213));
+  normalWall.repeat.set(
+    1,
+    emboss === "wąskie" ? 6 * (height / 213) : 3.5 * (height / 213)
+  );
   normalWall.wrapS = THREE.RepeatWrapping;
   normalWall.wrapT = THREE.RepeatWrapping;
 
-  normalwall90.repeat.set(emboss === "wąskie" ? (11*width/6) : (6*width/6), 1);
+  normalwall90.repeat.set(
+    emboss === "wąskie" ? (11 * width) / 6 : (6 * width) / 6,
+    1
+  );
   normalwall90.wrapS = THREE.RepeatWrapping;
   normalwall90.wrapT = THREE.RepeatWrapping;
 
   gateTexture.repeat.set(1, 1);
   gateTexture.wrapS = THREE.RepeatWrapping;
   gateTexture.wrapT = THREE.RepeatWrapping;
+
+  gateSegment.repeat.set(1, 2);
+  gateSegment.wrapS = THREE.RepeatWrapping;
+  gateSegment.wrapT = THREE.RepeatWrapping;
 
   normalGate.repeat.set(1, gateEmbose === "wąskie" ? 5.2 : 3, 1);
   normalGate.wrapS = THREE.RepeatWrapping;
