@@ -25,7 +25,6 @@ function Main() {
 
     gateCount: 2,
     gateType1: "uchylna",
-    gatePositionValue1: 300,
     gateColor1: "Złoty Dąb Jasny",
     gateColorRal1: null,
     gateWidth1: 3,
@@ -34,7 +33,7 @@ function Main() {
 
     gateType2: "uchylna",
     gateColor2: "Złoty Dąb Jasny",
-    gateColorRa2: null,
+    gateColorRal2: null,
     gateWidth2: 3,
     gateHeight2: 200,
     gatePositionValue2: 300,
@@ -61,17 +60,17 @@ function Main() {
 
   return (
     <div className="bg-slate-200 relative w-screen h-screen flex max-sm:flex-col">
-      <Modal modal={modal} setModal={setModal} />
+      <Modal selectedOptions={selectedOptions} modal={modal} setModal={setModal} />
       <div className="w-full h-full relative max-sm:h-1/2 ">
         <GarageViewer selectedOptions={selectedOptions} />
         <button
           onClick={() => setModal(true)}
-          className="absolute btn-acel top-0 right-0 m-10 animate-pulse  bg-slate-900 text-white rounded-md"
+          className="fixed z-50 btn-acel max-sm:py-2 w-full py-5 text-2xl bottom-0 right-0  animate-pulse  bg-slate-900 text-white rounded-md"
         >
           Wyślij wycenę
         </button>
       </div>
-      <div className=" p-5 md:w-[600px] bg-slate-300 overflow-auto ">
+      <div className=" p-5 md:w-[600px] h- bg-slate-300 overflow-auto ">
         <GarageConfigurator
           selectedOptions={selectedOptions}
           setSelectedOptions={setSelectedOptions}

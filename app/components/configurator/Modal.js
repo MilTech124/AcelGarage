@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import SendEmail from "@/app/utils/SendMail";
 
 const style = {
   position: "absolute",
@@ -16,9 +17,44 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal({ modal, setModal }) {
+export default function BasicModal({ selectedOptions, modal, setModal }) {
   const handleOpen = () => setModal(true);
   const handleClose = () => setModal(false);
+  const [contact, setContact] = React.useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    message: "",
+  });
+  console.log(selectedOptions.door.length);
+
+  function handleChange(e) {
+    setContact({ ...contact, [e.target.name]: e.target.value });
+  }
+
+  function sendData(e) {
+    e.preventDefault();
+    console.log("sendData");
+    // Convert door array to string
+  let doorList = selectedOptions.door.map((door, index) => `Door ${index + 1}: ${JSON.stringify(door)}`).join('\n');   
+  let windowList = selectedOptions.window.map((window, index) => `Window ${index + 1}: ${JSON.stringify(window)}`).join('\n');
+    SendEmail(
+      {
+        name: contact.name,
+        email: contact.email,
+        phone: contact.phone,
+        address: contact.address,
+        message: contact.message,
+        windowList: selectedOptions.window.length,
+        doorList: selectedOptions.door.length,
+        door: doorList,
+        window: windowList,
+        data: selectedOptions,
+      },
+      "template_426bxgo"
+    );
+  }
 
   return (
     <div>
@@ -30,42 +66,49 @@ export default function BasicModal({ modal, setModal }) {
       >
         <Box sx={style}>
           <h4 className="text-black">Formularz kontaktowy</h4>
-          <form className="flex flex-col gap-2">
+          <form className="flex flex-col gap-2" onSubmit={sendData}>
             <input
               type="text"
-              placeholder="Imię"
+              name="name"
+              placeholder="Imię i nazwisko"
+              onChange={handleChange}
               className="p-2 border border-gray-400 rounded-md"
             />
-            <input
-              type="text"
-              placeholder="Nazwisko"
-              className="p-2 border border-gray-400 rounded-md"
-            />
+
             <input
               type="tel"
+              name="phone"
               placeholder="Telefon"
+              onChange={handleChange}
               className="p-2 border border-gray-400 rounded-md"
             />
             <input
               type="email"
+              name="email"
               placeholder="Email"
+              onChange={handleChange}
               className="p-2 border border-gray-400 rounded-md"
             />
             <input
               type="text"
+              name="address"
+              onChange={handleChange}
               placeholder="Adres dostawy"
               className="p-2 border border-gray-400 rounded-md"
             />
             <textarea
+              name="message"
               placeholder="Informacje dodatkowe"
-              className="p-2 border border-gray-400 rounded-md"
+              onChange={handleChange}
+              className="p-2 border text-black border-gray-400 rounded-md"
             />
             <p className="text-black text-xs">
               Przesyłając ten formularz, wyrażam zgodę na przetwarzanie moich
               danych osobowych w celu udzielenia odpowiedzi na moje zapytanie
               oraz na otrzymywanie informacji handlowych i marketingowych drogą
-              elektroniczną od AcelGarage. Więcej informacji na temat przetwarzania
-              danych osobowych można znaleźć w Polityce Prywatności.
+              elektroniczną od AcelGarage. Więcej informacji na temat
+              przetwarzania danych osobowych można znaleźć w Polityce
+              Prywatności.
             </p>
             <button className="bg-slate-900 text-white p-2 rounded-md">
               Wyślij

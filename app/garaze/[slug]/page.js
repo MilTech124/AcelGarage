@@ -5,7 +5,7 @@ import axios from "axios";
 
 const getData = async ({ params }) => {
   const response = await axios.get(
-    `https://acelgarage.pl/wp-json/wp/v2/garaze?slug=${params.slug}`
+    `https://backend.acelgarage.pl/backend/wp-json/wp/v2/garaze?slug=${params.slug}`
   );
   const data = await response.data;
   return data;

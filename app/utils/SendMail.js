@@ -7,11 +7,11 @@ import { toast } from 'react-toastify';
 
 
 // Define a function to send an email with EmailJS
-function SendEmail(data) {
+function SendEmail(data,idTemplate) {
     // Define the email parameters
     const templateParams = data;
     const serviceID = process.env.NEXT_PUBLIC_SERVICE_ID;
-    const templateID = process.env.NEXT_PUBLIC_TEMPLATE_ID;
+    const templateID =idTemplate ? idTemplate : process.env.NEXT_PUBLIC_TEMPLATE_ID;
     const publicKey = process.env.NEXT_PUBLIC_PUBLIC_KEY;  
 
     toast.info('Wysyłanie wiadomości', {

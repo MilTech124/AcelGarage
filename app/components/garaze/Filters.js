@@ -6,7 +6,7 @@ import {Fade} from "react-awesome-reveal";
 
 const  getData = async() => {
     
-    const response = await axios.get(`https://acelgarage.pl/wp-json/wp/v2/garaze?per_page=100`)
+    const response = await axios.get(`https://backend.acelgarage.pl/backend/wp-json/wp/v2/garaze?per_page=100`)
     const data = await response.data 
     return data
 }

@@ -2,7 +2,7 @@
 const nextConfig = {
   transpilePackages: ['three'],
     images: {
-        domains: ['acelgarage.pl'],
+        domains: ['acelgarage.pl','backend.acelgarage.pl'],
       },
 }
 
