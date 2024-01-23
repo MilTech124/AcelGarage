@@ -11,7 +11,7 @@ function WelcKonfig() {
     </p>
   </Slide>
   <Link
-    href="/kalkulator"
+    href="/konfigurator"
     className="bg-white/50 p-2 rounded-md hover:scale-105 transition-all"
   >
     <img src="/image/Automation.svg" />

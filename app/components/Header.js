@@ -1,5 +1,5 @@
 "use client";
-import { Bars2Icon as Menu, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars2Icon as Menu, XMarkIcon,UserCircleIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -9,6 +9,10 @@ export default function Header() {
 
   return (
     <header id="header" className="bg-black relative border-b text-white z-10">
+    <Link href='/login'>
+      <UserCircleIcon className="absolute z-20 top-0 right-5 w-10 h-10 p-2 hover:text-red-500 text-white" />
+    </Link>
+     
       <div className="mx-auto">
         <div className="bg-slate-800 border-b-2 max-sm:text-xs text-sm border-white/20 py-1 flex justify-center max-sm:justify-start gap-5 relative">
           <Link href="tel:733003192" className="top-item">
