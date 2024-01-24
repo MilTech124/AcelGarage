@@ -4,6 +4,7 @@ import { Environment } from "@react-three/drei";
 import { OrbitControls, ContactShadows } from "@react-three/drei";
 import { Model } from "./Model";
 
+
 function GarageViewer({ selectedOptions }) {
   // renderowanie modelu 3D z wykorzystaniem selectedOptions
   return (
@@ -31,7 +32,7 @@ function GarageViewer({ selectedOptions }) {
       />
 
       <Model selectedOptions={selectedOptions} />
-      <Environment preset="city" />
+      <Environment  preset="city"/>
       
     </Canvas>
   );

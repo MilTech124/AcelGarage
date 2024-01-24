@@ -54,11 +54,9 @@ export function Model(props) {
     doorMaterial3,
     doorMaterial4,
     doorMaterial5,
-
   } = Materials(props.selectedOptions);
-  
 
-  const Gate = ({ gateMaterial, position, scale,type }) => {
+  const Gate = ({ gateMaterial, position, scale, type }) => {
     return (
       <>
         <group position={position} scale={scale}>
@@ -76,29 +74,28 @@ export function Model(props) {
             rotation={[0, 0, -Math.PI / 2]}
             scale={[1.02, 1.054, 1.45]} //55
           />
-           <mesh
+          <mesh
             name="przedziałka"
-            visible={type==="dwuskrzydłowa"}          
+            visible={type === "dwuskrzydłowa"}
             geometry={nodes.przedziałka.geometry}
             material={materials.czarna}
-            position={[3.2 * depth / 6, 1.033, 0]}
+            position={[(3.2 * depth) / 6, 1.033, 0]}
             rotation={[0, 0, -Math.PI / 2]}
             scale={[1.02, 1.054, 0.023]}
           />
-          <group >
-          <mesh
-          name="drzwi-klamka"
-          visible={type==="dwuskrzydłowa"}
-          geometry={nodes["drzwi-klamka"].geometry}
-          material={materials.czarna}
-          position={[(3.05 * depth) / 6, 1.035, -0.1]}
-          scale={[0.025, 0.02, 0.025]}
-        />
-         
+          <group>
+            <mesh
+              name="drzwi-klamka"
+              visible={type === "dwuskrzydłowa"}
+              geometry={nodes["drzwi-klamka"].geometry}
+              material={materials.czarna}
+              position={[(3.05 * depth) / 6, 1.035, -0.1]}
+              scale={[0.025, 0.02, 0.025]}
+            />
           </group>
-        
+
           <mesh
-          visible={type==="uchylna"}
+            visible={type === "uchylna"}
             geometry={nodes["brama-klamka"].geometry}
             material={materials.czarna}
             position={[(3.013 * depth) / 6, 1.032, 0.002]}
@@ -109,41 +106,88 @@ export function Model(props) {
     );
   };
 
-  const Door = ({number}) => {
+  const Door = ({ number }) => {
     if (!number || number === undefined) {
       number = 0;
     }
-    const doorMaterials = [doorMaterial1, doorMaterial2, doorMaterial3,doorMaterial4,doorMaterial5]; // Array
+    const doorMaterials = [
+      doorMaterial1,
+      doorMaterial2,
+      doorMaterial3,
+      doorMaterial4,
+      doorMaterial5,
+    ]; // Array
     const selectedDoorMaterial = doorMaterials[number];
     return (
-      <group name="drzwi-cale"
-      position={
-        door[number].position === "przod" ? [2.965*depth/6,1.054,width<5 ?2.82*width / 6 - door[number].positionValue / 100 :2.92*width / 6 - door[number].positionValue / 100]       
-        :door[number].position === "tył" ? [-2.965*depth/6,1.054,  (-2.2-0.71)*width / 6  + door[number].positionValue / 100] 
-        :door[number].position === "prawo" ? [(2.86) * depth / 6 - door[number].positionValue / 100, 1.054, -2.965 * width / 6]      
-        :door[number].position === "lewo" ? [(((2.86) * depth / 6 - door[number].positionValue / 100)-0.6*width/6), 1.054, 2.965 * width / 6]      
-         :null}      
-      rotation={[0, door[number].position === "przod" ? 0 
-      :door[number].position==="tył" ? Math.PI
-      :door[number].position==="prawo" ? Math.PI/2
-      :door[number].position==="lewo" ? -Math.PI/2
-      :null, 0]}
-
-      scale={[1, 1, door[number].size==="100x190" ? 1 :
-      door[number].size==="90x190" ? 0.95 :
-      door[number].size==="80x190" ? 0.92 :null
-    ]}
+      <group
+        name="drzwi-cale"
+        position={
+          door[number].position === "przod"
+            ? [
+                (2.965 * depth) / 6,
+                1.054,
+                width < 5
+                  ? (2.82 * width) / 6 - door[number].positionValue / 100
+                  : (2.92 * width) / 6 - door[number].positionValue / 100,
+              ]
+            : door[number].position === "tył"
+            ? [
+                (-2.965 * depth) / 6,
+                1.054,
+                ((-2.2 - 0.71) * width) / 6 + door[number].positionValue / 100,
+              ]
+            : door[number].position === "prawo"
+            ? [
+                (2.86 * depth) / 6 - door[number].positionValue / 100,
+                1.054,
+                (-2.965 * width) / 6,
+              ]
+            : door[number].position === "lewo"
+            ? [
+                (2.86 * depth) / 6 -
+                  door[number].positionValue / 100 -
+                  (0.6 * width) / 6,
+                1.054,
+                (2.965 * width) / 6,
+              ]
+            : null
+        }
+        rotation={[
+          0,
+          door[number].position === "przod"
+            ? 0
+            : door[number].position === "tył"
+            ? Math.PI
+            : door[number].position === "prawo"
+            ? Math.PI / 2
+            : door[number].position === "lewo"
+            ? -Math.PI / 2
+            : null,
+          0,
+        ]}
+        scale={[
+          1,
+          1,
+          door[number].size === "100x190"
+            ? 1
+            : door[number].size === "90x190"
+            ? 0.95
+            : door[number].size === "80x190"
+            ? 0.92
+            : null,
+        ]}
       >
-      
         <mesh
           name="drzwi-klamka"
           geometry={nodes["drzwi-klamka"].geometry}
           material={materials.czarna}
-          position={door[number].type==="lewe"?[0.1, 0.014,0 ]:[0.1, 0.014,-0.7 ]}
-          rotation={[door[number].type==="lewe"?0:Math.PI/1, 0, 0]}
+          position={
+            door[number].type === "lewe" ? [0.1, 0.014, 0] : [0.1, 0.014, -0.7]
+          }
+          rotation={[door[number].type === "lewe" ? 0 : Math.PI / 1, 0, 0]}
           scale={[0.025, 0.02, 0.025]}
         />
-        
+
         <mesh
           name="drzwi"
           geometry={nodes.drzwi.geometry}
@@ -166,8 +210,80 @@ export function Model(props) {
     const x = 1.5;
 
     return (
-      <group rotation={[0, 0, 0]}>
-        <group position={[0, 0, 0 + x]}>
+      <group
+        visible={carport}
+        rotation={
+          carportSide === "lewo" && roof === "dwuspad"
+            ? [0, 0, 0]
+            : carportSide === "prawo" && roof === "dwuspad"
+            ? [0, -Math.PI / 1, 0]
+            : carportSide === "tyl" && roof === "dwuspad przod-tył"
+            ? [0, -Math.PI / 2, 0]
+            : carportSide === "przod" && roof === "dwuspad przod-tył"
+            ? [0, Math.PI / 2, 0]
+            : [0, 0, 0]
+        }
+        position={[0, 0, 0]}
+        scale={
+          (roof === "dwuspad" && carportSide === "lewo") ||
+          carportSide === "prawo"
+            ? [
+                (1 * depth) / 6,
+                (1.115 * height) / 213,
+                (0.8 * width) / 6 + carportWidth * 0.15,
+              ]
+            : (roof === "dwuspad przod-tył" && carportSide === "przod") ||
+              carportSide === "tyl"
+            ? [
+                (1 * width) / 6,
+                (1.115 * height) / 213,
+                (0.8 * depth) / 6 + carportWidth * 0.15,
+              ]
+            : roof === "dwuspad przod-tył" &&
+              (carportSide === "lewo") ^ (carportSide === "prawo")
+            ? [(1 * depth) / 6, (1.115 * height) / 213, (1 * width) / 6]
+            : [1, (1.115 * height) / 213, 1]
+        }
+      >
+        <group
+          name="podpory"
+          position={[
+            carportSide === "przod" && roof === "dwuspad"
+              ? (-0.3 * width) / 6 + carportWidth * 0.9
+              : carportSide === "tyl" && roof === "dwuspad"
+              ? (0.3 * width) / 6 - carportWidth * 0.9
+              : 0,
+            0,
+            (carportSide === "przod") ^ (carportSide === "tyl") &&
+            roof === "dwuspad"
+              ? 0
+              : carportSide === "lewo" && roof === "dwuspad przod-tył"
+              ? (-0.3 * width) / 6 + carportWidth * 0.9
+              : carportSide === "prawo" && roof === "dwuspad przod-tył"
+              ? (0.3 * width) / 6 - carportWidth * 0.9
+              : 0 + x,
+          ]}
+          rotation={
+            carportSide === "przod" && roof === "dwuspad"
+              ? [0, Math.PI / 2, 0]
+              : carportSide === "tyl" && roof === "dwuspad"
+              ? [0, -Math.PI / 2, 0]
+              : [0, 0, 0]
+          }
+          scale={[
+            (carportSide === "przod") ^ (carportSide === "tyl") &&
+            roof === "dwuspad"
+              ? (1 * width) / 6
+              : 1,
+            1,
+            (carportSide === "przod") ^ (carportSide === "tyl") &&
+            roof === "dwuspad"
+              ? (1 * depth) / 6
+              :carportSide === "lewo" && roof === "dwuspad przod-tył"
+              ? (1 * width) / 6
+              : 1,
+          ]}
+        >
           <mesh
             name="podpora-przod"
             geometry={nodes["podpora-przod"].geometry}
@@ -190,11 +306,22 @@ export function Model(props) {
             scale={[0.025, 1.064, 0.025]}
           />
         </group>
-        <group scale={[1, 1, 1 * x]} rotation={[0, 0, 0]}>
+        <group
+          visible={
+            !(
+              ((carportSide === "przod") ^ (carportSide === "tyl") &&
+                roof === "dwuspad") ||
+              (roof === "dwuspad przod-tył" &&
+                (carportSide === "lewo") ^ (carportSide === "prawo"))
+            )
+          }
+          scale={[1, 1, 1 * x]}
+          rotation={[0, 0, 0]}
+        >
           <mesh
             name="dach-lewy"
             geometry={nodes["dach-lewy"].geometry}
-            material={nodes["dach-lewy"].material}
+            material={roofMaterial}
             position={[0, 2.641, 1.591]}
             rotation={[Math.PI / 9, 0, 0]}
             scale={[3.131, 1.137, 1.729]}
@@ -202,7 +329,7 @@ export function Model(props) {
           <mesh
             name="dach_-przod-wiata"
             geometry={nodes["dach_-przod-wiata"].geometry}
-            material={nodes["dach_-przod-wiata"].material}
+            material={wallMaterial}
             position={[3, 2.571, 0]}
             rotation={[0, 0, -Math.PI / 2]}
             scale={[1, 1, 1]}
@@ -210,7 +337,7 @@ export function Model(props) {
           <mesh
             name="dach_-tyl-wiata"
             geometry={nodes["dach_-tyl-wiata"].geometry}
-            material={nodes["dach_-tyl-wiata"].material}
+            material={wallMaterial}
             position={[-3, 2.571, 0]}
             rotation={[0, 0, -Math.PI / 2]}
             scale={[1, 1, 1]}
@@ -289,17 +416,57 @@ export function Model(props) {
   };
 
   const Roof = () => {
+    const carportDouble = () => {
+      if (carportSide === "przod" && roof === "dwuspad" && carport) {
+        return carportWidth * 0.15;
+      }
+      if (carportSide === "tyl" && roof === "dwuspad" && carport) {
+        return carportWidth * 0.15;
+      }
+      if (carportSide === "lewo" && roof === "dwuspad przod-tył" && carport) {
+        return carportWidth * 0.15;
+      }
+      if (carportSide === "prawo" && roof === "dwuspad przod-tył" && carport) {
+        return carportWidth * 0.15;
+      }
+      return 0;
+    };
+
     return (
       <group
         visible={roof === "dwuspad" || roof === "dwuspad przod-tył"}
         scale={
           roof === "dwuspad"
-            ? [1 * (depth / 6), (1.12 * height) / 213, 1 * (width / 6)]
+            ? [
+                1 * (depth / 6) + carportDouble(),
+                (1.12 * height) / 213,
+                1 * (width / 6),
+              ]
             : roof === "dwuspad przod-tył"
-            ? [1 * (width / 6), (1.12 * height) / 213, 1 * (depth / 6)]
+            ? [
+                1 * (width / 6) + carportDouble(),
+                (1.12 * height) / 213,
+                1 * (depth / 6),
+              ]
             : null
         }
-        position={[0, 0, 0]}
+        position={[
+          carportSide === "przod" && roof === "dwuspad"
+            ? 0 + carportDouble() * 3
+            : carportSide === "tyl" && roof === "dwuspad"
+            ? 0 - carportDouble() * 3
+            : carportSide === "lewo" && roof === "dwuspad przod-tył"
+            ? 0
+            : carportSide === "prawo" && roof === "dwuspad przod-tył"
+            ? 0
+            : 0,
+          0,
+          carportSide === "lewo" && roof === "dwuspad przod-tył"
+            ? 0 + carportDouble() * 3
+            : carportSide === "prawo" && roof === "dwuspad przod-tył"
+            ? 0 - carportDouble() * 3
+            : 0,
+        ]}
         rotation={
           roof === "dwuspad przod-tył"
             ? [0, -Math.PI / 2, 0]
@@ -309,8 +476,12 @@ export function Model(props) {
         }
       >
         <mesh
-          name="dach-lewy"
-          visible={true}
+          name="dach-prawy"
+          visible={
+            !(carportSide === "prawo" && roof === "dwuspad") ^
+              (carportSide === "tyl" && roof === "dwuspad przod-tył") ||
+            !carport
+          }
           geometry={nodes["dach-lewy"].geometry}
           material={roofMaterial}
           position={[0, 2.641, 1.591]}
@@ -318,7 +489,12 @@ export function Model(props) {
           scale={[3.131, 1.137, 1.729]}
         />
         <mesh
-          name="dach-prawy"
+          visible={
+            !(carportSide === "lewo" && roof === "dwuspad") ^
+              (carportSide === "przod" && roof === "dwuspad przod-tył") ||
+            !carport
+          }
+          name="dach-lewy"
           geometry={nodes["dach-prawy"].geometry}
           material={roofMaterial}
           position={[0, 2.628, -1.618]}
@@ -390,7 +566,7 @@ export function Model(props) {
   return (
     <group {...props} dispose={null} position={[0, -0.5, 0]}>
       {[...Array(gateCount)].map((_, index) => {
-        let gateMaterial, position, scale,type;
+        let gateMaterial, position, scale, type;
         if (index === 0) {
           gateMaterial = gateMaterial1;
           position = [
@@ -431,14 +607,15 @@ export function Model(props) {
       })}
 
       {door.map((item, index) => (
-        <Door number={index} key={index}  />
+        <Door number={index} key={index} />
       ))}
       {window.map((item, index) => (
         <Window number={index} key={index} />
       ))}
 
       <Roof />
-      {/* <Carport />  */}
+      {carport && <Carport />}
+
       <RoofDirection />
       <mesh
         name="calosc"

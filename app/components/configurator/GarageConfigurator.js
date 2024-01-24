@@ -36,10 +36,10 @@ const GarageConfigurator = ({ selectedOptions, setSelectedOptions }) => {
         selectedOptions={selectedOptions}
         setSelectedOptions={setSelectedOptions}
       />
-      {/* <CarportSetting
+      <CarportSetting
         selectedOptions={selectedOptions}
         setSelectedOptions={setSelectedOptions}
-      /> */}
+      />
       <Accessories
         selectedOptions={selectedOptions}
         setSelectedOptions={setSelectedOptions}
