@@ -304,7 +304,7 @@ function Materials(selectedOptions) {
     normalMap: roofType === "blachodachówka" ? roofTexture : roofTrapezTexture,
     color: roofColorRal,
     roughness: roofType === "blachodachówka" ? 0.9 : 0.9,
-    metalness: roofType === "blachodachówka" ? 0.1 : 0.4,
+    metalness: roofType === "blachodachówka" ? 0.6 : 0.4,
     bumpMap: roofType === "blachodachówka" ? roofTexture : roofTrapezTexture,
   });
 

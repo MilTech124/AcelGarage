@@ -51,6 +51,7 @@ function Main() {
     carport: false,
     carportWidth: 3,
     carportSide: "lewo",
+    carportType: "brak",
 
     gutter: false,
     automatic: false,
