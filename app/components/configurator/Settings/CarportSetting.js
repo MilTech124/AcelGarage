@@ -34,7 +34,69 @@ function CarportSetting({ selectedOptions, setSelectedOptions }) {
             <InputLabel id="demo-simple-select-standard-label">
               Strona
             </InputLabel>
-            <Select
+           
+            {/* KOREKCJA WYBORU STRONY WIATY */}
+            {selectedOptions.roof ==="spad przód" ? 
+            ( <Select
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              value={selectedOptions.carportSide}
+              onChange={(e) => {
+                setSelectedOptions({
+                  ...selectedOptions,
+                  carportSide: e.target.value,
+                });
+              }}
+              label="Strona"
+            >
+              <MenuItem value={"lewo"}>Prawo</MenuItem>
+              <MenuItem value={"prawo"}>Lewo</MenuItem>
+              <MenuItem value={"przod"}>Tył</MenuItem>
+              <MenuItem value={"tyl"}>Przód</MenuItem>
+              </Select>
+            )
+            : selectedOptions.roof ==="spad w lewo" ? 
+            ( <Select
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              value={selectedOptions.carportSide}
+              onChange={(e) => {
+                setSelectedOptions({
+                  ...selectedOptions,
+                  carportSide: e.target.value,
+                });
+              }}
+              label="Strona"
+            >
+              <MenuItem value={"lewo"}>Przod</MenuItem>
+              <MenuItem value={"prawo"}>Tył</MenuItem>
+              <MenuItem value={"przod"}>Prawo</MenuItem>
+              <MenuItem value={"tyl"}>Lewo</MenuItem>
+              </Select>
+            )
+            : selectedOptions.roof ==="spad w prawo" ? 
+            ( <Select
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              value={selectedOptions.carportSide}
+              onChange={(e) => {
+                setSelectedOptions({
+                  ...selectedOptions,
+                  carportSide: e.target.value,
+                });
+              }}
+              label="Strona"
+            >
+              <MenuItem value={"lewo"}>Tył</MenuItem>
+              <MenuItem value={"prawo"}>Przod</MenuItem>
+              <MenuItem value={"przod"}>Lewo</MenuItem>
+              <MenuItem value={"tyl"}>Prawo</MenuItem>
+              </Select>
+            )
+            
+            
+
+            :(<Select
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
               value={selectedOptions.carportSide}
@@ -50,7 +112,10 @@ function CarportSetting({ selectedOptions, setSelectedOptions }) {
               <MenuItem value={"prawo"}>Prawo</MenuItem>
               <MenuItem value={"przod"}>Przód</MenuItem>
               <MenuItem value={"tyl"}>Tył</MenuItem>
-            </Select>
+            /</Select>)
+                }
+             
+           
           </FormControl>
           <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
             <InputLabel id="demo-simple-select-standard-label">
