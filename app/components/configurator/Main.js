@@ -1,9 +1,11 @@
 "use client";
+import html2canvas from 'html2canvas';
 
 import React, { useState, useEffect, use } from "react";
 import GarageConfigurator from "./GarageConfigurator";
 import GarageViewer from "./GarageViewer";
 import Modal from "./Modal";
+import axios from 'axios';
 
 function Main() {
   const [selectedOptions, setSelectedOptions] = useState({
@@ -59,13 +61,37 @@ function Main() {
   });
   const [modal, setModal] = useState(false);
 
+  const captureScreenshot = async () => {
+    const wordpressEndpoint = 'https://backend.acelgarage.pl/backend/wp-json/wp/v2/media';
+    const elementToCapture = document.getElementById('capture');
+    
+    if (elementToCapture) {
+      const screenshot = await html2canvas(elementToCapture);
+      // Tutaj możesz przetworzyć zrzut ekranu, np. przekształcić go na dane binarne.     
+      const response = await axios.post(wordpressEndpoint,{
+        file: screenshot,
+      });  
+      const data = await response.json();
+      console.log(data);
+      return data;
+
+    } else {
+      console.error('Element not found');
+      return null;
+    }
+    
+   
+
+  };
+
+
   return (
     <div className="bg-slate-200 relative w-screen h-screen flex max-sm:flex-col">
       <Modal selectedOptions={selectedOptions} modal={modal} setModal={setModal} />
-      <div className="w-full h-full relative max-sm:h-1/2 ">
+      <div id='capture' className="w-full h-full relative max-sm:h-1/2 ">
         <GarageViewer selectedOptions={selectedOptions} />
         <button
-          onClick={() => setModal(true)}
+          onClick={() => (setModal(true), captureScreenshot())}
           className="fixed z-50 btn-acel max-sm:py-2 w-full py-5 text-2xl bottom-0 right-0  animate-pulse  bg-slate-900 text-white rounded-md"
         >
           Wyślij wycenę
