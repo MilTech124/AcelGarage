@@ -1,5 +1,6 @@
 "use client";
 import html2canvas from 'html2canvas';
+import { useThree } from '@react-three/fiber';
 
 import React, { useState, useEffect, use } from "react";
 import GarageConfigurator from "./GarageConfigurator";
@@ -60,36 +61,51 @@ function Main() {
     filc: false,
   });
   const [modal, setModal] = useState(false);
+  const [capture, setCapture] = useState(false);
+  const [imageURL, setImageURL] = useState(null);
 
-  const captureScreenshot = async (file) => {
+  const user = "JaroAdmin"
+  const token = "4BmG ohnX S7QC FuPZ DyVi sfBN"
+
+
+  const captureScreenshot = async (image) => {
+
+    const fetchResponse = await fetch(image);
+    const blob = await fetchResponse.blob();
+
     const formData = new FormData();
-    formData.append('file', file);
-
+    formData.append('file', blob, 'screenshot.png');
+    
     try {
-      const response = await axios.post('https://backend.acelgarage.pl/backend/wp-json/wp/v2/media', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        withCredentials: true
-      });
-
-      console.log(response.data);
+      const response = await axios.post(
+        'https://backend.acelgarage.pl/backend/wp-json/wp/v2/media',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Basic ' + btoa(user + ":" + token),
+          },
+          withCredentials: true,
+        }
+      );
+      console.log("Response",response.data);        
+  
+      await setImageURL(response.data.guid.rendered)
+      
+  
+    
     } catch (error) {
       console.error(error);
     }
   };
-    
-   
-
-
-
+ 
   return (
     <div className="bg-slate-200 relative w-screen h-screen flex max-sm:flex-col">
-      <Modal selectedOptions={selectedOptions} modal={modal} setModal={setModal} />
+      <Modal selectedOptions={selectedOptions} modal={modal} setModal={setModal} setCapture={setCapture} capture={capture} imageURL={imageURL} />
       <div id='capture' className="w-full h-full relative max-sm:h-1/2 ">
-        <GarageViewer selectedOptions={selectedOptions} />
+        <GarageViewer selectedOptions={selectedOptions} captureScreenshot={captureScreenshot} capture={capture}  />
         <button
-          onClick={() => (setModal(true), captureScreenshot())}
+          onClick={() => (setModal(true))}
           className="fixed z-50 btn-acel max-sm:py-2 w-full py-5 text-2xl bottom-0 right-0  animate-pulse  bg-slate-900 text-white rounded-md"
         >
           Wyślij wycenę

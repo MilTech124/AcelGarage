@@ -696,7 +696,6 @@ export function Model(props) {
          {/* //PODPORY DLA Lewo Prawo  */}
     </group>
   );
-  console.log(door);
 
   return (
     <group {...props} dispose={null} position={[0, -0.5, 0]}>

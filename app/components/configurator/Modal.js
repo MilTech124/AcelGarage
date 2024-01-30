@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import SendEmail from "@/app/utils/SendMail";
+import { toast } from "react-toastify";
 
 const style = {
   position: "absolute",
@@ -17,7 +18,9 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal({ selectedOptions, modal, setModal }) {
+
+
+export default function BasicModal({ selectedOptions, modal, setModal,setCapture, capture,imageURL }) {
   const handleOpen = () => setModal(true);
   const handleClose = () => setModal(false);
   const [contact, setContact] = React.useState({
@@ -27,33 +30,54 @@ export default function BasicModal({ selectedOptions, modal, setModal }) {
     address: "",
     message: "",
   });
-  console.log(selectedOptions.door.length);
+
+  React.useEffect(() => {
+    if (imageURL) {
+      console.log("imageurl" ,imageURL);
+      toast.success("Zrobiono zrzut ekranu");
+  
+      let doorList = selectedOptions.door.map((door, index) => `Door ${index + 1}: ${JSON.stringify(door)}`).join('\n');   
+      let windowList = selectedOptions.window.map((window, index) => `Window ${index + 1}: ${JSON.stringify(window)}`).join('\n');
+      SendEmail(
+        {
+          name: contact.name,
+          email: contact.email,
+          phone: contact.phone,
+          address: contact.address,
+          message: contact.message,
+          windowList: selectedOptions.window.length,
+          doorList: selectedOptions.door.length,
+          door: doorList,
+          window: windowList,
+          data: selectedOptions,
+          imageURL: imageURL,
+        },
+        "template_426bxgo"
+      );
+    }
+  }, [imageURL]);
+  
 
   function handleChange(e) {
     setContact({ ...contact, [e.target.name]: e.target.value });
   }
 
-  function sendData(e) {
+ const sendData = async (e) =>{
     e.preventDefault();
+
+    if(contact.name === "" || contact.email === "" || contact.phone === "" || contact.address === ""){
+      toast.error("Wypełnij wszystkie pola");
+      return;
+    }
+
     console.log("sendData");
-    // Convert door array to string
-  let doorList = selectedOptions.door.map((door, index) => `Door ${index + 1}: ${JSON.stringify(door)}`).join('\n');   
-  let windowList = selectedOptions.window.map((window, index) => `Window ${index + 1}: ${JSON.stringify(window)}`).join('\n');
-    SendEmail(
-      {
-        name: contact.name,
-        email: contact.email,
-        phone: contact.phone,
-        address: contact.address,
-        message: contact.message,
-        windowList: selectedOptions.window.length,
-        doorList: selectedOptions.door.length,
-        door: doorList,
-        window: windowList,
-        data: selectedOptions,
-      },
-      "template_426bxgo"
-    );
+    await setCapture(true);
+  
+  
+    
+    console.log("imageurl" ,imageURL);
+    
+    toast.success("Zrobiono zrzut ekranu");
   }
 
   return (
