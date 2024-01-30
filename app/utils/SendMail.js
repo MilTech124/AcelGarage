@@ -1,5 +1,6 @@
 // Import the EmailJS library
 import emailjs from '@emailjs/browser';
+import { redirect } from 'next/navigation';
 // Define your EmailJS service ID, template ID, and user ID
 import { toast } from 'react-toastify';
 
@@ -32,6 +33,12 @@ function SendEmail(data,idTemplate) {
                 pauseOnHover: true,     
                 });
             console.log('SUCCESS!', response.status, response.text);
+
+            setTimeout(() => {
+                redirect('/')
+            }, 5000);
+           
+            
         }, (error) => {
             console.log('FAILED...', error);
         });

@@ -75,9 +75,8 @@ export default function BasicModal({ selectedOptions, modal, setModal,setCapture
   
   
     
-    console.log("imageurl" ,imageURL);
+    console.log("imageurl" ,imageURL);    
     
-    toast.success("Zrobiono zrzut ekranu");
   }
 
   return (
