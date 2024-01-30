@@ -61,28 +61,26 @@ function Main() {
   });
   const [modal, setModal] = useState(false);
 
-  const captureScreenshot = async () => {
-    const wordpressEndpoint = 'https://backend.acelgarage.pl/backend/wp-json/wp/v2/media';
-    const elementToCapture = document.getElementById('capture');
-    
-    if (elementToCapture) {
-      const screenshot = await html2canvas(elementToCapture);
-      // Tutaj możesz przetworzyć zrzut ekranu, np. przekształcić go na dane binarne.     
-      const response = await axios.post(wordpressEndpoint,{
-        file: screenshot,
-      });  
-      const data = await response.json();
-      console.log(data);
-      return data;
+  const captureScreenshot = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
 
-    } else {
-      console.error('Element not found');
-      return null;
+    try {
+      const response = await axios.post('https://backend.acelgarage.pl/backend/wp-json/wp/v2/media', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        withCredentials: true
+      });
+
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
     }
+  };
     
    
 
-  };
 
 
   return (
