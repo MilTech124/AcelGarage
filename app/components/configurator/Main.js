@@ -63,7 +63,7 @@ function Main() {
   const [imageURL, setImageURL] = useState(null);
 
   const user = "JaroAdmin"
-  const token = "ls4P lcyk 6pOh g2my 6Kxd aHFV"
+  const password = "ls4P lcyk 6pOh g2my 6Kxd aHFV"
 
   const captureScreenshot = async (image) => {
 
@@ -80,7 +80,7 @@ function Main() {
         {
           headers: {
             'Content-Type': 'multipart/form-data',
-            'Authorization': 'Basic ' + btoa(user + ":" + token),
+            'Authorization': 'Basic ' + btoa(user + ":" + password),
           },
           withCredentials: true,
         }
