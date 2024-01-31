@@ -1,6 +1,4 @@
 "use client";
-import html2canvas from 'html2canvas';
-import { useThree } from '@react-three/fiber';
 
 import React, { useState, useEffect, use } from "react";
 import GarageConfigurator from "./GarageConfigurator";
@@ -65,7 +63,7 @@ function Main() {
   const [imageURL, setImageURL] = useState(null);
 
   const user = "JaroAdmin"
-  const token = "4BmG ohnX S7QC FuPZ DyVi sfBN"
+  const token = "ls4P lcyk 6pOh g2my 6Kxd aHFV"
 
 
   const captureScreenshot = async (image) => {
