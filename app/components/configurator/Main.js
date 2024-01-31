@@ -62,8 +62,8 @@ function Main() {
   const [capture, setCapture] = useState(false);
   const [imageURL, setImageURL] = useState(null);
 
-  const user = "JaroAdmin"
-  const password = "ls4P lcyk 6pOh g2my 6Kxd aHFV"
+  const user = process.env.NEXT_PUBLIC_USER_WP
+  const password = process.env.NEXT_PUBLIC_PASSWORD_WP
 
   const captureScreenshot = async (image) => {
 
