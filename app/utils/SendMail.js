@@ -2,10 +2,6 @@
 import emailjs from '@emailjs/browser';
 // Define your EmailJS service ID, template ID, and user ID
 import { toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
-
-
-
 
 // Define a function to send an email with EmailJS
 function SendEmail(data,idTemplate) {
@@ -35,9 +31,8 @@ function SendEmail(data,idTemplate) {
             console.log('SUCCESS!', response.status, response.text);
 
             setTimeout(() => {
-               useRouter().push('/')
-            }, 5000);
-           
+                window.location.href = '/';
+             }, 5000);        
             
         }, (error) => {
             console.log('FAILED...', error);

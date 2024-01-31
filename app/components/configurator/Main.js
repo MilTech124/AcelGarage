@@ -65,7 +65,6 @@ function Main() {
   const user = "JaroAdmin"
   const token = "ls4P lcyk 6pOh g2my 6Kxd aHFV"
 
-
   const captureScreenshot = async (image) => {
 
     const fetchResponse = await fetch(image);
