@@ -10,9 +10,7 @@ function page() {
   return (
     <main>
       <Hero />
-
       <WelcKonfig />
-
       <PopularGarages />
       <Opinion />
       <Way />

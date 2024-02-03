@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "Acel Garage-producent garaży blaszanych",
   description:"Odkryj jakość w Acel Garage. Specjalizujemy się w garażach blaszanych. Nasze produkty charakteryzują się wysoką jakością, trwałością i nowoczesnym designem, idealnie pasującym do każdego domu i przedsiębiorstwa. Wybierz Acel Garage dla niezawodnych, bezpiecznych i stylowych rozwiązań garażowych.",
-  keywords: "Acel Garage, Acel, garaże blaszane, garaze blaszane, bramy, bramy garażowe, bramy segmentowe, bramy uchylne, bramy rolowane, bramy przemysłowe, bramy przeciwpożarowe, bramy szybkobieżne,",
+  keywords: "Acel Garage, Acel, garaże blaszane, garaże premium, bramy, bramy garażowe, bramy segmentowe, bramy uchylne, garaże z wiatami, wiaty garażowe, konfigurator garaży",
 
 };
 
