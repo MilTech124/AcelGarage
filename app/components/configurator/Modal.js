@@ -11,7 +11,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 600,
+  width: 450,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -87,7 +87,7 @@ export default function BasicModal({ selectedOptions, modal, setModal,setCapture
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={style}  >
           <h4 className="text-black">Formularz kontaktowy</h4>
           <form className="flex flex-col gap-2" onSubmit={sendData}>
             <input

@@ -26,6 +26,13 @@ function Footer() {
             </div>
             
         </div>
+        
+    </div>
+    <div className="w-full py-2 border-t bg-slate-800">
+        <div className="flex justify-evenly items-center h-full">
+            <p className="text-white">© 2024 AcelGarage  -  <a href="/polityka" className="font-semibold">Polityka prywatnosci</a></p>
+            <p>Zaprojektował i wykonał <a href="https://www.mil-tech.pl/" className="text-green-400 font-bold">Mil-TECH</a></p>
+        </div>
     </div>
   </footer>
   )
