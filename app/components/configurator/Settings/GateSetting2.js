@@ -120,6 +120,9 @@ function GateSetting2({ selectedOptions, setSelectedOptions }) {
       <h4 className="bg-slate-900 p-2">Bramy</h4>
 
       <div className="relative">
+      <p className="text-red-500 text-xs py-2">
+          Maksymalna szerokość bramy <b>dwuskrzydłowej</b> oraz <b>uchylnej</b> to 3.5m
+        </p>
         <div className="flex justify-around">
           <img src="./konfigurator/gate.svg" />
           <div className="  flex flex-col justify-center items-center">
@@ -140,8 +143,8 @@ function GateSetting2({ selectedOptions, setSelectedOptions }) {
             </div>
           </div>
         </div>
-        <p className="text-red-400 text-xs pb-5">
-          Aby dodać więćej bram potrzebujesz min 6m szerokośći garażu
+        <p className="text-red-500 text-xs pb-5">
+          Aby dodać więćej bram potrzebujesz min <b>6m</b> szerokośći garażu
         </p>
         <div className="flex pb-3 gap-5 max-md:flex-wrap">
           <FormControl fullWidth>
@@ -221,7 +224,9 @@ function GateSetting2({ selectedOptions, setSelectedOptions }) {
                   {variable.gateSizes.width
                     .filter(
                       (widthVAR) =>
-                        width / (widthVAR + gatePositionValue1 / 100) >= 1
+                      gateType1 != "segmentowa" && (width / (widthVAR + gatePositionValue1 / 100) >= 1) && widthVAR <= 3.5
+                      ? true
+                      : gateType1 === "segmentowa" && (width / (widthVAR + gatePositionValue1 / 100) >= 1) ? true  :null
                     )
                     .map((width) => (
                       <MenuItem key={width} value={width}>
@@ -322,7 +327,9 @@ function GateSetting2({ selectedOptions, setSelectedOptions }) {
                   {variable.gateSizes.width
                     .filter(
                       (widthVAR) =>
-                        width / (widthVAR + gatePositionValue2 / 100) >= 1
+                      gateType2 != "segmentowa" && (width / (widthVAR + gatePositionValue2 / 100) >= 1) && widthVAR <= 3.5
+                      ? true
+                      : gateType2 === "segmentowa" && (width / (widthVAR + gatePositionValue2 / 100) >= 1) ? true  :null
                     )
                     .map((width) => (
                       <MenuItem key={width} value={width}>
@@ -420,7 +427,9 @@ function GateSetting2({ selectedOptions, setSelectedOptions }) {
                     {variable.gateSizes.width
                     .filter(
                       (widthVAR) =>
-                        width / (widthVAR + gatePositionValue3 / 100) >= 1
+                      gateType3 != "segmentowa" && (width / (widthVAR + gatePositionValue3 / 100) >= 1) && widthVAR <= 3.5
+                      ? true
+                      : gateType3 === "segmentowa" && (width / (widthVAR + gatePositionValue3 / 100) >= 1) ? true  :null
                     )
                     .map((width) => (
                       <MenuItem key={width} value={width}>

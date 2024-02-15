@@ -19,7 +19,7 @@ function Main() {
     roof: "dwuspad",
     roofColor: "Antracyt",
     roofColorRal: "#272C38",
-    roofType: "blachodachówka",
+    roofType: "trapezowa",
 
     gateEmbose: "wąskie",
     gateDirection: "poziom",
