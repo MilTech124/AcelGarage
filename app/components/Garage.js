@@ -15,7 +15,7 @@ function Garage({ src, title, link,prize }) {
             href={link}
             className="bg-white/50 hover:bg-white/80 text-black/50 hover:text-black/80 md:px-10 py-2 rounded-md transition-all duration-500"
           >
-           {prize ? prize : "Zamów Wycenę" } 
+           {prize ? `${prize} zł` : "Zamów Wycenę"} 
           </Link>
         </div>
         {/* ON HOVER SHOW BUTTON ,TITLE AND SHADOW ON BG */}

@@ -8,6 +8,9 @@ import Order from '../../utils/Order';
 
 function CustomSlider({data}) 
  {
+  
+  const passingData = data[0] ? data[0] : data;
+
   const [nav1, setNav1] = React.useState(null);
   const [show, setShow] = React.useState(false);
   const [nav2, setNav2] = React.useState(null);
@@ -42,7 +45,7 @@ function CustomSlider({data})
     centerPadding: '10px'
   };
 
-  const images = data[0].acf.obrazy.map((img) =>{
+  const images = passingData.acf.obrazy.map((img) =>{
     const mediumImageSrcSet = img.large_srcset.split(", ")[0].split(" ")[0];
     return mediumImageSrcSet;
   }
@@ -74,9 +77,9 @@ function CustomSlider({data})
           ))}
         </Slider>
       </div>
-      <div className='w-full'>
-        <h1 className='text-3xl font-bold text-center'>{data[0].acf.tytul}</h1>
-        <p className='text-left whitespace-pre-line md:p-5 p-2' dangerouslySetInnerHTML={{__html:data[0].acf.informacje}} ></p>
+      <div className='w-full px-2 md:px-10'>
+        <h1 className='text-3xl font-bold text-center'>{passingData.acf.tytul}</h1>
+        <p className='text-left whitespace-pre-line md:p-5 p-2' dangerouslySetInnerHTML={{__html:passingData.acf.informacje}} ></p>
         {/* {data[0].acf.cena ? data[0].acf.cena: null} */}
 
         <button onClick={()=>setShow(true)} className='btn-acel py-5 animate-pulse flex items-center justify-center bg-white/20 w-full'>  Zamów Wycenę</button>

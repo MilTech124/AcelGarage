@@ -58,9 +58,9 @@ export default function Header() {
             <Link href="/garaze" className="menu-item">
               Garaże
             </Link>
-            {/* <a href="/kojce" className="menu-item">
+            <a href="/kojce" className="menu-item">
               Kojce
-            </a>           */}
+            </a>
             <Link href="/konfigurator" className="menu-item">
               Konfigurator
             </Link>
