@@ -578,45 +578,9 @@ export function Model(props) {
           }    
       />
 
-      {/* //PODPORY DLA LEWO I PRAWO START  */}
-      {/* <group   
-       visible={carport && roof === "spad tyl" && carportSide === "lewo"^carportSide === "prawo" }
-          name="podpory"
-          position={[
-           0,0,0
-          ]
-          }
-          scale={[
-          1,1,1
-          ]}
-        >
-          <mesh
-            name="podpora-przod2"
-            geometry={nodes["podpora-przod"].geometry}
-            material={nodes["podpora-przod"].material}
-            position={[3.011, 1.35*height/213,carportSide==="lewo"? 3+carportWidth :carportSide==="prawo" ? -3-carportWidth : 3]}
-            scale={[0.025, 1.35*height/213, 0.025]}
-          />
-          <mesh
-            name="podpora-srodek2"
-            geometry={nodes["podpora-srodek"].geometry}
-            material={nodes["podpora-srodek"].material}
-            position={[0.014, 1.2*height/213, carportSide==="lewo"? 3+carportWidth :carportSide==="prawo" ? -3-carportWidth : 3]}
-            scale={[0.025, 1.2*height/213, 0.025]}
-          />
-          <mesh
-            name="podpora-tyl2"
-            geometry={nodes["podpora-tyl"].geometry}
-            material={nodes["podpora-tyl"].material}
-            position={[-2.958, 1.069, carportSide==="lewo"? 3+carportWidth :carportSide==="prawo" ? -3-carportWidth : 3]}
-            scale={[0.025, 1.064, 0.025]}
-          />
-      </group> */}
-      {/* //PODPORY DLA LEWO I PRAWO END  */}
-
-      {/* //PODPORY DLA TYL I PRZOD START  */}
-      <group   
-       visible={carport && carportSide === "przod"^carportSide === "tyl"}
+       {/* //PODPORY DLA TYL I PRZOD START  */}
+       <group   
+       visible={carport && (carportSide === "przod"^carportSide === "tyl")}
           name="podpory tyl"
           rotation={
             carportSide==="przod" ? [0, Math.PI/2, 0]
@@ -630,8 +594,8 @@ export function Model(props) {
             : null
           }
           scale={
-            carportSide==="przod" ? [1,1.02+(carportWidth*0.03),1 ]
-            : carportSide==="tyl" ? [1,0.8-(carportWidth*0.03),1 ]
+            carportSide==="przod" ? [0.97,1.0+(carportWidth*0.03),1 ]
+            : carportSide==="tyl" ? [0.99,0.8-(carportWidth*0.03),1 ]
             : null
             
           }
@@ -640,23 +604,24 @@ export function Model(props) {
             name="podpora-przod"
             geometry={nodes["podpora-przod"].geometry}
             material={nodes["podpora-przod"].material}
-            position={[3.011, 1.25*height/200, 3]}
-            scale={[0.025, 1.25*height/200, 0.025]}
+            position={[3.011, 1.25, 3]}
+            scale={[0.025, 1.4, 0.025]}
           />
           <mesh
             name="podpora-srodek"
             geometry={nodes["podpora-srodek"].geometry}
             material={nodes["podpora-srodek"].material}
-            position={[0.014, 1.25*height/200,  3]}
-            scale={[0.025, 1.25*height/200, 0.025]}
+            position={[0.014, 1.25,  3]}
+            scale={[0.025, 1.4, 0.025]}
           />
           <mesh
             name="podpora-tyl"
             geometry={nodes["podpora-tyl"].geometry}
             material={nodes["podpora-tyl"].material}
-            position={[-2.958,1.25*height/200, 3]}
-            scale={[.025, 1.25*height/200, 0.025]}
+            position={[-2.958,1.25, 3]}
+            scale={[.025, 1.4, 0.025]}
           />
+          
       </group>
       {/* //PODPORY DLA TYL I PRZOD END  */}
            {/* //PODPORY DLA Lewo Prawo  */}
@@ -668,22 +633,22 @@ export function Model(props) {
           ]
           }
           scale={[
-          1,1,1
+          0.98,1,1
           ]}
         >
           <mesh
             name="podpora-przod"
             geometry={nodes["podpora-przod"].geometry}
             material={nodes["podpora-przod"].material}
-            position={[3.011, 1.35*height/213,carportSide==="lewo"? 3+carportWidth :carportSide==="prawo" ? -3-carportWidth : 3]}
-            scale={[0.025, 1.35*height/213, 0.025]}
+            position={[3.011, 1.35,carportSide==="lewo"? 3+carportWidth :carportSide==="prawo" ? -3-carportWidth : 3]}
+            scale={[0.025, 1.35, 0.025]}
           />
           <mesh
             name="podpora-srodek"
             geometry={nodes["podpora-srodek"].geometry}
             material={nodes["podpora-srodek"].material}
-            position={[0.014, 1.2*height/213, carportSide==="lewo"? 3+carportWidth :carportSide==="prawo" ? -3-carportWidth : 3]}
-            scale={[0.025, 1.2*height/213, 0.025]}
+            position={[0.014, 1.2, carportSide==="lewo"? 3+carportWidth :carportSide==="prawo" ? -3-carportWidth : 3]}
+            scale={[0.025, 1.2, 0.025]}
           />
           <mesh
             name="podpora-tyl"

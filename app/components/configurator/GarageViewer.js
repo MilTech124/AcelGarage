@@ -51,7 +51,7 @@ function GarageViewer({ selectedOptions ,captureScreenshot,capture }) {
         maxDistance={30} // maximum zoom level            
       />
       {/* <ambientLight intensity={0.5} /> */}
-      <directionalLight position={[20, 20, 5]} intensity={1} />
+      <directionalLight position={[20, 20, 5]} intensity={2} />
       <ContactShadows
         frames={1}
         position={[0, -0.5, 0]}
