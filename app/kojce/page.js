@@ -36,7 +36,7 @@ const page = async () => {
           ? data.map((item) => (
               <Garage
                 key={item.id}
-                src={item.acf.obrazy[0].media_details.sizes.medium.source_url}
+                src={item?.acf?.obrazy?.[0]?.media_details?.sizes?.medium?.source_url || ""}
                 title={item.title.rendered}
                 link={`/kojce/${item.id}`}
                 prize={item.acf.prize}
