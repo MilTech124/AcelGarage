@@ -65,6 +65,10 @@ function Main() {
   const user = process.env.NEXT_PUBLIC_USER_WP;
   const password = process.env.NEXT_PUBLIC_PASSWORD_WP;
 
+  // console.log("User",user);
+  // console.log("Password",password);
+  
+
   const captureScreenshot = async (image) => {
 
     const fetchResponse = await fetch(image);
