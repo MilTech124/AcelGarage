@@ -37,7 +37,7 @@ export default function BasicModal({ selectedOptions, modal, setModal,setCapture
       console.log("imageurl" ,imageURL);
       toast.success("Zrobiono zrzut ekranu");
       
-      let carportList= selectedOptions.carport.map((carport, index) => `Sciany ${index + 1}: ${JSON.stringify(carport)}`).join('\n');
+      let carportList= selectedOptions.carportSides.map((carport, index) => `Sciany ${index + 1}: ${JSON.stringify(carport)}`).join('\n');
       let doorList = selectedOptions.door.map((door, index) => `Door ${index + 1}: ${JSON.stringify(door)}`).join('\n');   
       let windowList = selectedOptions.window.map((window, index) => `Window ${index + 1}: ${JSON.stringify(window)}`).join('\n');
       SendEmail(
