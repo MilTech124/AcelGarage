@@ -64,7 +64,7 @@ function Main() {
     metalWorkColorWall:"Złoty Dąb Jasny",
     metalWorkColorWallRal:null,
     metalWorkColorRoof: "#272C38",
-    metalWorkColorRoofRal: null,
+    metalWorkColorRoofRal: "Antracyt",
   });
   const smallHouse = {...selectedOptions,
     width: 3,

@@ -24,6 +24,7 @@ const style = {
 export default function BasicModal({ selectedOptions, modal, setModal,setCapture, capture,imageURL }) {
   const handleOpen = () => setModal(true);
   const handleClose = () => setModal(false);
+  const [loading, setLoading] = useState(false);
   const [contact, setContact] = useState({
     name: "",
     email: "",
@@ -68,6 +69,8 @@ export default function BasicModal({ selectedOptions, modal, setModal,setCapture
  const sendData = async (e) =>{
     e.preventDefault();
 
+    setLoading(true);
+
     if(contact.name === "" || contact.email === "" || contact.phone === "" || contact.address === ""){
       toast.error("Wypełnij wszystkie pola");
       return;
@@ -79,6 +82,8 @@ export default function BasicModal({ selectedOptions, modal, setModal,setCapture
   
     
     console.log("imageurl" ,imageURL);    
+
+    setLoading(false);
     
   }
 
@@ -136,8 +141,8 @@ export default function BasicModal({ selectedOptions, modal, setModal,setCapture
               przetwarzania danych osobowych można znaleźć w Polityce
               Prywatności.
             </p>
-            <button className="bg-slate-900 text-white p-2 rounded-md">
-              Wyślij
+            <button disabled={loading} className="bg-slate-900 text-white p-2 rounded-md">
+              {loading ? "Wysyłanie" : "Wyslij"}
             </button>
           </form>
         </Box>
