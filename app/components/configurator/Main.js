@@ -54,7 +54,7 @@ function Main() {
     carportWidth: 3,
     carportSide: "lewo",
     carportType: "brak",
-    carportSides:{lewo:false,prawo:false,przod:true,tyl:true},
+    carportSides:{lewo:false,prawo:false,przod:false,tyl:true},
     carportSides2:{lewo:true,prawo:true,przod:true,tyl:true},
 
     gutter: false,
