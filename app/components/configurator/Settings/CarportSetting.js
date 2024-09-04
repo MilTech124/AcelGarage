@@ -2,7 +2,9 @@ import React, { use, useEffect } from "react";
 import { Select, InputLabel, FormControl, MenuItem, Menu } from "@mui/material";
 import { variable } from "../Variable";
 import { toast } from "react-toastify";
+import Button from '@mui/material/Button';
 import Image from "next/image";
+
 
 function CarportSetting({ selectedOptions, setSelectedOptions }) {
   useEffect(() => {
@@ -11,6 +13,17 @@ function CarportSetting({ selectedOptions, setSelectedOptions }) {
     }
   }
   , [selectedOptions.carport]);
+  const {carportSides,roof,carportSide} = selectedOptions
+
+  const setCarportSides = (e) => {     
+    setSelectedOptions({
+      ...selectedOptions,
+      carportSides: { ...carportSides, [e.target.name]: !carportSides[e.target.name] }
+    });
+  };
+  
+  
+
   return (
     <div>
       <h4 className="bg-slate-900 p-2">Wiata</h4>
@@ -161,16 +174,36 @@ function CarportSetting({ selectedOptions, setSelectedOptions }) {
               <MenuItem value={"Oblachowane"}>Oblachowane</MenuItem>
               <MenuItem value={"Ażury"}>Ażury</MenuItem>
             </Select>
-             {selectedOptions.carportType === "brak" ? (
+             {/* {selectedOptions.carportType === "brak" ? (
               <></>
             ) : selectedOptions.carportType === "Oblachowane" ? (
               <Image className="pt-2"  src="/konfigurator/blacha.jpg" width={500} height={300} alt="" />
             ) : (
               <Image className="pt-2"  src="/konfigurator/azury.jpg" width={500} height={300} alt="" />
             )
-              }
+              } */}
           
           </FormControl>
+          {(selectedOptions.carport  && !(selectedOptions.carportType==="brak") ) && (
+        <div className="flex flex-col items-center justify-center bg-slate-400 rounded-md p-2 ">      
+          <p className="text-slate-700">Wybierz scianę do oblachowania</p>
+          <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+              <Button size="small" className="w-5" disabled={((roof==="dwuspad" || roof==="spad tyl") && carportSide==="przod") } variant={selectedOptions.carportSides.przod ? "contained":"outlined"} name="przod" onClick={(e) => setCarportSides(e)}>__</Button>
+          </FormControl>
+          <div className="flex">
+            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                <Button className="w-5" disabled={((roof==="dwuspad" || roof==="spad tyl") && carportSide==="prawo") } variant={selectedOptions.carportSides.lewo ? "contained":"outlined"} name="lewo" onClick={(e) => setCarportSides(e)} >|</Button>
+            </FormControl>
+            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                <Button className="w-5" disabled={((roof==="dwuspad" || roof==="spad tyl") && carportSide==="lewo") } variant={selectedOptions.carportSides.prawo ? "contained":"outlined"} name="prawo" onClick={(e) => setCarportSides(e)} >|</Button>
+            </FormControl>
+          </div>
+            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                <Button className="w-5" disabled={((roof==="dwuspad" || roof==="spad tyl") && carportSide==="tyl") } variant={selectedOptions.carportSides.tyl ? "contained":"outlined"} name="tyl" onClick={(e) => setCarportSides(e)} >__</Button>
+            </FormControl>
+      </div>
+      )
+        }
         </>
       )}
     </div>

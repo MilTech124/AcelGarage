@@ -34,7 +34,8 @@ function GarageViewer({ selectedOptions ,captureScreenshot,capture }) {
 
 
 
-  return (  
+  return ( 
+
     <Canvas gl={{ preserveDrawingBuffer: true }} 
       camera={{ position: [20, 5, 5], fov: 25,}}
       style={{
@@ -43,6 +44,7 @@ function GarageViewer({ selectedOptions ,captureScreenshot,capture }) {
         backgroundSize: "50% 50%",
       }}
     >
+
       <CaptureScreenshot setCaptureFunction={captureScreenshot} capture={capture} />
       <OrbitControls
         minPolarAngle={Math.PI / 2.8}
@@ -63,7 +65,7 @@ function GarageViewer({ selectedOptions ,captureScreenshot,capture }) {
       <Model selectedOptions={selectedOptions}/>
       <Environment  preset="city"/> 
     </Canvas>
-   
+  
   );
 }
 

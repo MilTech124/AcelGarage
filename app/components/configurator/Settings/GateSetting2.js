@@ -74,7 +74,7 @@ function GateSetting2({ selectedOptions, setSelectedOptions }) {
         );
       }
       setGateCount(gateCount + 1);
-    } else if (action === "-" && gateCount > 1) {
+    } else if (action === "-" && gateCount >= 1) {
       setGateCount(gateCount - 1);
     }
   };
@@ -95,6 +95,12 @@ function GateSetting2({ selectedOptions, setSelectedOptions }) {
   };
 
   useEffect(() => {
+    if (gateCount === 0) {
+      setSelectedOptions({
+        ...selectedOptions,
+        gateCount: 0,
+      });
+    }
     if (gateCount === 1) {
       setSelectedOptions({
         ...selectedOptions,

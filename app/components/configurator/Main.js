@@ -5,6 +5,7 @@ import GarageConfigurator from "./GarageConfigurator";
 import GarageViewer from "./GarageViewer";
 import Modal from "./Modal";
 import axios from 'axios';
+import Image from "next/image";
 
 function Main() {
   const [selectedOptions, setSelectedOptions] = useState({
@@ -53,11 +54,40 @@ function Main() {
     carportWidth: 3,
     carportSide: "lewo",
     carportType: "brak",
+    carportSides:{lewo:false,prawo:false,przod:true,tyl:true},
+    carportSides2:{lewo:true,prawo:true,przod:true,tyl:true},
 
     gutter: false,
     automatic: false,
     filc: false,
+   
+    metalWorkColorWall:"Złoty Dąb Jasny",
+    metalWorkColorWallRal:null,
+    metalWorkColorRoof: "#272C38",
   });
+  const smallHouse = {...selectedOptions,
+    width: 3,
+    depth: 2,
+    height: 213,
+    gateCount: 0,
+    
+    door: [{
+      color:"Złoty Dąb Jasny",
+      position:"przod",
+      positionValue:100,
+      size:"100x190",
+      type:"lewe"}
+    ],
+    window: [
+      {
+        position:"lewo",
+        positionValue:80,
+        size:"80x60"
+      }
+    ],
+
+
+  }
   const [modal, setModal] = useState(false);
   const [capture, setCapture] = useState(false);
   const [imageURL, setImageURL] = useState(null);
@@ -104,6 +134,10 @@ function Main() {
     <div className="bg-slate-200 relative w-screen h-screen flex max-sm:flex-col">
       <Modal selectedOptions={selectedOptions} modal={modal} setModal={setModal} setCapture={setCapture} capture={capture} imageURL={imageURL} />
       <div id='capture' className="w-full h-full relative max-sm:h-1/2 ">
+        <div onClick={()=>setSelectedOptions(smallHouse)} className="flex flex-col items-center bg-slate-400 hover:bg-slate-300 cursor-pointer p-2 rounded-l-md absolute right-0 top-2 z-10">
+          <Image src="/image/domek.png" alt="domek" width={100} height={100} />
+          <p className="text-xs">Domek Ogrodowy</p>
+        </div>
         <GarageViewer selectedOptions={selectedOptions} captureScreenshot={captureScreenshot} capture={capture}  />
         <button
           onClick={() => (setModal(true))}

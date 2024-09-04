@@ -35,7 +35,7 @@ export default function BasicModal({ selectedOptions, modal, setModal,setCapture
     if (imageURL) {
       console.log("imageurl" ,imageURL);
       toast.success("Zrobiono zrzut ekranu");
-  
+      
       let doorList = selectedOptions.door.map((door, index) => `Door ${index + 1}: ${JSON.stringify(door)}`).join('\n');   
       let windowList = selectedOptions.window.map((window, index) => `Window ${index + 1}: ${JSON.stringify(window)}`).join('\n');
       SendEmail(

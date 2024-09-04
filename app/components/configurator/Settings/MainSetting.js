@@ -32,6 +32,11 @@ const MainGarage = ({ selectedOptions, setSelectedOptions }) => {
     setSelectedOptions({ ...selectedOptions, color,colorRal });
   };
 
+  const handleMetalWorkColor = (color,colorRal) => {    
+    setSelectedOptions({ ...selectedOptions, metalWorkColorWall:color, metalWorkColorWallRal:colorRal });
+
+  }
+
 
 
   return (
@@ -134,6 +139,23 @@ const MainGarage = ({ selectedOptions, setSelectedOptions }) => {
           </Select>
         </FormControl>
       </Grid>
+      
+      <div className='p-2 bg-slate-400 rounded-md m-2'>
+      <h4>Obróbki ścian:</h4>
+      <Grid item xs={12} className='pt-2'>
+        <div className='flex flex-wrap gap-2 ' spacing={2}>
+          {garageColors.map((color) => (
+          color.url ? <div key={color.name} className={`max-w-[80px] ${selectedOptions.metalWorkColorWall===color.name ? ' font-bold' : null}`}> <img key={color.name} src={color.url} className='w-20 h-12 rounded-md ' alt={color.name} onClick={() => handleMetalWorkColor(color.name,color.ral)} /> <p className='text-xs text-center text-black'>{color.name}</p></div>
+          : <div key={color.name} className={`max-w-[80px] ${selectedOptions.metalWorkColorWall===color.name ? ' font-bold' : null}`}><div key={color.name} className='w-20 h-12 rounded-md' style={{backgroundColor:color.ral}} onClick={() => handleMetalWorkColor(color.name,color.ral)}></div> <p className='text-xs text-center text-black'>{color.name}</p>
+        
+          </div>
+          ))}
+        </div>
+      </Grid>
+
+      </div>
+      
+
     </Grid>
   );
 };

@@ -2,6 +2,8 @@ import { useLoader } from "@react-three/fiber";
 import { TextureLoader } from "three";
 import { MeshStandardMaterial } from "three";
 import * as THREE from "three";
+import { DoubleSide } from 'three'
+
 
 function Materials(selectedOptions) {
   const {
@@ -25,6 +27,10 @@ function Materials(selectedOptions) {
     door,
     height,
     width,
+    metalWorkColorWall,
+    metalWorkColorWallRal,
+    metalWorkColorRoof,
+    carportType,
   } = selectedOptions;
 
   //helpers
@@ -41,6 +47,7 @@ function Materials(selectedOptions) {
         normalMap: direction === "poziom" ? normalWall : normalwall90,
         roughness: 0.8,
         metalness: 1,
+        side:DoubleSide
       });
     } else {
       wallMaterial = new MeshStandardMaterial({
@@ -48,6 +55,7 @@ function Materials(selectedOptions) {
         normalMap: direction === "poziom" ? normalWall : normalwall90,
         roughness: 0.9,
         metalness: 0.2,
+        side:DoubleSide
       });
     }
     return wallMaterial;
@@ -236,6 +244,9 @@ function Materials(selectedOptions) {
   const roofTexture = useLoader(TextureLoader, "/model/roof.jpg");
   const roofTrapezTexture = useLoader(TextureLoader, "/model/trapez2.jpg");
 
+  const azuryTexture = useLoader(TextureLoader, "/model/azury2.png");
+  const alphatexture = useLoader(TextureLoader, "/model/alpha-azury2.png");
+
   const wallTexture = useLoader(TextureLoader, "/model/jasny-dab-2.jpg");
   const wallTextureDabDark = useLoader(TextureLoader, "/model/dab-2.jpg");
   const wallTextureOrzech = useLoader(TextureLoader, "/model/orzech-2.jpg");
@@ -298,6 +309,10 @@ function Materials(selectedOptions) {
   normalGate90.wrapS = THREE.RepeatWrapping;
   normalGate90.wrapT = THREE.RepeatWrapping;
 
+  alphatexture.repeat.set(1, 1);
+  alphatexture.wrapS = THREE.RepeatWrapping;
+  alphatexture.wrapT = THREE.RepeatWrapping;
+
   //materials
   const roofMaterial = new MeshStandardMaterial({
     map: roofType === "blachodachówka" ? null : roofTrapezTexture,
@@ -308,10 +323,128 @@ function Materials(selectedOptions) {
     bumpMap: roofType === "blachodachówka" ? roofTexture : roofTrapezTexture,
   });
 
+  const metalWallMaterialFunc = ()=>{
+    let wallMetal;
+   
+    if (metalWorkColorWallRal === null || metalWorkColorWallRal === undefined) {
+      wallMetal = new MeshStandardMaterial({
+        map:
+        metalWorkColorWall === "Złoty Dąb Jasny"
+            ? wallTexture
+            : metalWorkColorWall === "Złoty Dąb Ciemny"
+            ? wallTextureDabDark
+            : wallTextureOrzech,
+        // normalMap: direction === "poziom" ? normalWall : normalwall90,
+        roughness: 0.8,
+        metalness: 1,
+      });
+    } else {
+      wallMetal = new MeshStandardMaterial({
+        color: metalWorkColorWallRal,
+        // normalMap: direction === "poziom" ? normalWall : normalwall90,
+        roughness: 0.9,
+        metalness: 0.2,
+      });
+    }
+    return wallMetal;
+  }
+  
+    
+ 
+
+  const metalRoofWorksMaterial = new MeshStandardMaterial({
+    // map: wallTexture,
+    // normalMap: normalWall,
+    color: metalWorkColorRoof,
+    roughness: 0.9,
+    metalness: 0.6,
+    // bumpMap: normalWall,
+  });
+
+  const azuryMaterialChose = () => {
+    console.log(carportType);
+    
+    let material;
+    if (carportType==="Ażury"){
+      if (colorRal === null || colorRal === undefined)  {
+        material = new MeshStandardMaterial({
+          map:          
+          color === "Złoty Dąb Jasny"
+          ? wallTexture
+          // : color === "Złoty Dąb Ciemny"
+          // ? wallTextureDabDark
+          : color === "Orzech"
+          ? wallTextureOrzech    
+          : null,
+          alphaMap: alphatexture,
+          color: colorRal,
+          roughness: 0.8,        
+          metalness: 1,
+          bumpScale: -1,  
+          transparent: true,
+          side:DoubleSide
+        });
+      } else {
+        material = new MeshStandardMaterial({
+          color: colorRal,
+          alphaMap: alphatexture,
+          color: colorRal,
+          roughness: 0.9,        
+          metalness: .2,
+          bumpScale: -1,  
+          transparent: true,
+          side:DoubleSide   
+        });
+      }  
+      return material
+    }
+    if (carportType ==="Oblachowane"){
+      return mainColor()
+     } 
+     if (carportType ==="mix"){
+      if (colorRal === null || colorRal === undefined)  {
+        material = new MeshStandardMaterial({
+          map:
+          
+          color === "Złoty Dąb Jasny"
+          ? wallTexture
+          // : color === "Złoty Dąb Ciemny"
+          // ? wallTextureDabDark
+          : color === "Orzech"
+          ? wallTextureOrzech    
+          : null,
+          alphaMap: alphatexture,
+          color: colorRal,
+          roughness: 0.8,        
+          metalness: 1,
+          bumpScale: -1,  
+          transparent: true,
+          side:DoubleSide
+        });
+      } else {
+        material = new MeshStandardMaterial({
+          color: colorRal,
+          alphaMap: alphatexture,
+          color: colorRal,
+          roughness: 0.9,        
+          metalness: .2,
+          bumpScale: -1,  
+          transparent: true,
+          side:DoubleSide   
+        });
+      }  
+  
+      return {material1:mainColor() ,material2:material}
+     }
+  }
+
   const wallMaterial = mainColor();
   const gateMaterial1 = gateColor(1);
   const gateMaterial2 = gateColor(2);
   const gateMaterial3 = gateColor(3);
+  const azuryMaterial = azuryMaterialChose();
+  const metalWallMaterial = metalWallMaterialFunc();
+
 
   let doorMaterial1;
   let doorMaterial2;
@@ -332,6 +465,9 @@ function Materials(selectedOptions) {
     doorMaterial2,
     doorMaterial3,
     doorMaterial4,
+    metalWallMaterial,
+    metalRoofWorksMaterial,
+    azuryMaterial,   
   };
 }
 
