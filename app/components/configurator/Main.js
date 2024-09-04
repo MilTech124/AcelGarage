@@ -64,6 +64,7 @@ function Main() {
     metalWorkColorWall:"Złoty Dąb Jasny",
     metalWorkColorWallRal:null,
     metalWorkColorRoof: "#272C38",
+    metalWorkColorRoofRal: null,
   });
   const smallHouse = {...selectedOptions,
     width: 3,
@@ -134,7 +135,8 @@ function Main() {
     <div className="bg-slate-200 relative w-screen h-screen flex max-sm:flex-col">
       <Modal selectedOptions={selectedOptions} modal={modal} setModal={setModal} setCapture={setCapture} capture={capture} imageURL={imageURL} />
       <div id='capture' className="w-full h-full relative max-sm:h-1/2 ">
-        <div onClick={()=>setSelectedOptions(smallHouse)} className="flex flex-col items-center bg-slate-400 hover:bg-slate-300 cursor-pointer p-2 rounded-l-md absolute right-0 top-2 z-10">
+        <div onClick={()=>setSelectedOptions(smallHouse)}
+         className="flex flex-col items-center bg-slate-400 hover:bg-slate-300 cursor-pointer p-2 rounded-l-md absolute right-0 top-2 md:z-10">
           <Image src="/image/domek.png" alt="domek" width={100} height={100} />
           <p className="text-xs">Domek Ogrodowy</p>
         </div>

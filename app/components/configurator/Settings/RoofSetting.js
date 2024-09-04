@@ -27,8 +27,8 @@ function RoofSetting({selectedOptions, setSelectedOptions}) {
         setSelectedOptions({ ...selectedOptions, roofColor,roofColorRal });
       };
 
-      const handleMetalWorkRoofColor = (color) => {    
-        setSelectedOptions({ ...selectedOptions, metalWorkColorRoof:color });
+      const handleMetalWorkRoofColor = (color,colorRal) => {    
+        setSelectedOptions({ ...selectedOptions, metalWorkColorRoof:color,metalWorkColorRoofRal:colorRal}); 
       }
 
   return (
@@ -64,7 +64,7 @@ function RoofSetting({selectedOptions, setSelectedOptions}) {
       <Grid item xs={12} className='pt-2'>
         <div className='flex flex-wrap gap-2 ' spacing={2}>
           {roofColor.map((color) => (
-          <div key={color.name} className={`max-w-[80px] ${selectedOptions.metalWorkColorRoof===color.ral ? ' font-bold' : null}`}><div className='w-20 h-12 rounded-md' style={{backgroundColor:color.ral}} onClick={() =>handleMetalWorkRoofColor(color.ral) }></div> <p className='text-xs text-center text-black'>{color.name}</p>       
+          <div key={color.name} className={`max-w-[80px] ${selectedOptions.metalWorkColorRoof===color.ral ? ' font-bold' : null}`}><div className='w-20 h-12 rounded-md' style={{backgroundColor:color.ral}} onClick={() =>handleMetalWorkRoofColor(color.ral,color.name) }></div> <p className='text-xs text-center text-black'>{color.name}</p>       
           </div>
           ))}
         </div>
