@@ -1,10 +1,11 @@
-import * as React from "react";
+
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import SendEmail from "@/app/utils/SendMail";
 import { toast } from "react-toastify";
+import { useState } from "react";
 
 const style = {
   position: "absolute",
@@ -23,7 +24,7 @@ const style = {
 export default function BasicModal({ selectedOptions, modal, setModal,setCapture, capture,imageURL }) {
   const handleOpen = () => setModal(true);
   const handleClose = () => setModal(false);
-  const [contact, setContact] = React.useState({
+  const [contact, setContact] = useState({
     name: "",
     email: "",
     phone: "",
@@ -36,6 +37,7 @@ export default function BasicModal({ selectedOptions, modal, setModal,setCapture
       console.log("imageurl" ,imageURL);
       toast.success("Zrobiono zrzut ekranu");
       
+      let carportList= selectedOptions.carport.map((carport, index) => `Sciany ${index + 1}: ${JSON.stringify(carport)}`).join('\n');
       let doorList = selectedOptions.door.map((door, index) => `Door ${index + 1}: ${JSON.stringify(door)}`).join('\n');   
       let windowList = selectedOptions.window.map((window, index) => `Window ${index + 1}: ${JSON.stringify(window)}`).join('\n');
       SendEmail(
@@ -51,6 +53,7 @@ export default function BasicModal({ selectedOptions, modal, setModal,setCapture
           window: windowList,
           data: selectedOptions,
           imageURL: imageURL,
+          carportList: carportList
         },
         "template_426bxgo"
       );
