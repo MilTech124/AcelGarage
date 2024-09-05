@@ -299,7 +299,7 @@ export function Model(props) {
           name="podpora-przod"
           geometry={nodes["podpora-przod"].geometry}
           material={nodes["podpora-przod"].material}
-          position={[2.8, 1.069, 3]}
+          position={[3, 1.069, 3]}
           scale={[0.025, 1.064, 0.025]}
         />
         <mesh
