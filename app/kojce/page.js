@@ -3,6 +3,14 @@ import axios from "axios";
 import Garage from "../components/Garage";
 import Image from "next/image";
 
+
+export const metadata = {
+  title: "Acel Garage-Kojce dla psa i pupila",
+  description:" Dzięki zastosowaniu wysokiej jakości materiałów oraz nowoczesnych rozwiązań technologicznych, nasze kojce gwarantują bezpieczeństwo i wygodę użytkowania przez wiele lat.",
+  keywords: "Kojce, kojce premium, kojce dla psa, kojce dla pupila, kojec dla psa",
+
+};
+
 const page = async () => {
   const getData = async () => {
     const response = await axios.get(
@@ -37,7 +45,7 @@ const page = async () => {
               <Garage
                 key={item.id}
                 src={item?.acf?.obrazy?.[0]?.media_details?.sizes?.medium?.source_url || ""}
-                title={item.title.rendered}
+                title={item.acf.tytul}
                 link={`/kojce/${item.id}`}
                 prize={item.acf.prize}
               />

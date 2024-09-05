@@ -52,8 +52,11 @@ export default function Header() {
             <Link href="/" className="menu-item">
               Strona Główna
             </Link>
-            <Link href="/bramy" className="menu-item">
+            <Link href="/bramy-segmentowe" className="menu-item">
               Bramy Segmentowe
+            </Link>
+            <Link href="/bramy" className="menu-item">
+              Bramy
             </Link>
             <Link href="/garaze" className="menu-item">
               Garaże
