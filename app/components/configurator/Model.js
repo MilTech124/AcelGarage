@@ -59,7 +59,7 @@ export function Model(props) {
     doorMaterial5,
     metalWallMaterial,
     metalRoofWorksMaterial,
-    azuryMaterial
+    azuryMaterial,wallMaterialCopy
   } = Materials(props.selectedOptions);
 
   const Gate = ({ gateMaterial, position, scale, type }) => {
@@ -342,7 +342,7 @@ export function Model(props) {
         <mesh
           name="dach_-przod-wiata"
           geometry={nodes["dach_-przod-wiata"].geometry}
-          material={wallMaterial}
+          material={wallMaterialCopy}
           position={[3.006, 2.571, 0]}
           rotation={[0, 0, -Math.PI / 2]}
           scale={[1, 1, 1]}
@@ -350,7 +350,7 @@ export function Model(props) {
         <mesh
           name="dach_-tyl-wiata"
           geometry={nodes["dach_-tyl-wiata"].geometry}
-          material={wallMaterial}
+          material={wallMaterialCopy}
           position={[-3, 2.571, 0]}
           rotation={[0, 0, -Math.PI / 2]}
           scale={[1, 1, 1]}
@@ -519,7 +519,7 @@ export function Model(props) {
           position={[0, 2.628, -1.618]}
           rotation={[-Math.PI / 9, 0, 0]}
           scale={[3.131, 1.137, 1.729]}
-        />W
+        />
         <mesh
           name="dach-tyl"
           geometry={nodes["dach-tyl"].geometry}

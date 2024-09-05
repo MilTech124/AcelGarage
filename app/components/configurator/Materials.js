@@ -31,6 +31,7 @@ function Materials(selectedOptions) {
     metalWorkColorWallRal,
     metalWorkColorRoof,
     carportType,
+    carportWidth
   } = selectedOptions;
 
   //helpers
@@ -293,6 +294,14 @@ function Materials(selectedOptions) {
   normalwall90.wrapS = THREE.RepeatWrapping;
   normalwall90.wrapT = THREE.RepeatWrapping;
 
+  const normalwall90Copy = normalwall90.clone(); //copy normalwall90
+  normalwall90Copy.repeat.set(
+    emboss === "wąskie" ? ((11 * width) / 6 + carportWidth*0.8) : ((6 * width) / 6)+ carportWidth*0.8,
+    1
+  );
+  normalwall90Copy.wrapS = THREE.RepeatWrapping;
+  normalwall90Copy.wrapT = THREE.RepeatWrapping;
+
   gateTexture.repeat.set(1, 1);
   gateTexture.wrapS = THREE.RepeatWrapping;
   gateTexture.wrapT = THREE.RepeatWrapping;
@@ -455,6 +464,15 @@ function Materials(selectedOptions) {
   doorMaterial3 = door.length >= 3 ? doorColor(2) : doorMaterial3;
   doorMaterial4 = door.length >= 4 ? doorColor(3) : doorMaterial4;
 
+
+
+  const wallMaterialCopy = wallMaterial.clone();
+  wallMaterialCopy.normalMap = wallMaterial.normalMap.clone(); // Tworzy kopię mapy
+  wallMaterialCopy.normalMap=  direction === "poziom" ? normalWall: normalwall90Copy;
+  
+  // normalMap: direction === "poziom" ? normalWall : normalwall90,
+
+
   return {
     roofMaterial,
     wallMaterial,
@@ -467,7 +485,8 @@ function Materials(selectedOptions) {
     doorMaterial4,
     metalWallMaterial,
     metalRoofWorksMaterial,
-    azuryMaterial,   
+    azuryMaterial, 
+    wallMaterialCopy  
   };
 }
 
