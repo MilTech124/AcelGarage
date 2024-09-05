@@ -317,7 +317,27 @@ export function Model(props) {
           scale={[0.025, 1.064, 0.025]}
         />
             <CarportMetal/>
-         
+        
+                                                                                           {/* Obróbki Sciany do wiaty  */}       
+        <group>
+        <mesh
+          name="sciana-obrobka-przod-lewo"
+          geometry={nodes['sciana-obrobka-przod-lewo'].geometry}
+          material={metalWallMaterial}
+          position={[2.9705, 1.0862, 2.9816]}
+          scale={[0.0596, 1.0451, 0.0542]}
+        />
+       
+        <mesh
+          name="sciana-obrobka-tyl-lewo"
+          geometry={nodes['sciana-obrobka-tyl-lewo'].geometry}
+          material={metalWallMaterial}
+          position={[-2.9562, 1.0862, 2.9816]}
+          scale={[0.0596, 1.0451, 0.0542]}
+        />
+        </group>
+        
+                                                                                          {/* Obróbki Sciany do wiaty  */}
       </group>
       <group
         visible={
@@ -649,24 +669,44 @@ export function Model(props) {
             name="podpora-przod"
             geometry={nodes["podpora-przod"].geometry}
             material={nodes["podpora-przod"].material}
-            position={[3.011, 1.25, 3]}
-            scale={[0.025, 1.4, 0.025]}
+            position={[3.011, 1.35, 3]}
+            scale={[0.025, 1.35, 0.025]}
           />
           <mesh
             name="podpora-srodek"
             geometry={nodes["podpora-srodek"].geometry}
             material={nodes["podpora-srodek"].material}
-            position={[0.014, 1.25,  3]}
-            scale={[0.025, 1.4, 0.025]}
+            position={[0.014, 1.35,  3]}
+            scale={[0.025, 1.35, 0.025]}
           />
           <mesh
             name="podpora-tyl"
             geometry={nodes["podpora-tyl"].geometry}
             material={nodes["podpora-tyl"].material}
-            position={[-2.958,1.25, 3]}
-            scale={[.025, 1.4, 0.025]}
+            position={[-2.958,1.35, 3]}
+            scale={[.025, 1.35, 0.025]}
           />
           
+
+                                                                    {/* OBRÓBKA SPAD */}
+      <group visible={ carportType!=="brak"}>                                                       
+        <mesh
+          name="sciana-obrobka-przod-lewo"
+          geometry={nodes['sciana-obrobka-przod-lewo'].geometry}
+          material={metalWallMaterial}
+          position={[3, 1.35, 2.9816]}
+          scale={[0.0596, 1.35, 0.0542]}
+        />    
+           <mesh
+          name="sciana-obrobka-przod-lewo"
+          geometry={nodes['sciana-obrobka-przod-lewo'].geometry}
+          material={metalWallMaterial}
+          position={[-3, 1.35, 2.9816]}
+          scale={[0.0596, 1.35, 0.0542]}
+        />   
+      
+      </group>
+                                                                    {/* OBRÓBKA SPAD */}  
       </group>
       {/* //PODPORY DLA TYL I PRZOD END  */}
            {/* //PODPORY DLA Lewo Prawo  */}
@@ -681,6 +721,7 @@ export function Model(props) {
           0.98,1,1
           ]}
         >
+        
           <mesh
             name="podpora-przod"
             geometry={nodes["podpora-przod"].geometry}
@@ -702,6 +743,24 @@ export function Model(props) {
             position={[-2.958, 1.069, carportSide==="lewo"? 3+carportWidth :carportSide==="prawo" ? -3-carportWidth : 3]}
             scale={[0.025, 1.064, 0.025]}
           />
+                                                                    {/* OBRÓBKA SPAD */}
+      <group visible={ carportType!=="brak"}>                                                       
+        <mesh
+          name="sciana-obrobka-przod-lewo"
+          geometry={nodes['sciana-obrobka-przod-lewo'].geometry}
+          material={metalWallMaterial}
+          position={[3.011, 1.35,carportSide==="lewo"? 3.02+carportWidth :carportSide==="prawo" ? -3.02-carportWidth : 3]}          
+          scale={[0.0596, 1.32, 0.0542]}
+        />    
+        <mesh
+          name="sciana-obrobka-tyl-lewo"
+          geometry={nodes['sciana-obrobka-tyl-lewo'].geometry}
+          material={metalWallMaterial}
+          position={[-3, 1.069, carportSide==="lewo"? 3.02+carportWidth :carportSide==="prawo" ? -3.02-carportWidth : 3]}
+          scale={[0.0596, 1.0451, 0.0542]}
+        />
+      </group>
+                                                                    {/* OBRÓBKA SPAD */}  
         </group>
          {/* //PODPORY DLA Lewo Prawo  */}
     </group>
@@ -763,18 +822,19 @@ export function Model(props) {
           position={[2.9705, 1.0862, 2.9816]}
           scale={[0.0596, 1.0451, 0.0542]}
         />
-        <mesh
-          name="sciana-obrobka-przod-prawo"
-          geometry={nodes['sciana-obrobka-przod-prawo'].geometry}
-          material={metalWallMaterial}
-          position={[2.9444, 1.0862, -2.9485]}
-          scale={[0.0596, 1.0451, 0.0542]}
-        />
+       
         <mesh
           name="sciana-obrobka-tyl-lewo"
           geometry={nodes['sciana-obrobka-tyl-lewo'].geometry}
           material={metalWallMaterial}
           position={[-2.9562, 1.0862, 2.9816]}
+          scale={[0.0596, 1.0451, 0.0542]}
+        />
+         <mesh
+          name="sciana-obrobka-przod-prawo"
+          geometry={nodes['sciana-obrobka-przod-prawo'].geometry}
+          material={metalWallMaterial}
+          position={[2.9444, 1.0862, -2.9485]}
           scale={[0.0596, 1.0451, 0.0542]}
         />
         <mesh
@@ -791,35 +851,35 @@ export function Model(props) {
   )
   const MetalWorkDirectionMain = () => (
     <group name="sciany-obrobka" >
-    <mesh
-      name="sciana-obrobka-przod-lewo"
-      geometry={nodes['sciana-obrobka-przod-lewo'].geometry}
-      material={metalWallMaterial}
-      position={[3, 1.34, 2.9816]}
-      scale={[0.0596, 1.32, 0.0542]}
-    />
-    <mesh
-      name="sciana-obrobka-przod-prawo"
-      geometry={nodes['sciana-obrobka-przod-prawo'].geometry}
-      material={metalWallMaterial}
-      position={[2.98, 1.34, -2.9485]}
-      scale={[0.0596, 1.32, 0.0542]}
-    />
-    <mesh
-      name="sciana-obrobka-tyl-lewo"
-      geometry={nodes['sciana-obrobka-tyl-lewo'].geometry}
-      material={metalWallMaterial}
-      position={[-3, 1.0862, 2.9816]}
-      scale={[0.0596, 1.0451, 0.0542]}
-    />
-    <mesh
-      name="sciana-obrobka-tyl-prawo"
-      geometry={nodes['sciana-obrobka-tyl-prawo'].geometry}
-      material={metalWallMaterial}
-      position={[-3, 1.0862, -2.9485]}
-      scale={[0.0596, 1.0451, 0.0542]}
-    />
-  </group>
+      <mesh
+        name="sciana-obrobka-przod-lewo"
+        geometry={nodes['sciana-obrobka-przod-lewo'].geometry}
+        material={metalWallMaterial}
+        position={[3, 1.34, 2.9816]}
+        scale={[0.0596, 1.32, 0.0542]}
+      />    
+      <mesh
+        name="sciana-obrobka-tyl-lewo"
+        geometry={nodes['sciana-obrobka-tyl-lewo'].geometry}
+        material={metalWallMaterial}
+        position={[-3, 1.0862, 2.9816]}
+        scale={[0.0596, 1.0451, 0.0542]}
+      />
+        <mesh
+        name="sciana-obrobka-przod-prawo"
+        geometry={nodes['sciana-obrobka-przod-prawo'].geometry}
+        material={metalWallMaterial}
+        position={[2.98, 1.34, -2.9485]}
+        scale={[0.0596, 1.32, 0.0542]}
+      />
+      <mesh
+        name="sciana-obrobka-tyl-prawo"
+        geometry={nodes['sciana-obrobka-tyl-prawo'].geometry}
+        material={metalWallMaterial}
+        position={[-3, 1.0862, -2.9485]}
+        scale={[0.0596, 1.0451, 0.0542]}
+      />
+    </group>
   )
 
   const CarportMetal =()=>(    
@@ -916,6 +976,7 @@ export function Model(props) {
               position={[0.024, 1.131, 1.755]}
               scale={[3, 1.102, 2.994]}
             />
+            
           
         </group> 
         <group name="wiata-spad-bok-prawy" 
