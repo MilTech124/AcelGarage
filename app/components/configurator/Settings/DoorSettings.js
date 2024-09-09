@@ -62,6 +62,8 @@ function DoorSettings({ selectedOptions, setSelectedOptions }) {
     this.size = size;
     this.type = type;
     this.color = color;
+    this.direction = "poziom";
+    this.embosse= "wąskie"
     this.position = "lewo";
     this.positionValue = 20;
   }
@@ -119,6 +121,52 @@ function DoorSettings({ selectedOptions, setSelectedOptions }) {
                 {variable.doorSize.map((size) => (
                   <MenuItem key={size} value={size}>{size}</MenuItem>
                 ))}
+              </Select>
+            </FormControl>
+
+            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+             <InputLabel id="demo-simple-select-standard-label">
+              Przetłoczenia
+             </InputLabel>
+             <Select 
+             labelId="demo-simple-select-standard-label"
+             id="demo-simple-select-standard"
+             value={door.direction}
+             onChange={(e) => {
+              setSelectedOptions({
+                ...selectedOptions,
+                door: selectedOptions.door.map((item, i) =>
+                  i === index ? { ...item, direction: e.target.value } : item
+                ),
+              });
+            }}
+             label="Przetłoczenia"
+             >
+             <MenuItem key="poziom" value="poziom">poziom</MenuItem>
+             <MenuItem key="pion" value="pion">pion</MenuItem>
+             </Select>
+            </FormControl>
+
+            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel id="demo-simple-select-standard-label">
+              Rozmiar przetłoczeń 
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-standard-label"
+                id="demo-simple-select-standard"
+                value={door.embosse}
+                onChange={(e) => {
+                  setSelectedOptions({
+                    ...selectedOptions,
+                    door: selectedOptions.door.map((item, i) =>
+                      i === index ? { ...item, embosse: e.target.value } : item
+                    ),
+                  });
+                }}
+                label="Rozmiar przetłoczeń"
+              >
+                <MenuItem key="wąskie" value="wąskie">wąskie</MenuItem>
+                <MenuItem key="szerokie" value="szerokie">szerokie</MenuItem>
               </Select>
             </FormControl>
 
