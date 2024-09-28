@@ -96,10 +96,10 @@ function Main() {
   const user = process.env.NEXT_PUBLIC_USER_WP;
   const password = process.env.NEXT_PUBLIC_PASSWORD_WP;
 
-  useEffect(() => {
-    if(selectedOptions.width < 6 )
-      setSelectedOptions({...selectedOptions, gatePositionValue1:0})
-  })
+  // useEffect(() => {
+  //   if(selectedOptions.width < 6 )
+  //     setSelectedOptions({...selectedOptions, gatePositionValue1:0})
+  // })
   
 
   const captureScreenshot = async (image) => {
