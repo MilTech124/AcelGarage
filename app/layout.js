@@ -1,3 +1,6 @@
+// © 2025 Mil-TECH Usługi IT (Jarosław Matusiak)
+// Ten kod jest chroniony prawem autorskim. Zabronione jest jego odsprzedawanie i wykorzystanie komercyjne bez zgody autora.
+
 import { Inter } from "next/font/google";
 
 import "./globals.css";

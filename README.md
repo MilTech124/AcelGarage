@@ -34,3 +34,11 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Licencja i prawa autorskie / License and Copyright
+
+Ten projekt jest chroniony prawem autorskim. Wszelkie prawa zastrzeżone przez Mil-TECH Usługi IT (Jarosław Matusiak).  
+Zabronione jest odsprzedawanie, kopiowanie oraz wykorzystywanie kodu w celach komercyjnych bez zgody autora.
+
+This project is protected by copyright. All rights reserved by Mil-TECH Usługi IT (Jarosław Matusiak).  
+Reselling, copying, or using this code for commercial purposes without the author's permission is strictly prohibited.
