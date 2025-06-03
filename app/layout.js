@@ -8,6 +8,8 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AnalyticsScripts from "./components/AnalyticsScripts";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,6 +36,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-MH44M4M')`}}>
 
     </script>
+       <AnalyticsScripts />
 
     </head>
 
