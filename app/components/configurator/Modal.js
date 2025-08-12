@@ -103,7 +103,7 @@ export default function BasicModal({ selectedOptions, modal, setModal,setCapture
               name="name"
               placeholder="Imię i nazwisko"
               onChange={handleChange}
-              className="p-2 border border-gray-400 rounded-md"
+              className="p-2 border border-gray-400 rounded-md text-black"
             />
 
             <input
@@ -111,21 +111,21 @@ export default function BasicModal({ selectedOptions, modal, setModal,setCapture
               name="phone"
               placeholder="Telefon"
               onChange={handleChange}
-              className="p-2 border border-gray-400 rounded-md"
+              className="p-2 border border-gray-400 rounded-md text-black"
             />
             <input
               type="email"
               name="email"
               placeholder="Email"
               onChange={handleChange}
-              className="p-2 border border-gray-400 rounded-md"
+              className="p-2 border border-gray-400 rounded-md text-black"
             />
             <input
               type="text"
               name="address"
               onChange={handleChange}
               placeholder="Adres dostawy"
-              className="p-2 border border-gray-400 rounded-md"
+              className="p-2 border border-gray-400 rounded-md text-black"
             />
             <textarea
               name="message"
