@@ -12,26 +12,33 @@ import { variable } from "../Variable";
 
 function WindowSettings({ selectedOptions, setSelectedOptions }) {
   const [countWindow, setCountWindow] = useState(0);
-  const { width, depth} = selectedOptions;
+  const { width, depth } = selectedOptions;
+
+  // Okna we wnęce mają własną sekcję (panel "Wnęka").
+  const naWnece = (el) => String(el.position).startsWith("wnęka");
+  const oknaZewnetrzne = selectedOptions.window.filter((o) => !naWnece(o));
+
 
   const handleSliderChange = (prop) => (event, newValue) => {
     setSelectedOptions({ ...selectedOptions, [prop]: newValue });
   };
   const handleWindow = (action) => {
-    if (action === "+" && countWindow < 5) {
-      setCountWindow(countWindow + 1);
+    if (action === "+") {
       const newWindow = new window("80x60");
       setSelectedOptions({
         ...selectedOptions,
         window: [...selectedOptions.window, newWindow],
       });
-      console.log(selectedOptions.window);
       toast.success("Dodano okno");
-    } else if (action === "-" && countWindow > 0) {
-      setCountWindow(countWindow - 1);
+    } else if (action === "-" && oknaZewnetrzne.length > 0) {
+      // kasujemy ostatnie okno ZE ŚCIANY, żeby nie zabrać tych z wnęki
+      const ostatnie = selectedOptions.window.reduce(
+        (akum, o, i) => (naWnece(o) ? akum : i),
+        -1
+      );
       setSelectedOptions({
         ...selectedOptions,
-        window: selectedOptions.window.slice(0, -1),
+        window: selectedOptions.window.filter((_, i) => i !== ostatnie),
       });
       toast.error("Usunięto okno");
     }
@@ -51,7 +58,7 @@ function WindowSettings({ selectedOptions, setSelectedOptions }) {
           <img className="w-20 pt-5" src="./konfigurator/window.png" />
         </figure>
         <div className="  flex flex-col justify-center items-center">
-          <p className="text-2xl font-bold">{countWindow}</p>
+          <p className="text-2xl font-bold">{oknaZewnetrzne.length}</p>
           <div className="flex gap-2">
             <button
               className="bg-slate-900 text-white px-2 py-1 rounded-md"
@@ -69,7 +76,10 @@ function WindowSettings({ selectedOptions, setSelectedOptions }) {
         </div>
         <div></div>
       </div>
-      {selectedOptions.window.map((window, index) => (
+      {selectedOptions.window
+        .map((window, index) => ({ window, index }))
+        .filter(({ window }) => !naWnece(window))
+        .map(({ window, index }) => (
         <div className="bg-slate-200 mb-4 py-2" key={index}>
           <FormControl  sx={{ m: 1, minWidth: 120 }}>
             <InputLabel id="demo-simple-select-helper-label">

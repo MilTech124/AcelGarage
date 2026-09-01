@@ -62,8 +62,13 @@ function GarageViewer({ selectedOptions ,captureScreenshot,capture }) {
       />
       
 
-      <Model selectedOptions={selectedOptions}/>
-      <Environment  preset="city"/> 
+      {/* Granica Suspense MUSI być wewnątrz <Canvas>: bez niej r3f rzuca na zewnątrz
+          obietnicę, która nigdy się nie rozwiązuje (Block), kontener zostaje schowany,
+          useMeasure mierzy 0x0 i scena już nigdy się nie renderuje. */}
+      <Suspense fallback={null}>
+        <Model selectedOptions={selectedOptions} />
+        <Environment preset="city" />
+      </Suspense>
     </Canvas>
   
   );

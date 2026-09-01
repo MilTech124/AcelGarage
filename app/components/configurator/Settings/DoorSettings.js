@@ -13,6 +13,12 @@ function DoorSettings({ selectedOptions, setSelectedOptions }) {
   const [countDoor, setCountDoor] = useState(0);
   const { width, depth, height } = selectedOptions;
 
+  // Drzwi we wnęce mają własną sekcję (panel "Wnęka") - tutaj pokazujemy tylko te
+  // na ścianach zewnętrznych, ale operujemy na wspólnej tablicy selectedOptions.door.
+  const naWnece = (el) => String(el.position).startsWith("wnęka");
+  const drzwiZewnetrzne = selectedOptions.door.filter((d) => !naWnece(d));
+
+
    const doorColor = [
     { name: "Złoty Dąb Jasny", url: "./konfigurator/jasny-dab.webp" },
     { name: "Złoty Dąb Ciemny", url: "./konfigurator/ciemny-dab.png" },
@@ -37,20 +43,26 @@ function DoorSettings({ selectedOptions, setSelectedOptions }) {
   };
 
   const handleDoor = (action) => {
-    if (action === "+" && countDoor < 5) {
-      setCountDoor(countDoor + 1);
+    if (action === "+") {
+      if (selectedOptions.door.length >= 4) {
+        toast.error("Maksymalnie 4 drzwi w całym garażu");
+        return;
+      }
       const newDoor = new door("100x190", "lewe", "Złoty Dąb Jasny");
       setSelectedOptions({
         ...selectedOptions,
         door: [...selectedOptions.door, newDoor],
       });
-      console.log(selectedOptions.door);
       toast.success("Dodano drzwi");
-    } else if (action === "-" && countDoor > 0) {
-      setCountDoor(countDoor - 1);
+    } else if (action === "-" && drzwiZewnetrzne.length > 0) {
+      // kasujemy ostatnie drzwi ZE ŚCIANY, żeby nie zabrać tych z wnęki
+      const ostatnie = selectedOptions.door.reduce(
+        (akum, d, i) => (naWnece(d) ? akum : i),
+        -1
+      );
       setSelectedOptions({
         ...selectedOptions,
-        door: selectedOptions.door.slice(0, -1),
+        door: selectedOptions.door.filter((_, i) => i !== ostatnie),
       });
       toast.error("Usunięto drzwi");
     }
@@ -77,7 +89,7 @@ function DoorSettings({ selectedOptions, setSelectedOptions }) {
           <img className="w-20 pt-5" src="./konfigurator/door.png" />
         </figure>
         <div className="  flex flex-col justify-center items-center">
-          <p className="text-2xl font-bold">{countDoor}</p>
+          <p className="text-2xl font-bold">{drzwiZewnetrzne.length}</p>
           <div className="flex gap-2">
             <button
               className="bg-slate-900 text-white px-2 py-1 rounded-md"
@@ -98,7 +110,10 @@ function DoorSettings({ selectedOptions, setSelectedOptions }) {
       </div>
 
       <div className="flex flex-col  gap-2">
-        {selectedOptions.door.map((door, index) => (
+        {selectedOptions.door
+          .map((door, index) => ({ door, index }))
+          .filter(({ door }) => !naWnece(door))
+          .map(({ door, index }) => (
           <div key={index} className="flex flex-wrap gap-2 justify-between p-2 mt-2 bg-slate-200">
             <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
               <InputLabel id="demo-simple-select-standard-label">
@@ -239,7 +254,9 @@ function DoorSettings({ selectedOptions, setSelectedOptions }) {
                   label="Pozycja"
                 >
                   {variable.doorPosition.map((position) => (
-                    <MenuItem key={position} value={position}>{position}</MenuItem>
+                    <MenuItem key={position} value={position}>
+                      {position}
+                    </MenuItem>
                   ))}
                 </Select>
               </FormControl>

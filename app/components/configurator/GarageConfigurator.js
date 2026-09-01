@@ -6,6 +6,7 @@ import GateSetting2 from "./Settings/GateSetting2";
 import DoorSettings from "./Settings/DoorSettings";
 import WindowSettings from "./Settings/WindowSettings";
 import CarportSetting from "./Settings/CarportSetting";
+import WnekaSetting from "./Settings/WnekaSetting";
 import Accessories from "./Settings/Accessories";
 // importuj inne selektory
 
@@ -37,6 +38,10 @@ const GarageConfigurator = ({ selectedOptions, setSelectedOptions }) => {
         setSelectedOptions={setSelectedOptions}
       />
       <CarportSetting
+        selectedOptions={selectedOptions}
+        setSelectedOptions={setSelectedOptions}
+      />
+      <WnekaSetting
         selectedOptions={selectedOptions}
         setSelectedOptions={setSelectedOptions}
       />

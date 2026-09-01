@@ -34,6 +34,10 @@ export const variable={
     windowPosition: ["przod","tył","lewo","prawo"],
     
     carportWidth:[1,,1.5,2,3,3.5,4],
+
+    wnekaSide: ["przod","tył","lewo","prawo"],
+    wnekaWidth: [1,1.5,2,2.5,3,3.5,4,5,6],
+    wnekaDepth: [1,1.5,2,2.5,3,4],
     
     universalColours:[
         {name: "Antracyt", ral: "#272C38"},

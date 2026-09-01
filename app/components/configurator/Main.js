@@ -57,6 +57,13 @@ function Main() {
     carportSides:{lewo:false,prawo:false,przod:false,tyl:true},
     carportSides2:{lewo:true,prawo:true,przod:true,tyl:true},
 
+    wneka: false,
+    wnekaSide: "tył",
+    wnekaWidth: 2,
+    wnekaDepth: 1.5,
+    wnekaAnchor: "lewa", // od której krawędzi ściany liczymy pozycję
+    wnekaPositionValue: 0, // cm od tej krawędzi
+
     gutter: false,
     automatic: false,
     filc: false,
