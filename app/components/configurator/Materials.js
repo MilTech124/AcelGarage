@@ -5,6 +5,28 @@ import * as THREE from "three";
 import { DoubleSide } from 'three'
 
 
+// Kolejność MUSI odpowiadać destrukturyzacji w Materials().
+const TEXTURE_URLS = [
+  "/model/roof.jpg",
+  "/model/trapez2.jpg",
+  "/model/azury2.png",
+  "/model/alpha-azury2.png",
+  "/model/jasny-dab-2.jpg",
+  "/model/dab-2.jpg",
+  "/model/orzech-2.jpg",
+  "/model/winchester.jpg",
+  "/model/dab-bielony.png",
+  "/model/normal-big-90.jpg",
+  "/model/normal-big.jpg",
+  "/model/jasny-dab-2.jpg", // gateTexture - osobna instancja tej samej grafiki co wallTexture
+  "/model/normal-big-90-gate.jpg",
+  "/model/normal-big-gate.jpg",
+  "/model/segmentowa.jpg",
+];
+
+// Start pobierania już przy imporcie modułu, równolegle z garaz.glb.
+useLoader.preload(TextureLoader, TEXTURE_URLS);
+
 function Materials(selectedOptions) {
   const {
     roofColorRal,
@@ -35,16 +57,23 @@ function Materials(selectedOptions) {
   } = selectedOptions;
 
   //helpers
+  const woodMap = (name) =>
+    name === "Złoty Dąb Jasny"
+      ? wallTexture
+      : name === "Złoty Dąb Ciemny"
+      ? wallTextureDabDark
+      : name === "Winchester"
+      ? wallTextureWinchester
+      : name === "Dąb Bielony"
+      ? wallTextureDabBielony
+      : wallTextureOrzech;
+
   const mainColor = () => {
     let wallMaterial;
     if (colorRal === null || colorRal === undefined) {
       wallMaterial = new MeshStandardMaterial({
         map:
-          color === "Złoty Dąb Jasny"
-            ? wallTexture
-            : color === "Złoty Dąb Ciemny"
-            ? wallTextureDabDark
-            : wallTextureOrzech,
+          woodMap(color),
         normalMap: direction === "poziom" ? normalWall : normalwall90,
         roughness: 0.8,
         metalness: 1,
@@ -70,11 +99,7 @@ function Materials(selectedOptions) {
         if (gateColorRal1 === null || gateColorRal1 === undefined) {
           gateMaterial = new MeshStandardMaterial({
             map:
-              gateColor1 === "Złoty Dąb Jasny"
-                ? wallTexture
-                : gateColor1 === "Złoty Dąb Ciemny"
-                ? wallTextureDabDark
-                : wallTextureOrzech,
+              woodMap(gateColor1),
             normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
             roughness: 0.8,
             metalness: 1,
@@ -91,11 +116,7 @@ function Materials(selectedOptions) {
         if (gateColorRal1 === null || gateColorRal1 === undefined) {
           gateMaterial = new MeshStandardMaterial({
             map:
-              gateColor1 === "Złoty Dąb Jasny"
-                ? wallTexture
-                : gateColor1 === "Złoty Dąb Ciemny"
-                ? wallTextureDabDark
-                : wallTextureOrzech,
+              woodMap(gateColor1),
             normalMap: gateSegment,
             roughness: 0.8,
             metalness: 1,
@@ -115,11 +136,7 @@ function Materials(selectedOptions) {
         if (gateColorRal2 === null || gateColorRal2 === undefined) {
           gateMaterial = new MeshStandardMaterial({
             map:
-              gateColor2 === "Złoty Dąb Jasny"
-                ? wallTexture
-                : gateColor2 === "Złoty Dąb Ciemny"
-                ? wallTextureDabDark
-                : wallTextureOrzech,
+              woodMap(gateColor2),
             normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
             roughness: 0.8,
             metalness: 1,
@@ -136,11 +153,7 @@ function Materials(selectedOptions) {
         if (gateColorRal2 === null || gateColorRal2 === undefined) {
           gateMaterial = new MeshStandardMaterial({
             map:
-              gateColor2 === "Złoty Dąb Jasny"
-                ? wallTexture
-                : gateColor2 === "Złoty Dąb Ciemny"
-                ? wallTextureDabDark
-                : wallTextureOrzech,
+              woodMap(gateColor2),
             normalMap: gateSegment,
             roughness: 0.8,
             metalness: 1,
@@ -160,11 +173,7 @@ function Materials(selectedOptions) {
         if (gateColorRal3 === null || gateColorRal3 === undefined) {
           gateMaterial = new MeshStandardMaterial({
             map:
-              gateColor3 === "Złoty Dąb Jasny"
-                ? wallTexture
-                : gateColor3 === "Złoty Dąb Ciemny"
-                ? wallTextureDabDark
-                : wallTextureOrzech,
+              woodMap(gateColor3),
             normalMap: gateDirection === "poziom" ? normalGate : normalGate90,
             roughness: 0.8,
             metalness: 1,
@@ -181,11 +190,7 @@ function Materials(selectedOptions) {
         if (gateColorRal3 === null || gateColorRal3 === undefined) {
           gateMaterial = new MeshStandardMaterial({
             map:
-              gateColor3 === "Złoty Dąb Jasny"
-                ? wallTexture
-                : gateColor3 === "Złoty Dąb Ciemny"
-                ? wallTextureDabDark
-                : wallTextureOrzech,
+              woodMap(gateColor3),
             normalMap: gateSegment,
             roughness: 0.8,
             metalness: 1,
@@ -228,11 +233,7 @@ function Materials(selectedOptions) {
       if (colorRal === null || colorRal === undefined) {
         doorMaterial = new MeshStandardMaterial({
           map:
-            color === "Złoty Dąb Jasny"
-              ? wallTexture
-              : color === "Złoty Dąb Ciemny"
-              ? wallTextureDabDark
-              : wallTextureOrzech,
+            woodMap(color),
           normalMap: normalMap,
           roughness: 0.8,
           metalness: 1,
@@ -249,23 +250,30 @@ function Materials(selectedOptions) {
     }
   };
 
-  //textures loader
-  const roofTexture = useLoader(TextureLoader, "/model/roof.jpg");
-  const roofTrapezTexture = useLoader(TextureLoader, "/model/trapez2.jpg");
-
-  const azuryTexture = useLoader(TextureLoader, "/model/azury2.png");
-  const alphatexture = useLoader(TextureLoader, "/model/alpha-azury2.png");
-
-  const wallTexture = useLoader(TextureLoader, "/model/jasny-dab-2.jpg");
-  const wallTextureDabDark = useLoader(TextureLoader, "/model/dab-2.jpg");
-  const wallTextureOrzech = useLoader(TextureLoader, "/model/orzech-2.jpg");
-  const normalWall = useLoader(TextureLoader, "/model/normal-big-90.jpg");
-  const normalwall90 = useLoader(TextureLoader, "/model/normal-big.jpg");
-
-  const gateTexture = useLoader(TextureLoader, "/model/jasny-dab-2.jpg");
-  const normalGate = useLoader(TextureLoader, "/model/normal-big-90-gate.jpg");
-  const normalGate90 = useLoader(TextureLoader, "/model/normal-big-gate.jpg");
-  const gateSegment = useLoader(TextureLoader, "/model/segmentowa.jpg");
+  /*
+    Wszystkie tekstury ładujemy JEDNYM wywołaniem useLoader z tablicą adresów.
+    Wcześniej było 15 osobnych useLoader - każdy zawieszał (suspend) render osobno,
+    więc pliki szły kaskadą jeden po drugim (15 przebiegów renderu). Każda przerwa
+    w tej kaskadzie zostawiała konfigurator na stałe na "Ładowanie modelu…".
+    Tablica = jedno zawieszenie i wszystkie pliki równolegle.
+  */
+  const [
+    roofTexture,
+    roofTrapezTexture,
+    azuryTexture,
+    alphatexture,
+    wallTexture,
+    wallTextureDabDark,
+    wallTextureOrzech,
+    wallTextureWinchester,
+    wallTextureDabBielony,
+    normalWall,
+    normalwall90,
+    gateTexture,
+    normalGate,
+    normalGate90,
+    gateSegment,
+  ] = useLoader(TextureLoader, TEXTURE_URLS);
 
   //textures uv
   roofTexture.repeat.set(1.5, 1.5);
@@ -287,6 +295,14 @@ function Materials(selectedOptions) {
   wallTextureOrzech.repeat.set(1, 1);
   wallTextureOrzech.wrapS = THREE.RepeatWrapping;
   wallTextureOrzech.wrapT = THREE.RepeatWrapping;
+
+  wallTextureWinchester.repeat.set(1, 1);
+  wallTextureWinchester.wrapS = THREE.RepeatWrapping;
+  wallTextureWinchester.wrapT = THREE.RepeatWrapping;
+
+  wallTextureDabBielony.repeat.set(1, 1);
+  wallTextureDabBielony.wrapS = THREE.RepeatWrapping;
+  wallTextureDabBielony.wrapT = THREE.RepeatWrapping;
 
   normalWall.repeat.set(
     1,
@@ -338,11 +354,7 @@ function Materials(selectedOptions) {
     if (metalWorkColorWallRal === null || metalWorkColorWallRal === undefined) {
       wallMetal = new MeshStandardMaterial({
         map:
-        metalWorkColorWall === "Złoty Dąb Jasny"
-            ? wallTexture
-            : metalWorkColorWall === "Złoty Dąb Ciemny"
-            ? wallTextureDabDark
-            : wallTextureOrzech,
+        woodMap(metalWorkColorWall),
         // normalMap: direction === "poziom" ? normalWall : normalwall90,
         roughness: 0.8,
         metalness: 1,
@@ -382,8 +394,12 @@ function Materials(selectedOptions) {
           ? wallTexture
           // : color === "Złoty Dąb Ciemny"
           // ? wallTextureDabDark
+          : color === "Winchester"
+          ? wallTextureWinchester
+          : color === "Dąb Bielony"
+          ? wallTextureDabBielony
           : color === "Orzech"
-          ? wallTextureOrzech    
+          ? wallTextureOrzech
           : null,
           alphaMap: alphatexture,
           color: colorRal,
@@ -419,8 +435,12 @@ function Materials(selectedOptions) {
           ? wallTexture
           // : color === "Złoty Dąb Ciemny"
           // ? wallTextureDabDark
+          : color === "Winchester"
+          ? wallTextureWinchester
+          : color === "Dąb Bielony"
+          ? wallTextureDabBielony
           : color === "Orzech"
-          ? wallTextureOrzech    
+          ? wallTextureOrzech
           : null,
           alphaMap: alphatexture,
           color: colorRal,

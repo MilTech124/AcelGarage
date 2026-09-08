@@ -40,6 +40,8 @@ function GateSetting2({ selectedOptions, setSelectedOptions }) {
     { name: "Złoty Dąb Jasny", url: "./konfigurator/jasny-dab.webp" },
     { name: "Złoty Dąb Ciemny", url: "./konfigurator/ciemny-dab.png" },
     { name: "Orzech", url: "./konfigurator/orzech.png" },
+    { name: "Winchester", url: "./konfigurator/winchester.jpg" },
+    { name: "Dąb Bielony", url: "./konfigurator/dab-bielony.png" },
     { name: "Antracyt", ral: "#272C38" },
     { name: "Ciemny Brąz 8017", ral: "#2F1D1D" },
     { name: "Brąz Jasny 8004", ral: "#85392C" },

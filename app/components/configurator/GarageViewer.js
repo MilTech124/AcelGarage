@@ -34,11 +34,48 @@ function GarageViewer({ selectedOptions ,captureScreenshot,capture }) {
   const canvasRef = useRef();
   const [wymiary, setWymiary] = useState(false);
 
+  /*
+    R3F montuje scenę dopiero wtedy, gdy zmierzy swój kontener na więcej niż 0 px
+    (react-use-measure + ResizeObserver). Jeśli strona wystartuje w tle - karta
+    otwarta "w nowej zakładce", przełączony pulpit, telefon z wygaszonym ekranem -
+    pomiar potrafi zostać na zerze i scena nigdy nie rusza: zostaje sam kafelkowany
+    placeholder albo wieczne "Ładowanie modelu…".
+    Rozpoznajemy taki martwy stan po tym, że kontener ma już realny rozmiar, a bufor
+    canvasa nadal ma domyślne 300x150 (czyli WebGLRenderer nigdy nie dostał setSize),
+    i przemontowujemy <Canvas> - świeży pomiar wykonuje się na gotowym layoucie.
+  */
+  const wrapRef = useRef(null);
+  const [mountKey, setMountKey] = useState(0);
 
+  useEffect(() => {
+    let proby = 0;
+    const sprawdz = () => {
+      const wrap = wrapRef.current;
+      const canvas = wrap && wrap.querySelector("canvas");
+      if (!wrap || !canvas || proby >= 10) return;
+      const martwy =
+        wrap.clientWidth > 0 &&
+        wrap.clientHeight > 0 &&
+        canvas.width <= 300 &&
+        canvas.height <= 150;
+      if (martwy) {
+        proby += 1;
+        setMountKey((k) => k + 1);
+      }
+    };
+    const id = setInterval(sprawdz, 1000);
+    document.addEventListener("visibilitychange", sprawdz);
+    window.addEventListener("resize", sprawdz);
+    return () => {
+      clearInterval(id);
+      document.removeEventListener("visibilitychange", sprawdz);
+      window.removeEventListener("resize", sprawdz);
+    };
+  }, []);
 
   return (
 
-    <div className="relative w-full h-full">
+    <div className="relative w-full h-full" ref={wrapRef}>
 
     {/* Przełącznik miarek - lewa krawędź viewera, lustrzanie do karty presetu po prawej */}
     <button
@@ -69,7 +106,8 @@ function GarageViewer({ selectedOptions ,captureScreenshot,capture }) {
       <p className="text-xs">Wymiary</p>
     </button>
 
-    <Canvas gl={{ preserveDrawingBuffer: true }}
+    <Canvas key={mountKey} gl={{ preserveDrawingBuffer: true }}
+      resize={{ scroll: false, debounce: { scroll: 0, resize: 0 } }}
       camera={{ position: [20, 5, 5], fov: 25,}}
       style={{
         background: "url(/logo-black.png)",
