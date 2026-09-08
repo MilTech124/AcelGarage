@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Select, InputLabel, FormControl, MenuItem, Slider } from "@mui/material";
 import { variable } from "../Variable";
+import { wnekaWSwiecie } from "../WallGeometry";
 import { toast } from "react-toastify";
 
 /*
@@ -16,7 +17,6 @@ function WnekaSetting({ selectedOptions, setSelectedOptions }) {
     wnekaWidth,
     wnekaDepth,
     wnekaAnchor,
-    wnekaPositionValue,
     width,
     depth,
     door,
@@ -32,6 +32,10 @@ function WnekaSetting({ selectedOptions, setSelectedOptions }) {
   // długość ścianki, po której przesuwamy element
   const dlugoscScianki = (pozycja) =>
     pozycja === "wnęka tył" ? wnekaWidth : wnekaDepth;
+  const opisScianki = (pozycja) =>
+    pozycja === "wnęka tył"
+      ? "od lewej krawędzi wnęki"
+      : "od lica ściany w głąb wnęki";
 
   // nowy element stawiamy za tymi, które już stoją na ściance tylnej,
   // żeby nie wylądował dokładnie na poprzednim
@@ -108,9 +112,9 @@ function WnekaSetting({ selectedOptions, setSelectedOptions }) {
 
   const szerokosci = variable.wnekaWidth.filter((w) => w <= dlugoscSciany);
   const glebokosci = variable.wnekaDepth.filter((g) => g <= glebokoscMax - 1);
-  // pozycja liczona od wybranej krawędzi ściany, w cm (jak przy bramach)
-  const zakres = Math.max(0, (dlugoscSciany - wnekaWidth) * 100);
-  const krawedz = wnekaAnchor === "prawa" ? "prawej" : "lewej";
+  // wnęka stoi w narożniku, więc ścianka dzieląca istnieje tylko wtedy,
+  // gdy nie zajmuje całej ściany
+  const jestSciankaBoczna = wnekaWidth < dlugoscSciany - 0.01;
 
   // Zajęte fragmenty ściany (metry, współrzędna świata wzdłuż ściany) - wzory
   // takie same jak w Model.js, żeby ostrzeżenie zgadzało się z tym, co widać.
@@ -157,14 +161,12 @@ function WnekaSetting({ selectedOptions, setSelectedOptions }) {
     return out;
   };
 
-  // Zakres wnęki wzdłuż ściany w tych samych współrzędnych co bramy i drzwi
-  // (dodatnia strona = "lewa" krawędź, tak jak w pozycjonowaniu bram).
+  // Zakres wnęki wzdłuż ściany w tych samych współrzędnych co bramy i drzwi -
+  // liczony tą samą funkcją co geometria, żeby kolizje zgadzały się z modelem.
   const zakresWneki = (o) => {
-    const dlugosc = o.wnekaSide === "przod" || o.wnekaSide === "tył" ? o.width : o.depth;
-    const znak = o.wnekaAnchor === "prawa" ? -1 : 1;
-    const srodek =
-      znak * (dlugosc / 2 - o.wnekaPositionValue / 100 - o.wnekaWidth / 2);
-    return { od: srodek - o.wnekaWidth / 2, do: srodek + o.wnekaWidth / 2 };
+    const W = wnekaWSwiecie(o);
+    if (!W) return { od: 0, do: 0 };
+    return { od: Math.min(W.c0, W.c1), do: Math.max(W.c0, W.c1) };
   };
 
   const koliduje = (lista, opcje) => {
@@ -200,16 +202,19 @@ function WnekaSetting({ selectedOptions, setSelectedOptions }) {
     const maxGleb = glebokosci.length ? Math.max(...glebokosci) : 0;
     const nowaSzer = Math.min(wnekaWidth, maxSzer);
     const nowaGleb = Math.min(wnekaDepth, maxGleb);
-    const limit = Math.max(0, (dlugoscSciany - nowaSzer) * 100);
-    const nowaPoz = Math.max(0, Math.min(limit, wnekaPositionValue));
-
-    // po zwężeniu wnęki jej drzwi i okna muszą zmieścić się na krótszej ściance
+    // po zwężeniu wnęki jej drzwi i okna muszą zmieścić się na krótszej ściance,
+    // a przy wnęce na całą ścianę nie ma już ścianki bocznej - wracają na tylną
+    const bokZostaje = nowaSzer < dlugoscSciany - 0.01;
     const przytnij = (lista, szerokoscElementu) =>
       lista.map((el) => {
         if (!naWnece(el)) return el;
-        const dlugosc = el.position === "wnęka tył" ? nowaSzer : nowaGleb;
+        const pozycja = !bokZostaje && el.position === "wnęka bok" ? "wnęka tył" : el.position;
+        const dlugosc = pozycja === "wnęka tył" ? nowaSzer : nowaGleb;
         const max = Math.max(0, (dlugosc - szerokoscElementu) * 100);
-        return el.positionValue > max ? { ...el, positionValue: max } : el;
+        const wartosc = Math.min(el.positionValue, max);
+        return pozycja !== el.position || wartosc !== el.positionValue
+          ? { ...el, position: pozycja, positionValue: wartosc }
+          : el;
       });
     const noweDrzwi = przytnij(door, 1);
     const noweOkna = przytnij(okna, 0.8);
@@ -217,17 +222,11 @@ function WnekaSetting({ selectedOptions, setSelectedOptions }) {
       noweDrzwi.some((d, i) => d !== door[i]) ||
       noweOkna.some((o, i) => o !== okna[i]);
 
-    if (
-      nowaSzer !== wnekaWidth ||
-      nowaGleb !== wnekaDepth ||
-      nowaPoz !== wnekaPositionValue ||
-      zmienioneElementy
-    ) {
+    if (nowaSzer !== wnekaWidth || nowaGleb !== wnekaDepth || zmienioneElementy) {
       setSelectedOptions({
         ...selectedOptions,
         wnekaWidth: nowaSzer,
         wnekaDepth: nowaGleb,
-        wnekaPositionValue: nowaPoz,
         door: noweDrzwi,
         window: noweOkna,
       });
@@ -240,7 +239,6 @@ function WnekaSetting({ selectedOptions, setSelectedOptions }) {
     wnekaWidth,
     wnekaDepth,
     wnekaAnchor,
-    wnekaPositionValue,
     door,
     okna,
   ]);
@@ -307,34 +305,17 @@ function WnekaSetting({ selectedOptions, setSelectedOptions }) {
               </Select>
             </FormControl>
 
-            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel>Odmierzaj od</InputLabel>
+            <FormControl variant="standard" sx={{ m: 1, minWidth: 160 }}>
+              <InputLabel>Narożnik</InputLabel>
               <Select
                 value={wnekaAnchor}
-                label="Odmierzaj od"
+                label="Narożnik"
                 onChange={(e) => zmien({ wnekaAnchor: e.target.value })}
               >
-                <MenuItem value={"lewa"}>Lewej krawędzi</MenuItem>
-                <MenuItem value={"prawa"}>Prawej krawędzi</MenuItem>
+                <MenuItem value={"lewa"}>Przy lewym narożniku</MenuItem>
+                <MenuItem value={"prawa"}>Przy prawym narożniku</MenuItem>
               </Select>
             </FormControl>
-
-            <div className="w-full px-4">
-              <p className="text-xs text-slate-700">
-                {wnekaPositionValue} cm od {krawedz} krawędzi ściany
-              </p>
-              <Slider
-                value={wnekaPositionValue}
-                min={0}
-                max={zakres}
-                step={10}
-                marks={[
-                  { value: 0, label: "przy krawędzi" },
-                  { value: zakres, label: "" },
-                ]}
-                onChange={(e, v) => zmien({ wnekaPositionValue: v })}
-              />
-            </div>
 
             {/* drzwi i okna na ściankach wnęki */}
             <div className="w-full bg-slate-300 rounded-md p-2 mt-2">
@@ -399,8 +380,9 @@ function WnekaSetting({ selectedOptions, setSelectedOptions }) {
                       }
                     >
                       <MenuItem value={"wnęka tył"}>Tylna</MenuItem>
-                      <MenuItem value={"wnęka lewo"}>Lewa</MenuItem>
-                      <MenuItem value={"wnęka prawo"}>Prawa</MenuItem>
+                      {jestSciankaBoczna && (
+                        <MenuItem value={"wnęka bok"}>Boczna (dzieląca)</MenuItem>
+                      )}
                     </Select>
                   </FormControl>
 
@@ -465,10 +447,7 @@ function WnekaSetting({ selectedOptions, setSelectedOptions }) {
 
                   <div className="w-full px-2">
                     <p className="text-xs text-slate-700">
-                      {el.positionValue} cm{" "}
-                      {el.position === "wnęka tył"
-                        ? "od lewej krawędzi wnęki"
-                        : "od lica ściany w głąb wnęki"}
+                      {el.positionValue} cm {opisScianki(el.position)}
                     </p>
                     <Slider
                       value={el.positionValue}

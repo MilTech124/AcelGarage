@@ -61,8 +61,7 @@ function Main() {
     wnekaSide: "tył",
     wnekaWidth: 2,
     wnekaDepth: 1.5,
-    wnekaAnchor: "lewa", // od której krawędzi ściany liczymy pozycję
-    wnekaPositionValue: 0, // cm od tej krawędzi
+    wnekaAnchor: "lewa", // przy której krawędzi ściany stoi wnęka (narożnik)
 
     gutter: false,
     automatic: false,

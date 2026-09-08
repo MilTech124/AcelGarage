@@ -1,9 +1,10 @@
 import { Suspense } from "react";
 import { Canvas, extend, useThree } from '@react-three/fiber'
 import { Environment } from "@react-three/drei";
-import { OrbitControls, ContactShadows } from "@react-three/drei";
+import { OrbitControls, ContactShadows, Html } from "@react-three/drei";
 import { Model } from "./Model";
-import { useRef, useEffect } from "react";
+import Dimensions from "./Dimensions";
+import { useRef, useEffect, useState } from "react";
 
 
 function CaptureScreenshot({ setCaptureFunction,capture }) {
@@ -15,12 +16,12 @@ function CaptureScreenshot({ setCaptureFunction,capture }) {
         const imageData = gl.domElement.toDataURL('image/png');
         console.log(imageData);
         return imageData;
-      };  
+      };
        setCaptureFunction(capture())
 
     }
-   
-   
+
+
   },[capture])
 
   return null;
@@ -31,12 +32,44 @@ function CaptureScreenshot({ setCaptureFunction,capture }) {
 function GarageViewer({ selectedOptions ,captureScreenshot,capture }) {
 
   const canvasRef = useRef();
+  const [wymiary, setWymiary] = useState(false);
 
 
 
-  return ( 
+  return (
 
-    <Canvas gl={{ preserveDrawingBuffer: true }} 
+    <div className="relative w-full h-full">
+
+    {/* Przełącznik miarek - lewa krawędź viewera, lustrzanie do karty presetu po prawej */}
+    <button
+      type="button"
+      onClick={() => setWymiary((w) => !w)}
+      aria-pressed={wymiary}
+      title={wymiary ? "Ukryj wymiary" : "Pokaż wymiary"}
+      className={`flex flex-col items-center gap-1 cursor-pointer p-2 rounded-r-md absolute left-0 top-2 z-10 transition-colors ${
+        wymiary
+          ? "bg-slate-900 text-white hover:bg-slate-700"
+          : "bg-slate-400 text-slate-900 hover:bg-slate-300"
+      }`}
+    >
+      <svg
+        width="28"
+        height="28"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <rect x="2" y="8" width="20" height="8" rx="1" />
+        <path d="M6 8v4M10 8v3M14 8v4M18 8v3" />
+      </svg>
+      <p className="text-xs">Wymiary</p>
+    </button>
+
+    <Canvas gl={{ preserveDrawingBuffer: true }}
       camera={{ position: [20, 5, 5], fov: 25,}}
       style={{
         background: "url(/logo-black.png)",
@@ -50,7 +83,7 @@ function GarageViewer({ selectedOptions ,captureScreenshot,capture }) {
         minPolarAngle={Math.PI / 2.8}
         maxPolarAngle={Math.PI / 2.2}
         minDistance={15} // minimum zoom level
-        maxDistance={30} // maximum zoom level            
+        maxDistance={30} // maximum zoom level
       />
       {/* <ambientLight intensity={0.5} /> */}
       <directionalLight position={[20, 20, 5]} intensity={2} />
@@ -60,17 +93,38 @@ function GarageViewer({ selectedOptions ,captureScreenshot,capture }) {
         blur={1}
         opacity={0.75}
       />
-      
+
 
       {/* Granica Suspense MUSI być wewnątrz <Canvas>: bez niej r3f rzuca na zewnątrz
           obietnicę, która nigdy się nie rozwiązuje (Block), kontener zostaje schowany,
           useMeasure mierzy 0x0 i scena już nigdy się nie renderuje. */}
-      <Suspense fallback={null}>
+      <Suspense
+        fallback={
+          <Html center>
+            <span className="text-slate-600 text-sm whitespace-nowrap">
+              Ładowanie modelu…
+            </span>
+          </Html>
+        }
+      >
         <Model selectedOptions={selectedOptions} />
+      </Suspense>
+
+      {/* Miarki poza granicą Suspense modelu: nie czekają na GLB, liczą się z samych
+          wymiarów, więc nie mają jak zablokować sceny. */}
+      {wymiary && <Dimensions selectedOptions={selectedOptions} />}
+
+      {/* Environment MUSI mieć własną granicę: to tylko mapa odbić, którą drei
+          ściąga z cudzego CDN (raw.githack.com, ~1,5 MB). We wspólnej granicy
+          z modelem wolny, zablokowany albo wiszący HDR trzymał cały garaż
+          niewidoczny - stąd "czasem model się nie pokazuje". */}
+      <Suspense fallback={null}>
         <Environment preset="city" />
       </Suspense>
     </Canvas>
-  
+
+    </div>
+
   );
 }
 

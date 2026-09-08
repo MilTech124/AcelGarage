@@ -41,6 +41,24 @@ export default function BasicModal({ selectedOptions, modal, setModal,setCapture
       // let carportList= selectedOptions.carportSides.map((carport, index) => `Sciany ${index + 1}: ${JSON.stringify(carport)}`).join('\n');
       let doorList = selectedOptions.door.map((door, index) => `Door ${index + 1}: ${JSON.stringify(door)}`).join('\n');   
       let windowList = selectedOptions.window.map((window, index) => `Window ${index + 1}: ${JSON.stringify(window)}`).join('\n');
+
+      // Wnęka jako jedna gotowa linia - w szablonie maila wystarczy {{wneka}}.
+      // Surowych pól wnekaWidth/wnekaDepth nie wysyłamy osobno, bo zostają
+      // w stanie także po przełączeniu wnęki na "Nie" i pokazywałyby wymiary
+      // czegoś, czego w wycenie nie ma.
+      const metr = (v) => `${String(v).replace(".", ",")} m`;
+      const stronaWneki = { przod: "przód", "tył": "tył", lewo: "lewo", prawo: "prawo" };
+      const weWnece = (lista) =>
+        lista.filter((el) => String(el.position).startsWith("wnęka")).length;
+      const wneka = selectedOptions.wneka
+        ? [
+            `Tak - ściana ${stronaWneki[selectedOptions.wnekaSide] || selectedOptions.wnekaSide}`,
+            `${metr(selectedOptions.wnekaWidth)} x ${metr(selectedOptions.wnekaDepth)}`,
+            `przy ${selectedOptions.wnekaAnchor === "prawa" ? "prawym" : "lewym"} narożniku`,
+            `drzwi we wnęce: ${weWnece(selectedOptions.door)}`,
+            `okna we wnęce: ${weWnece(selectedOptions.window)}`,
+          ].join(", ")
+        : "Nie";
       SendEmail(
         {
           name: contact.name,
@@ -52,6 +70,7 @@ export default function BasicModal({ selectedOptions, modal, setModal,setCapture
           doorList: selectedOptions.door.length,
           door: doorList,
           window: windowList,
+          wneka: wneka,
           data: selectedOptions,
           imageURL: imageURL,
           // carportList: carportList

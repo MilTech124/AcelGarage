@@ -7,14 +7,21 @@ import { useGLTF } from "@react-three/drei";
 import Materials from "./Materials";
 import { ROOF, monoTrimY, combinedRoof } from "./RoofGeometry";
 import {
+  pozycjaDrzwi,
+  pozycjaOkna,
+} from "./ItemPlacement";
+import {
   buildWneka,
   buildGablePanels,
   localAxis,
   localScale,
   localAlongSign,
   wnekaWSwiecie,
-  miejsceNaSciance,
 } from "./WallGeometry";
+
+// Połowa grubości słupka wnęki w jednostkach lokalnych - tyle samo co podpory
+// wiaty (0.025 => ok. 5 cm przy garażu 6 m), wcześniej było dwa razy grubiej.
+const SLUPEK_WNEKI = 0.025;
 
 export function Model(props) {
   const {
@@ -57,7 +64,6 @@ export function Model(props) {
     wnekaWidth,
     wnekaDepth,
     wnekaAnchor,
-    wnekaPositionValue,
   } = props.selectedOptions;
   const { nodes, materials } = useGLTF("/model/garaz.glb");
   const {
@@ -73,7 +79,7 @@ export function Model(props) {
     doorMaterial5,
     metalWallMaterial,
     metalRoofWorksMaterial,
-    azuryMaterial,wallMaterialCopy
+    azuryMaterial,
   } = Materials(props.selectedOptions);
 
   const mono = roof !== "dwuspad" && roof !== "dwuspad przod-tył";
@@ -123,11 +129,24 @@ export function Model(props) {
   */
   const szczytyGeom = useMemo(() => {
     if (!wiataPodDachem) return null;
+    /*
+      Odniesienie UV w poziomie: tekstura przechodzi 0..1 na odcinku NAD GARAŻEM
+      (dokładnie tak, jak na ścianie pod szczytem), a nad wiatą biegnie dalej
+      (U > 1 albo U < 0 - mapy są RepeatWrapping). Bez tego 0..1 rozkładało się na
+      cały dach garaż+wiata i przetłoczenia szczytu były k razy rzadsze niż na
+      ścianie. Odcinek garażu to [styk, 3] albo [-3, -styk] - stąd min z krańców.
+    */
+    const zStyk = kierunekWiaty * dach.styk;
+    const uRef = {
+      min: Math.min(zStyk, kierunekWiaty * 3),
+      span: 6 / dach.k,
+    };
     const wspolne = {
       yBottom: 2.129, // lekko poniżej korony ściany, żeby zakryć styk
       ridgeY: dach.ridgeY,
       tan: Math.tan(dach.pitch),
       thickness: 0.036,
+      uRef,
     };
     const out = [];
     [ROOF.gableX, -ROOF.gableX].forEach((x) => {
@@ -145,7 +164,7 @@ export function Model(props) {
       }).forEach((geometry) => out.push({ geometry, czesc: "wiata" }));
     });
     return out;
-  }, [wiataPodDachem, dach.ridgeY, dach.pitch, dach.styk, kierunekWiaty]);
+  }, [wiataPodDachem, dach.ridgeY, dach.pitch, dach.styk, dach.k, kierunekWiaty]);
 
   useEffect(() => {
     if (!szczytyGeom) return undefined;
@@ -158,21 +177,30 @@ export function Model(props) {
     skalę tej grupy (1 jednostka lokalna = wymiar garażu / 6 metra). Bez tego
     wnęka 2 m przy garażu 12 m wyszłaby dwa razy za wąska.
   */
+  // Wnęka w metrach w układzie świata - jedno źródło prawdy o jej krawędziach,
+  // z którego korzysta i geometria, i wstawianie drzwi/okien (WallGeometry.js).
+  const wnekaSwiat = useMemo(
+    () =>
+      wnekaWSwiecie({
+        wneka,
+        wnekaSide,
+        wnekaAnchor,
+        wnekaWidth,
+        wnekaDepth,
+        width,
+        depth,
+      }),
+    [wneka, wnekaSide, wnekaAnchor, wnekaWidth, wnekaDepth, width, depth]
+  );
+
   const wnekaParts = useMemo(() => {
-    if (!wneka) return null;
+    if (!wnekaSwiat) return null;
     const { axis, sign } = localAxis(roof, wnekaSide);
     const skala = localScale(roof, { width, depth });
     const osWzdluz = axis === "x" ? "z" : "x";
     const half = Math.min(3, wnekaWidth / 2 / skala[osWzdluz]);
     const glebokosc = Math.min(5, wnekaDepth / skala[axis]);
-    // pozycja liczona od wybranej krawędzi ściany (tak jak przy bramach),
-    // a nie od jej środka - "lewa" to ta sama krawędź co przy pozycji bramy
-    const dlugoscSciany =
-      wnekaSide === "przod" || wnekaSide === "tył" ? width : depth;
-    const odKrawedzi = wnekaPositionValue / 100;
-    const znak = wnekaAnchor === "prawa" ? -1 : 1;
-    const przesuniecie =
-      znak * (dlugoscSciany / 2 - odKrawedzi - wnekaWidth / 2);
+    const przesuniecie = wnekaSwiat.srodekB;
     const swoboda = Math.max(0, 3 - half);
     const center = Math.max(
       -swoboda,
@@ -182,48 +210,9 @@ export function Model(props) {
       )
     );
     return buildWneka({ mono, axis, sign, center, half, depth: glebokosc });
-  }, [
-    wneka,
-    roof,
-    wnekaSide,
-    wnekaWidth,
-    wnekaDepth,
-    wnekaAnchor,
-    wnekaPositionValue,
-    width,
-    depth,
-    mono,
-  ]);
+  }, [wnekaSwiat, roof, wnekaSide, wnekaWidth, wnekaDepth, width, depth, mono]);
 
   // geometrie to bufory GPU - przy zmianie wymiarów trzeba je zwolnić
-  // Wnęka w metrach w układzie świata + miejsca na jej ściankach (WallGeometry.js).
-  const wnekaSwiat = useMemo(
-    () =>
-      wnekaWSwiecie({
-        wneka,
-        wnekaSide,
-        wnekaAnchor,
-        wnekaPositionValue,
-        wnekaWidth,
-        wnekaDepth,
-        width,
-        depth,
-      }),
-    [
-      wneka,
-      wnekaSide,
-      wnekaAnchor,
-      wnekaPositionValue,
-      wnekaWidth,
-      wnekaDepth,
-      width,
-      depth,
-    ]
-  );
-
-  const wnekaMiejsce = (pozycja, odsuniecie, szerokosc) =>
-    miejsceNaSciance(wnekaSwiat, pozycja, odsuniecie, szerokosc);
-
   useEffect(() => {
     if (!wnekaParts) return undefined;
     return () => {
@@ -244,7 +233,9 @@ export function Model(props) {
           <mesh key={i} name={`wneka-bryla-${i}`} geometry={g} material={material} />
         ))}
         <mesh name="wneka-sufit" geometry={wnekaParts.ceiling} material={material} />
-        {krawedzie.map((e, i) => (
+        {krawedzie
+          .filter((e, i) => (i < 2 ? wnekaParts.flanks[i] : true))
+          .map((e, i) => (
           <mesh
             key={`obrobka-${i}`}
             name={`wneka-obrobka-${i}`}
@@ -254,16 +245,22 @@ export function Model(props) {
             scale={[0.0596, polowaWysokosci(e), 0.0542]}
           />
         ))}
-        {/* gdy wnęka dochodzi do końca ściany, nie ma już skrzydła - w narożniku staje słupek */}
+        {/* Przy otwartym narożniku wnęki staje słupek. Siatki podpór nie mają
+            materiału w GLB (three podstawia wtedy biały), więc bierzemy materiał
+            ścian - słupek jest w kolorze garażu. */}
         {wnekaParts.flanks.map((jestSciana, i) =>
           jestSciana ? null : (
             <mesh
               key={`podpora-${i}`}
               name={`wneka-podpora-${i}`}
               geometry={nodes["podpora-przod"].geometry}
-              material={nodes["podpora-przod"].material}
+              material={wallMaterial}
               position={srodek(wnekaParts.outerEdges[i])}
-              scale={[0.05, polowaWysokosci(wnekaParts.outerEdges[i]), 0.05]}
+              scale={[
+                SLUPEK_WNEKI,
+                polowaWysokosci(wnekaParts.outerEdges[i]),
+                SLUPEK_WNEKI,
+              ]}
             />
           )
         )}
@@ -333,87 +330,15 @@ export function Model(props) {
       doorMaterial5,
     ]; // Array
     const selectedDoorMaterial = doorMaterials[number];
-    // drzwi we wnęce: pozycję liczymy z płaszczyzn jej ścianek
-    const skalaDrzwi =
-      door[number].size === "100x190"
-        ? 1
-        : door[number].size === "90x190"
-        ? 0.95
-        : 0.92;
-    const naWnece =
-      typeof door[number].position === "string" &&
-      door[number].position.startsWith("wnęka");
-    const miejsce = naWnece
-      ? wnekaMiejsce(door[number].position, door[number].positionValue, skalaDrzwi)
-      : null;
-    if (naWnece && !miejsce) return null; // wnęka wyłączona
+    // pozycja (także ta na ściankach wnęki) liczona w ItemPlacement.js
+    const miejsce = pozycjaDrzwi(door[number], { width, depth, wnekaSwiat });
+    if (!miejsce) return null; // wnęka wyłączona albo nieznana ściana
     return (
       <group
         name="drzwi-cale"
-        position={
-          miejsce
-            ? [
-                // środek skrzydła siedzi 0.362 (w skali drzwi) od punktu grupy
-                miejsce.x + 0.362 * skalaDrzwi * Math.sin(miejsce.kat),
-                1.054,
-                miejsce.z + 0.362 * skalaDrzwi * Math.cos(miejsce.kat),
-              ]
-            : door[number].position === "przod"
-            ? [
-                (2.965 * depth) / 6,
-                1.054,
-                width < 5
-                  ? (2.82 * width) / 6 - door[number].positionValue / 100
-                  : (2.92 * width) / 6 - door[number].positionValue / 100,
-              ]
-            : door[number].position === "tył"
-            ? [
-                (-2.965 * depth) / 6,
-                1.054,
-                ((-2.2 - 0.71) * width) / 6 + door[number].positionValue / 100,
-              ]
-            : door[number].position === "prawo"
-            ? [
-                (2.86 * depth) / 6 - door[number].positionValue / 100,
-                1.054,
-                (-2.965 * width) / 6,
-              ]
-            : door[number].position === "lewo"
-            ? [
-                (2.86 * depth) / 6 -
-                  door[number].positionValue / 100 -
-                  (0.6 * width) / 6,
-                1.054,
-                (2.965 * width) / 6,
-              ]
-            : null
-        }
-        rotation={[
-          0,
-          miejsce
-            ? miejsce.kat
-            : door[number].position === "przod"
-            ? 0
-            : door[number].position === "tył"
-            ? Math.PI
-            : door[number].position === "prawo"
-            ? Math.PI / 2
-            : door[number].position === "lewo"
-            ? -Math.PI / 2
-            : null,
-          0,
-        ]}
-        scale={[
-          1,
-          1,
-          door[number].size === "100x190"
-            ? 1
-            : door[number].size === "90x190"
-            ? 0.95
-            : door[number].size === "80x190"
-            ? 0.92
-            : null,
-        ]}
+        position={miejsce.position}
+        rotation={[0, miejsce.kat, 0]}
+        scale={[1, 1, miejsce.skala]}
       >
         <mesh
           name="drzwi-klamka"
@@ -578,67 +503,13 @@ export function Model(props) {
     if (!number || number === undefined) {
       number = 0;
     }
-    // okno we wnęce - szerokość skrzydła to 0.8 m (skala grupy 0.4 na siatce ±1)
-    const naWnece =
-      typeof window[number].position === "string" &&
-      window[number].position.startsWith("wnęka");
-    const miejsce = naWnece
-      ? wnekaMiejsce(window[number].position, window[number].positionValue, 0.8)
-      : null;
-    if (naWnece && !miejsce) return null; // wnęka wyłączona
+    const miejsce = pozycjaOkna(window[number], { width, depth, wnekaSwiat });
+    if (!miejsce) return null; // wnęka wyłączona albo nieznana ściana
     return (
       <group
         name="okno"
-        position={
-          miejsce
-            ? [miejsce.x, 1.631, miejsce.z]
-            : window[number].position === "przod"
-            ? [
-                (3.006 * depth) / 6,
-                1.631,
-                width >= 6
-                  ? (2.7 * width) / 6 - window[number].positionValue / 100
-                  : (2 * width) / 6 - window[number].positionValue / 100,
-              ]
-            : window[number].position === "tył"
-            ? [
-                (-3.006 * depth) / 6,
-                1.631,
-                width >= 6
-                  ? (2.7 * width) / 6 - window[number].positionValue / 100
-                  : (2 * width) / 6 - window[number].positionValue / 100,
-              ]
-            : window[number].position === "lewo"
-            ? [
-                depth <= 6
-                  ? (-2.4 * depth) / 6 + window[number].positionValue / 100
-                  : (-2.7 * depth) / 6 + window[number].positionValue / 100,
-                1.631,
-                (3 * width) / 6,
-              ]
-            : window[number].position === "prawo"
-            ? [
-                depth <= 6
-                  ? (-2.4 * depth) / 6 + window[number].positionValue / 100
-                  : (-2.7 * depth) / 6 + window[number].positionValue / 100,
-                1.631,
-                (-3 * width) / 6,
-              ]
-            : null
-        }
-        rotation={
-          miejsce
-            ? [0, miejsce.kat, 0]
-            : window[number].position === "przod"
-            ? [0, 0, 0]
-            : window[number].position === "tył"
-            ? [0, Math.PI / 1, 0]
-            : window[number].position === "lewo"
-            ? [0, -Math.PI / 2, 0]
-            : window[number].position === "prawo"
-            ? [0, -Math.PI / -2, 0]
-            : [0, 0, 0]
-        }
+        position={miejsce.position}
+        rotation={[0, miejsce.kat, 0]}
         scale={[0.02, 0.3, 0.4]}
       >
         <mesh
@@ -1311,7 +1182,7 @@ export function Model(props) {
           key={i}
           name={"szczyt-" + czesc + "-" + i}
           geometry={geometry}
-          material={czesc === "wiata" ? wallMaterialCopy : wallMaterial}
+          material={wallMaterial}
         />
       ))}
     </group>

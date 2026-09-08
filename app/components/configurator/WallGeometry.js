@@ -233,8 +233,12 @@ export function localAlongSign(roof, alongAxis) {
   zFrom, zTo - zakres w układzie lokalnym grupy dachu
   ridgeY     - wysokość kalenicy (lokalnie), kalenica jest w z = 0
   tan        - nachylenie połaci w jednostkach lokalnych
+  uRef       - odniesienie UV w poziomie: odcinek lokalnego z, na którym tekstura ma
+               przejść 0..1. Grupa dachu obejmuje garaż RAZEM z wiatą, więc jest
+               szersza od grupy ścian - bez tego przetłoczenia na szczycie wychodzą
+               rzadsze niż na ścianie pod nim. Domyślnie cały obrys dachu.
 */
-export function buildGablePanels({ x, thickness, zFrom, zTo, yBottom, ridgeY, tan }) {
+export function buildGablePanels({ x, thickness, zFrom, zTo, yBottom, ridgeY, tan, uRef }) {
   const y = (z) => ridgeY - Math.abs(z) * tan;
   // Grupa dachu ma inną skalę Y niż grupa ścian (1.12 vs 1.2), więc żeby przetłoczenia
   // na szczycie miały tę samą gęstość w świecie co na ścianie, odniesienie w pionie to
@@ -242,7 +246,7 @@ export function buildGablePanels({ x, thickness, zFrom, zTo, yBottom, ridgeY, ta
   const uvRef = [
     { min: -3, span: 6 },
     { min: yBottom, span: 2.143 },
-    { min: -3, span: 6 },
+    uRef || { min: -3, span: 6 },
   ];
   const a = Math.min(zFrom, zTo);
   const b = Math.max(zFrom, zTo);
@@ -282,7 +286,6 @@ export function wnekaWSwiecie({
   wneka,
   wnekaSide,
   wnekaAnchor,
-  wnekaPositionValue,
   wnekaWidth,
   wnekaDepth,
   width,
@@ -291,19 +294,52 @@ export function wnekaWSwiecie({
   if (!wneka) return null;
   const przodTyl = wnekaSide === "przod" || wnekaSide === "tył";
   const znakA = wnekaSide === "przod" || wnekaSide === "lewo" ? 1 : -1;
+  const osA = przodTyl ? "x" : "z";
+  const osB = przodTyl ? "z" : "x";
   const polowaA = przodTyl ? depth / 2 : width / 2;
   const dlugoscSciany = przodTyl ? width : depth;
-  const znakKrawedzi = wnekaAnchor === "prawa" ? -1 : 1;
-  const srodek =
-    znakKrawedzi * (dlugoscSciany / 2 - wnekaPositionValue / 100 - wnekaWidth / 2);
+
+  /*
+    "Lewa" i "prawa" liczymy tak, jak widzi to człowiek stojący na zewnątrz i
+    patrzący na wnękę - inaczej te same etykiety trafiały raz w jedną, raz w drugą
+    ścianę (zależnie od strony garażu). Patrzymy w kierunku d = -normalna ściany,
+    więc prawa strona widza to d x up, a lewa strona wypada na dodatnim krańcu osi
+    B tylko dla wnęki z przodu i z prawej.
+  */
+  const znakLewej = (osA === "x") === (znakA > 0) ? 1 : -1;
+  /*
+    Wnęka zawsze siedzi w narożniku garażu - jest dosunięta do jednej krawędzi
+    ściany, nigdy nie wisi w jej środku. Od strony naroża jest więc otwarta
+    (nie ma tam ścianki), a jedyna ścianka boczna to ta dzieląca, po przeciwnej
+    stronie. Stąd dwie ścianki na elementy: tylna i boczna.
+  */
+  const przyLewej = wnekaAnchor !== "prawa";
+  const znakKrawedzi = (przyLewej ? 1 : -1) * znakLewej;
+  const srodek = znakKrawedzi * (dlugoscSciany / 2 - wnekaWidth / 2);
+  const c1 = srodek + wnekaWidth / 2;
+  const c0 = srodek - wnekaWidth / 2;
+  const lewa = znakLewej > 0 ? c1 : c0;
+  const prawa = znakLewej > 0 ? c0 : c1;
+  // czy po drugiej stronie wnęki zostało jeszcze coś ściany (przy wnęce na całą
+  // ścianę nie ma ścianki dzielącej)
+  const jestBok = wnekaWidth < dlugoscSciany - 0.01;
   return {
-    osA: przodTyl ? "x" : "z",
-    osB: przodTyl ? "z" : "x",
+    osA,
+    osB,
     znakA,
+    znakLewej,
     lico: znakA * polowaA,
     tyl: znakA * (polowaA - wnekaDepth),
-    c1: srodek + wnekaWidth / 2,
-    c0: srodek - wnekaWidth / 2,
+    c1,
+    c0,
+    srodekB: srodek,
+    lewa,
+    prawa,
+    // narożnik (strona otwarta) i ścianka dzieląca
+    naroze: przyLewej ? lewa : prawa,
+    bok: jestBok ? (przyLewej ? prawa : lewa) : null,
+    znakNormalnejBoku: przyLewej ? znakLewej : -znakLewej,
+    jestBok,
   };
 }
 
@@ -325,13 +361,15 @@ export function miejsceNaSciance(W, pozycja, odsuniecie, szerokosc) {
   const przodTyl = W.osA === "x";
   const zloz = (a, b) => (przodTyl ? { x: a, z: b } : { x: b, z: a });
   if (pozycja === "wnęka tył") {
-    const wzdluz = W.c1 - d - szerokosc / 2;
+    // odsunięcie liczone od lewej krawędzi wnęki - lewej z punktu widzenia widza
+    const wzdluz = W.lewa - W.znakLewej * (d + szerokosc / 2);
     return { ...zloz(W.tyl, wzdluz), kat: katDlaNormalnej(W.osA, W.znakA) };
   }
-  const wLewo = pozycja === "wnęka lewo";
+  // ścianka boczna = dzieląca, po przeciwnej stronie niż narożnik
+  if (!W.jestBok) return null;
   const wGlab = W.lico - W.znakA * (d + szerokosc / 2);
   return {
-    ...zloz(wGlab, wLewo ? W.c1 : W.c0),
-    kat: katDlaNormalnej(W.osB, wLewo ? -1 : 1),
+    ...zloz(wGlab, W.bok),
+    kat: katDlaNormalnej(W.osB, W.znakNormalnejBoku),
   };
 }
